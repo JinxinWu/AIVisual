@@ -44,24 +44,15 @@
           </el-form>
         </div>
       </el-col></el-row>
-
-
-
-
   </div>
 </template>
-
 <script>
 import { getUUID } from "@/utils";
 import axios from "axios";
 export default {
   data() {
     return {
-      BaseUrl: "http://43.143.234.65:88/api/",
-      loginApi: {
-        login: "account/user/login",
-        captcha: "account/captcha.jpg",
-      },
+      BaseUrl: "http://localhost:8000/",
       dataForm: {
         userName: "",
         password: "",
@@ -83,7 +74,7 @@ export default {
     };
   },
   created() {
-    this.getUserCaptcha();
+    this.getCaptcha();
   },
 
   methods: {
@@ -91,47 +82,55 @@ export default {
     dataFormSubmit() {
       let _this = this;
 
-        this.$refs["dataForm"].validate((valid) => {
-          if (valid) {
-            let param = {
-              username: this.dataForm.userName,
-              password: this.dataForm.password,
-              uuid: this.dataForm.uuid,
-              captcha: this.dataForm.captcha,
-            };
-            axios
-              .post(this.BaseUrl + this.loginApi["login"], param)
-              .then((res) => {
-                if (res.status === 200) {
-                  if (res.data.msg === "登录成功") {
-                    this.$cookie.set("token", res.data.token);
-                    this.$router.replace({ name: "teShowCourse" });
-                  } else {
-                    _this.getCaptcha();
-                    _this.$message.error(data.msg);
-                  }
+      this.$refs["dataForm"].validate((valid) => {
+        if (valid) {
+          let param = {
+            username: this.dataForm.userName,
+            password: this.dataForm.password,
+            uuid: this.dataForm.uuid,
+            captcha: this.dataForm.captcha,
+          };
+          axios
+            .post(this.BaseUrl + "account/user/login", param)
+            .then((res) => {
+              if (res.status === 200) {
+                if (res.data.msg === "登录成功") {
+                  this.$cookie.set("token", res.data.token);
+                  this.$router.replace({ name: "Train" });
+                } else {
+                  _this.getCaptcha();
+                  _this.$message.error(data.msg);
                 }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        });
-      } 
-        
-
-      
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
     },
     // 获取验证码
     getCaptcha() {
-        this.getCaptcha();
-    },
-    getCaptcha() {
       this.dataForm.uuid = getUUID();
-      this.captchaPath = this.$http.adornUrl(
-        `/captcha.jpg?uuid=${this.dataForm.uuid}`
-      );
+      axios
+        .get(
+          this.BaseUrl +
+          "account/captcha.jpg?uuid=" +
+          this.dataForm.uuid,
+          { responseType: "blob" }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            let blob = new Blob([res.data], { type: "image/jpeg" });
+            this.captchaPath = window.URL.createObjectURL(blob);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+  },
+
 
 };
 </script>
