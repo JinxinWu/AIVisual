@@ -1,130 +1,146 @@
 <template>
-  <div class="fluid container">
-    <div class="form-group form-group-lg panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">组件拖拽实例</h3>
+  <div id="app">
+    <!--使用draggable组件-->
+    <div class="itxst">
+      <div class="col">
+        <div class="title">拖拽到B组试试看,小于4个元素不允许拖拽</div>
+        <draggable
+          v-model="arr1"
+          :group="groupA"
+          animation="300"
+          dragClass="dragClass"
+          ghostClass="ghostClass"
+          chosenClass="chosenClass"
+        >
+          <transition-group :style="style">
+            <div class="item" v-for="item in arr1" :key="item.id">
+              {{ item.name }}
+            </div>
+          </transition-group>
+        </draggable>
       </div>
-      <div class="panel-body">
-        <div class="checkbox">
-          <label><input type="checkbox" v-model="editable" />设置组件可拖拽</label>
-        </div>
+      <div class="col">
+        <div class="title">B组（本组是个空数组）</div>
+        <draggable
+          v-model="arr2"
+          :group="groupB"
+          animation="300"
+          dragClass="dragClass"
+          ghostClass="ghostClass"
+          chosenClass="chosenClass"
+        >
+          <transition-group :style="style">
+            <div class="item" v-for="item in arr2" :key="item.id">
+              {{ item.name }}
+            </div>
+          </transition-group>
+        </draggable>
       </div>
     </div>
-
-    <div class="col-md-3">
-      <draggable class="list-group" tag="ul" :list="this.list" v-bind="dragOptions" :move="onMove"
-        @start="isDragging = true" @end="isDragging = false">
-        <div class="list-group-item" v-for="(item, index) in this.list" :key="item.value">
-          <span class="badge">{{ index }}</span>
-          <span class="lefttitle">
-            {{ item.name }}
-          </span>
-        </div>
-      </draggable>
-    </div>
-
-    <div class="list-group col-md-3">
-      <pre>{{ listString }}</pre>
-    </div>
+    <div style="display: block">{{ message }}</div>
   </div>
 </template>
- 
 <script>
+//导入draggable组件
 import draggable from "vuedraggable";
 export default {
+  //注册draggable组件
   components: {
     draggable,
   },
   data() {
     return {
-      list: [
-        {
-          name: "-姓名",
-          value: "name",
+      drag: false,
+      message: "",
+      groupA: {
+        name: "itxst",
+        put: true, //可以拖入
+        pull: () => {
+          if (this.arr1.length <= 3) {
+            this.message = "元素小于等于3不允许再拖拽了";
+          }
+          return this.arr1.length > 3;
         },
-        {
-          name: "-性别",
-          value: "sex",
-        },
-        {
-          name: "-年龄",
-          value: "age",
-        },
-        {
-          name: "-地址",
-          value: "address",
-        },
-        {
-          name: "-邮箱",
-          value: "mailbox",
-        },
+      },
+      groupB: {
+        name: "itxst",
+        pull: "clone", //B组拖拽时克隆到A组
+        put: true,
+      },
+      //定义要被拖拽对象的数组
+      arr1: [
+        { id: 1, name: "www.itxst.com" },
+        { id: 2, name: "www.jd.com" },
+        { id: 3, name: "www.baidu.com" },
+        { id: 4, name: "www.taobao.com" },
       ],
-      list2: [],
-      editable: true, //决定是否可拖动，为false则组件不可拖动
-      isDragging: false,
-      delayedDragging: false,
+      arr2: [], //空数组
+      arr3: [], //空数组
+      //空数组之在的样式，设置了这个样式才能拖入
+      style: "min-height:120px;display: block;",
     };
   },
+  mounted() {},
   methods: {
-
-    onMove({ relatedContext, draggedContext }) {
-      const relatedElement = relatedContext.element;
-      const draggedElement = draggedContext.element;
-      return (
-        (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      );
+    //开始拖拽事件
+    onStart() {
+      this.drag = true;
+      return true;
     },
-  },
-  computed: {
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        disabled: !this.editable,
-        ghostClass: "ghost",
-      };
-    },
-    listString() {
-      return JSON.stringify(this.list, null, 2);
-    },
-  },
-  watch: {
-    isDragging(newValue) {
-      if (newValue) {
-        this.delayedDragging = true;
-        return;
-      }
-      this.$nextTick(() => {
-        this.delayedDragging = false;
-      });
+    //拖拽结束事件
+    onEnd() {
+      this.drag = false;
     },
   },
 };
 </script>
- 
-<style>
-.flip-list-move {
-  transition: transform 0.5s;
+<style scoped>
+/*定义要拖拽元素的样式*/
+.ghostClass {
+  background-color: blue !important;
+}
+.chosenClass {
+  background-color: red !important;
+  opacity: 1 !important;
+}
+.dragClass {
+  background-color: blueviolet !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-image: none !important;
+}
+.itxst {
+  margin: 10px;
+  min-height: 200px;
+}
+.title {
+  padding: 6px 12px;
+}
+.col {
+  width: 40%;
+  flex: 1;
+  padding: 10px;
+  border: solid 1px #eee;
+  border-radius: 5px;
+  float: left;
+}
+.col + .col {
+  margin-left: 10px;
 }
 
-.no-move {
-  transition: transform 0s;
+.item {
+  padding: 6px 12px;
+  margin: 0px 10px 0px 10px;
+  border: solid 1px #eee;
+  background-color: #f1f1f1;
 }
-
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-}
-
-.list-group {
-  min-height: 20px;
-}
-
-.list-group-item {
+.item:hover {
+  background-color: #fdfdfd;
   cursor: move;
 }
-
-.list-group-item i {
-  cursor: pointer;
+.item + .item {
+  border-top: none;
+  margin-top: 6px;
 }
 </style>

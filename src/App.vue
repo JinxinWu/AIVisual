@@ -1,14 +1,5 @@
 <template>
-  <div>
-    <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-    </el-container>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -59,4 +50,5 @@ body>.el-container {
 
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
-}</style>
+}
+</style>
