@@ -1,4 +1,4 @@
-# ai_platform
+# aivisual
 
 ## Project setup
 ```
