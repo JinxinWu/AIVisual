@@ -66,7 +66,7 @@ export default {
         },
       },
       groupB: {
-        name: "itxst",
+        name: "itxst1",
         pull: "clone", //B组拖拽时克隆到A组
         put: true,
       },

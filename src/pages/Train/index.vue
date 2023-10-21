@@ -10,7 +10,7 @@
           <!-- 遍历步骤 -->
           <el-tab-pane v-for="(step, index) in steps" :key="index" :label="step">
             <!-- 遍历组件、步骤传来取的数据 -->
-            <draggable :group="groupA" :sort="false" animation="300" ref="dragA" :id="index">
+            <draggable :group="groupA" :sort="false" animation="300" @mousedown.native="getId">
               <el-popover v-for="method in methods[index]" :key="method.id" placement="top-start" :title=method.name
                 width="400" trigger="hover" :content=method.content>
                 <el-button slot="reference">{{ method.name }}</el-button>
@@ -26,12 +26,15 @@
               <div slot="header" class="clearfix">
                 <span>数据导入</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 {{ messages[0] }}
               </div>
@@ -49,12 +52,15 @@
               <div slot="header" class="clearfix">
                 <span>数据预处理</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 推荐使用数据预处理组件，支持多种数据预处理方法，包括数据归一化、数据标准化、数据离散化、onehot编码、label编码、描述性统计、词向量转化、相似度计算、图像增强等
               </div>
@@ -72,12 +78,15 @@
               <div slot="header" class="clearfix">
                 <span>特征工程</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 推荐使用特征工程组件，支持多种特征工程方法，包括特征选择、特征降维、特征提取、特征构造等
               </div>
@@ -97,12 +106,15 @@
               <div slot="header" class="clearfix">
                 <span>模型选择</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 推荐使用模型选择组件，支持多种模型选择方法，包括模型评估、模型调参、模型融合等
               </div>
@@ -120,12 +132,15 @@
               <div slot="header" class="clearfix">
                 <span>模型评估</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 推荐使用模型评估组件，支持多种模型评估方法，包括模型评估、模型调参、模型融合等
               </div>
@@ -143,12 +158,15 @@
               <div slot="header" class="clearfix">
                 <span>模型预测</span>
               </div>
-              <draggable :group="groupB" animation="300">
-                <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
-                  trigger="hover" :content=item.content>
-                  <el-button slot="reference">{{ item.name }}</el-button>
-                </el-popover>
-              </draggable>
+              <!-- 留一个距离给拖入的元素 -->
+              <div style="min-height:160px;display: block;">
+                <draggable :group="groupB" animation="300">
+                  <el-popover v-for="item in arr" :key="item.id" placement="top-start" :title=item.name width="400"
+                    trigger="hover" :content=item.content>
+                    <el-button slot="reference">{{ item.name }}</el-button>
+                  </el-popover>
+                </draggable>
+              </div>
               <div class="text item">
                 推荐使用模型预测组件，支持多种模型预测方法，包括模型评估、模型调参、模型融合等
               </div>
@@ -177,18 +195,18 @@ export default {
       steps: ['数据导入', '数据预处理', '特征工程', '模型选择', '模型评估', '模型预测'],
       methods: [
         [{ st: 0, id: 0, name: '关系型数据库导入数据', content: 'shujuguiyihua' },
-         { st: 0, id: 1, name: '本地csv导入数据', content: 'shujubiaozhunhua' },
-         { st: 0, id: 2, name: '从本地excel导入数据', content: 'shujubiaozhunhua' },
-         { st: 0, id: 3, name: '非结构化数据导入', content: 'shujubiaozhunhua' },],
+        { st: 0, id: 1, name: '本地csv导入数据', content: 'shujubiaozhunhua' },
+        { st: 0, id: 2, name: '从本地excel导入数据', content: 'shujubiaozhunhua' },
+        { st: 0, id: 3, name: '非结构化数据导入', content: 'shujubiaozhunhua' },],
         [{ st: 0, id: 4, name: '数据归一化', content: 'shujuguiyihua' },
-         { st: 1, id: 5, name: '数据标准化', content: 'shujubiaozhunhua' },
-         { st: 1, id: 6, name: '数据离散化', content: 'shujulisanhua' },
-         { st: 1, id: 7, name: 'onehot编码', content: 'onehotbianma' },
-         { st: 1, id: 8, name: 'label编码', content: 'labelbianma' },
-         { st: 1, id: 9, name: '描述性统计', content: 'miaoshuxingtongji' },
-         { st: 1, id: 10, name: '词向量转化', content: 'cixiangliangzhuanhua' },
-         { st: 1, id: 11, name: '相似度计算', content: 'xiangsidujisuan' },
-         { st: 1, id: 12, name: '图像增强', content: 'tuxiangzengqiang' }],
+        { st: 1, id: 5, name: '数据标准化', content: 'shujubiaozhunhua' },
+        { st: 1, id: 6, name: '数据离散化', content: 'shujulisanhua' },
+        { st: 1, id: 7, name: 'onehot编码', content: 'onehotbianma' },
+        { st: 1, id: 8, name: 'label编码', content: 'labelbianma' },
+        { st: 1, id: 9, name: '描述性统计', content: 'miaoshuxingtongji' },
+        { st: 1, id: 10, name: '词向量转化', content: 'cixiangliangzhuanhua' },
+        { st: 1, id: 11, name: '相似度计算', content: 'xiangsidujisuan' },
+        { st: 1, id: 12, name: '图像增强', content: 'tuxiangzengqiang' }],
       ],
       messages: ['shuju', 'yuchuli', 'tezheng', 'xuanze', 'pinggu', 'yuce'],
       groupA: {
@@ -197,19 +215,23 @@ export default {
         pull: "clone",
       },
       groupB: {
-        name: "itxst12",
+        name: "itxst",
         pull: false, //B组拖拽时克隆到A组
-        put: () => {
-          if (this.st != 0) {
-            this.message = "元素小于等于3不允许再拖拽了";
+        put: (e) => {
+          // console.log(e);
+          if (this.methods[0][0].st != 0) {
+            this.messages[0] = '元素错误';
           }
-          return this.arr.length > 3;
+          return this.methods[0][0].st == 0;
         },
       },
       arr: [],
     }
   },
   methods: {
+    getId(e) {
+      console.log(this);
+    },
   },
 }
 </script>
