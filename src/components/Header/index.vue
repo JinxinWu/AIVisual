@@ -7,8 +7,8 @@
       <div class="grid-content bg-purple">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
           <el-menu-item index="/login">登录/个人信息</el-menu-item>
-          <el-menu-item index="/train">模型训练</el-menu-item>
-          <el-menu-item index="/test">模型验证</el-menu-item>
+          <el-menu-item index="/train">数据训练</el-menu-item>
+          <el-menu-item index="/test">数据预测</el-menu-item>
         </el-menu>
       </div>
     </el-col>

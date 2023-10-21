@@ -4,9 +4,12 @@
     <div class="itxst">
       <div class="col">
         <div class="title">拖拽到B组试试看,小于4个元素不允许拖拽</div>
+        <!-- v-model传数据 :group拖拉拽规则 animation过渡动画 dragClass拖动元素样式 -->
+        <!-- ghostClass拖动时样式 -->
         <draggable
           v-model="arr1"
           :group="groupA"
+          :sort="false"
           animation="300"
           dragClass="dragClass"
           ghostClass="ghostClass"
