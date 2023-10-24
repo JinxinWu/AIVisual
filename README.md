@@ -1,7 +1,7 @@
 # aivisual
-
+```
 npm i yarn
-
+```
 ## Project setup
 ```
 npm install
