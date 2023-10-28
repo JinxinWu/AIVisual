@@ -46,10 +46,10 @@
 
               <!-- 数据处理和构建模型 -->
               <div
-                style="min-height: 450px; display: block; position: relative"
+                style="min-height: 500px; display: block; position: relative"
               >
-                <div style="position: absolute; z-index: 2;">
-                  <el-table :data="arr" style="width: 100%">
+                <div style="position: absolute; z-index: 2">
+                  <el-table :data="arr" style="width: 100%" height="500">
                     <el-table-column
                       label="操作顺序"
                       type="index"
@@ -58,30 +58,93 @@
                       align="center"
                     >
                     </el-table-column>
+
                     <el-table-column
                       prop="name"
                       label="操作名称"
                       width="600"
                       align="center"
                     >
+                      <template slot-scope="scope">
+                        <span style="margin-left: 0px">{{
+                          scope.row.name
+                        }}</span>
+                      </template>
                     </el-table-column>
 
                     <el-table-column label="操作" width="200">
-                      <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button
-                      >
-                      <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button
-                      >
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          @click="dialogFormVisible = true"
+                          >{{ scope.row.st !== 0 ? "编辑" : "上传" }}</el-button
+                        >
+                        <!-- Form -->
+                        <el-dialog
+                          title="收货地址"
+                          :visible.sync="dialogFormVisible"
+                          append-to-body
+                        >
+                          <el-form :model="form">
+                            <el-form-item
+                              label="活动区域"
+                              :label-width="formLabelWidth"
+                            >
+                              <el-select
+                                v-model="form.region"
+                                placeholder="请选择活动区域"
+                              >
+                                <el-option
+                                  label="区域一"
+                                  value="shanghai"
+                                ></el-option>
+                                <el-option
+                                  label="区域二"
+                                  value="beijing"
+                                ></el-option>
+                              </el-select>
+                            </el-form-item>
+                            <el-form-item
+                              label="上传文件"
+                              :label-width="formLabelWidth"
+                            >
+                              <el-upload
+                                class="upload-demo"
+                                drag
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                multiple
+                              >
+                                <i class="el-icon-upload"></i>
+                                <div class="el-upload__text">
+                                  将文件拖到此处，或<em>点击上传</em>
+                                </div>
+                                <div class="el-upload__tip" slot="tip">
+                                  只能上传jpg/png文件，且不超过500kb
+                                </div>
+                              </el-upload>
+                            </el-form-item>
+                          </el-form>
+                          <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogFormVisible = false"
+                              >取 消</el-button
+                            >
+                            <el-button
+                              type="primary"
+                              @click="dialogFormVisible = false"
+                              >确 定</el-button
+                            >
+                          </div>
+                        </el-dialog>
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          @click="handleDelete(scope.$index, scope.row)"
+                          >删除</el-button
+                        >
+                      </template>
                     </el-table-column>
                   </el-table>
                 </div>
-
                 <div
                   style="
                     display: none;
@@ -100,7 +163,7 @@
           </el-col>
           <!-- 平台显示信息 -->
           <el-col :span="8">
-            <el-card style="width: auto; height: 600px">
+            <el-card style="width: auto; min-height: 600px">
               <div slot="header" class="clearfix">
                 <span>平台显示的信息</span>
               </div>
@@ -163,7 +226,7 @@ export default {
           },
         ],
         [
-          { st: 0, id: 4, name: "数据归一化", content: "shujuguiyihua" },
+          { st: 1, id: 4, name: "数据归一化", content: "shujuguiyihua" },
           { st: 1, id: 5, name: "数据标准化", content: "shujubiaozhunhua" },
           { st: 1, id: 6, name: "数据离散化", content: "shujulisanhua" },
           { st: 1, id: 7, name: "onehot编码", content: "onehotbianma" },
@@ -195,6 +258,41 @@ export default {
       y: 0,
       index1: 0,
       index2: 0,
+      gridData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+      ],
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
     };
   },
   watch: {
@@ -219,7 +317,25 @@ export default {
       console.log(index, row);
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      // console.log(row);
+      this.$confirm("此操作将删除此步骤, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          this.arr.splice(index, 1);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     indexMethod(index) {
       return index + 1;
@@ -236,7 +352,7 @@ export default {
 }
 
 .box-card {
-  height: 300px;
+  min-height: 300px;
 }
 
 // Container
