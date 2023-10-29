@@ -49,7 +49,7 @@
                 style="min-height: 500px; display: block; position: relative"
               >
                 <div style="position: absolute; z-index: 2">
-                  <el-table :data="arr" style="width: 100%" height="500">
+                  <el-table :data="arr" style="width: 100%" height="450">
                     <el-table-column
                       label="操作顺序"
                       type="index"
@@ -110,8 +110,13 @@
                             >
                               <el-upload
                                 class="upload-demo"
+                                accept=".csv"
+                                action="#"
+                                :http-request="httpRequest"
+                                :before-upload="beforeUpload"
+                                :on-exceed="handleExceed"
+                                :limit="1"
                                 drag
-                                action="https://jsonplaceholder.typicode.com/posts/"
                                 multiple
                               >
                                 <i class="el-icon-upload"></i>
@@ -128,9 +133,7 @@
                             <el-button @click="dialogFormVisible = false"
                               >取 消</el-button
                             >
-                            <el-button
-                              type="primary"
-                              @click="dialogFormVisible = false"
+                            <el-button type="primary" @click="submitImportForm"
                               >确 定</el-button
                             >
                           </div>
@@ -144,6 +147,21 @@
                       </template>
                     </el-table-column>
                   </el-table>
+                </div>
+                <div
+                  style="
+                    position: absolute;
+                    z-index: 2;
+                    bottom: 0px;
+                    right: 20px;
+                  "
+                >
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)"
+                    >删除</el-button
+                  >
                 </div>
                 <div
                   style="
@@ -177,6 +195,7 @@
 
 <script>
 import Header from "@/components/Header/index.vue";
+import axios from "axios";
 import { Autocomplete } from "element-ui";
 //导入draggable组件
 import draggable from "vuedraggable";
@@ -285,6 +304,7 @@ export default {
         region: "",
       },
       formLabelWidth: "120px",
+      fileList: [],
     };
   },
   watch: {
@@ -299,6 +319,60 @@ export default {
     },
   },
   methods: {
+    // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
+    httpRequest(option) {
+      this.fileList.push(option);
+    },
+    // 上传前处理
+    beforeUpload(file) {
+      let fileSize = file.size;
+      const FIVE_M = 5 * 1024 * 1024;
+      //大于5M，不允许上传
+      // if (fileSize > FIVE_M) {
+      //   this.$message.error("最大上传5M");
+      //   return false;
+      // }
+      //判断文件类型，必须是xlsx格式
+      let fileName = file.name;
+      let reg = /^.+(\.csv)$/;
+      if (!reg.test(fileName)) {
+        this.$message.error("只能上传xlsx!");
+        return false;
+      }
+      return true;
+    },
+    // 文件数量过多时提醒
+    handleExceed() {
+      this.$message({ type: "error", message: "最多支持1个附件上传" });
+    },
+    //文件上传
+    submitImportForm() {
+      // 使用form表单的数据格式
+      const paramsData = new FormData();
+      // 将上传文件数组依次添加到参数paramsData中
+      this.fileList.forEach((x) => {
+        console.log(x);
+        paramsData.append("file", x.file);
+        console.log(x.file);
+      });
+      //这里根据自己封装的axios来进行调用后端接口
+      axios.post(
+      	  //后端接口，自行修改
+          "http://localhost:80/guo/test/upload",
+          paramsData,
+          {
+            headers: {'Content-Type': 'multipart/form-data'}
+          }
+      ).then(res => {
+        console.log(res.data.message)
+      })
+        // this.$refs.importFormRef.resetFields(); //清除表单信息
+        // this.$refs.upload.clearFiles(); //清空上传列表
+        this.fileList = []; //集合清空
+        this.dialogVisible1 = false; //关闭对话框
+      
+    },
+
     getXY(e, index1) {
       this.$data.x = e.originalEvent.pageX;
       this.$data.y = e.originalEvent.pageY;
