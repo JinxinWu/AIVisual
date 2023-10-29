@@ -23,7 +23,7 @@
               <el-popover
                 v-for="method in methods[index]"
                 :key="method.id"
-                placement="top-start"
+                placement="bottom-start"
                 :title="method.name"
                 width="400"
                 trigger="hover"
