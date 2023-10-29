@@ -87,30 +87,12 @@
                         >
                           <el-form :model="form">
                             <el-form-item
-                              label="活动区域"
-                              :label-width="formLabelWidth"
-                            >
-                              <el-select
-                                v-model="form.region"
-                                placeholder="请选择活动区域"
-                              >
-                                <el-option
-                                  label="区域一"
-                                  value="shanghai"
-                                ></el-option>
-                                <el-option
-                                  label="区域二"
-                                  value="beijing"
-                                ></el-option>
-                              </el-select>
-                            </el-form-item>
-                            <el-form-item
                               label="上传文件"
                               :label-width="formLabelWidth"
                             >
                               <el-upload
                                 class="upload-demo"
-                                accept=".csv"
+                                accept=".csv .xlsx"
                                 action="#"
                                 :http-request="httpRequest"
                                 :before-upload="beforeUpload"
@@ -334,11 +316,11 @@ export default {
       // }
       //判断文件类型，必须是xlsx格式
       let fileName = file.name;
-      let reg = /^.+(\.csv)$/;
-      if (!reg.test(fileName)) {
-        this.$message.error("只能上传xlsx!");
-        return false;
-      }
+      // let reg = /^.+(\.csv)$/ ;
+      // if (!reg.test(fileName)) {
+      //   this.$message.error("只能上传xlsx!");
+      //   return false;
+      // }
       return true;
     },
     // 文件数量过多时提醒
@@ -364,12 +346,20 @@ export default {
             headers: {'Content-Type': 'multipart/form-data'}
           }
       ).then(res => {
-        console.log(res.data.message)
+        const url = res.data.url
+        console.log("==========" + res.data.url)
+        this.fileList = []; //集合清空
+        this.dialogFormVisible = false; //关闭对话框
+        axios.get(
+      	  //后端接口，自行修改
+          "http://localhost:80/guo/test/showDetail?url=" + url
+          ).then(res => {
+            console.log(res.data.detail)
+          })
       })
         // this.$refs.importFormRef.resetFields(); //清除表单信息
         // this.$refs.upload.clearFiles(); //清空上传列表
-        this.fileList = []; //集合清空
-        this.dialogVisible1 = false; //关闭对话框
+        
       
     },
     submit(){
@@ -381,7 +371,7 @@ export default {
             headers: {'Content-Type': 'application/json'}
           }
       ).then(res => {
-        console.log(res.data.message)
+
       })
     },
 
