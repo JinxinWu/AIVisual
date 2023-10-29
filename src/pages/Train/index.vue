@@ -159,8 +159,8 @@
                   <el-button
                     size="mini"
                     type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
-                    >删除</el-button
+                    @click="submit"
+                    >提交</el-button
                   >
                 </div>
                 <div
@@ -371,6 +371,18 @@ export default {
         this.fileList = []; //集合清空
         this.dialogVisible1 = false; //关闭对话框
       
+    },
+    submit(){
+      axios.post(
+      	  //后端接口，自行修改
+          "http://localhost:80/guo/test/upload",
+          JSON.stringify(this.arr),
+          {
+            headers: {'Content-Type': 'application/json'}
+          }
+      ).then(res => {
+        console.log(res.data.message)
+      })
     },
 
     getXY(e, index1) {
