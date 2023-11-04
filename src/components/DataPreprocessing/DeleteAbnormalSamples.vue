@@ -1,8 +1,16 @@
 <template>
-  <el-button type="primary">{{ this.name }}</el-button>
+  <el-popover
+    placement="top"
+    :title=name
+    width="200"
+    trigger="hover"
+    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+  >
+    <div class="hf-button" slot="reference">{{ this.name }}</div>
+  </el-popover>
 </template>
   
-  <script>
+<script>
 import { Autocomplete } from "element-ui";
 export default {
   data() {
@@ -40,14 +48,17 @@ export default {
 };
 </script>
   
-  <style scoped>
-.el-button {
+<style lang='less' scoped>
+@height: 25px;
+.hf-button {
+  cursor: pointer;
   background-color: #d6edf7;
   font-size: 13px;
   color: black;
   border: none;
-  height: 25px;
-  line-height: 0;
+  // height与line-height相同时文字居中
+  height: @height;
+  line-height: @height;
   margin: auto;
   width: 120px;
 }

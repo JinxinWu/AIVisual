@@ -70,7 +70,7 @@
             >
               <div>异常值处理</div>
               <div style="margin-top: 5px; margin-bottom: 5px">
-                <DeleteAbnormalSamples
+                <DeleteAbnormalSamples draggable="true"
                   @customEvent="getMessage"
                 ></DeleteAbnormalSamples>
               </div>
@@ -427,7 +427,7 @@ export default {
 <style lang="less" scoped>
 //表格最左边的div
 .rowDiv {
-  background-color: #004088;
+  background-color: #2932e1;
   width: 100px;
   height: 25px;
   margin: 10px auto;
