@@ -1,37 +1,96 @@
 <template>
-  <div>
-    <el-col :span="4" :offset="2">
-      <div class="grid-content bg-purple">logo</div>
+  <el-row>
+    <el-col :span="8">
+      <div class="logo">项目名称</div>
     </el-col>
-    <el-col :span="10" :offset="8">
-      <div class="grid-content bg-purple">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+
+    <el-col :span="16">
+      <div class="menu">
+        <el-menu
+          :default-active="activeIndex"
+          class="el-menu-demo"
+          mode="horizontal"
+          active-text-color="#409EFF"
+          @select="handleSelect"
+          router
+        >
           <el-menu-item index="/login">登录/个人信息</el-menu-item>
-          <el-menu-item index="/train">数据训练</el-menu-item>
-          <el-menu-item index="/test">数据预测</el-menu-item>
+          <el-menu-item index="/test">数据预测</el-menu-item
+          ><el-menu-item index="/train">数据训练</el-menu-item>
         </el-menu>
       </div>
     </el-col>
-  </div>
+  </el-row>
 </template>
-9
+
 <script>
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
     return {
-      activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex: "1",
+      activeIndex2: "1",
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
+.el-row {
+  background-color: #fff;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+//第一个el-col的样式
+.el-row .el-col:first-child {
+  background-color: #004088;
+  border-radius: 20px 0 0 0;
+}
 
+//logo盒子的样式
+.logo {
+  width: auto;
+  height: auto;
+  color: white;
+  font-weight: 600;
+  font-size: 24px;
+  margin-left: 25%;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+//菜单样式
+//定位
+.menu {
+  margin-right: 100px;
+}
+.el-menu-demo {
+  font-size: 18px !important;
+}
+//去除默认下边线
+.el-menu.el-menu--horizontal {
+    border-bottom: none;
+}
+//菜单内容样式
+.el-menu-demo .el-menu-item {
+  float: right;
+  margin-right: 10px;
+  color: black;
+  font-size: 16px !important;
+  height:30px;
+  margin-top:15px;
+  line-height: 30px;
+  border-radius: 10px;
+}
+.el-menu-demo .el-menu-item:hover {
+  font-weight: 600;
+  color: white !important;
+  background-color: #004088 !important;
+  border-radius: 10px;
+}
 </style>

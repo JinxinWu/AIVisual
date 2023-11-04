@@ -6,413 +6,435 @@
       </el-header>
       <el-main>
         <!-- 组件+步骤 -->
-        <el-tabs type="border-card">
-          <!-- 遍历步骤 -->
-          <el-tab-pane
-            v-for="(step, index) in steps"
-            :key="index"
-            :label="step"
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv" style="">加载数据</div></el-col
           >
-            <!-- 遍历组件、步骤传来取的数据 -->
-            <draggable
-              :group="groupA"
-              :sort="false"
-              animation="300"
-              @end="getXY($event, index)"
-            >
-              <el-popover
-                v-for="method in methods[index]"
-                :key="method.id"
-                placement="bottom-start"
-                :title="method.name"
-                width="400"
-                trigger="hover"
-                :content="method.content"
-              >
-                <el-button slot="reference">{{ method.name }}</el-button>
-              </el-popover>
-            </draggable>
-          </el-tab-pane>
-        </el-tabs>
-
-        <!-- 流程图模块 -->
-        <el-row :gutter="24" style="min-height: 600px; margin-top: 25px">
-          <!-- 数据导入 -->
-          <el-col :span="16">
-            <el-card class="box-card" style="width: auto; height: auto">
-              <div slot="header" class="clearfix">
-                <span>信息队列</span>
-              </div>
-
-              <!-- 数据处理和构建模型 -->
-              <div
-                style="min-height: 500px; display: block; position: relative"
-              >
-                <div style="position: absolute; z-index: 2">
-                  <el-table :data="arr" style="width: 100%" height="450">
-                    <el-table-column
-                      label="操作顺序"
-                      type="index"
-                      :index="indexMethod"
-                      width="100"
-                      align="center"
-                    >
-                    </el-table-column>
-
-                    <el-table-column
-                      prop="name"
-                      label="操作名称"
-                      width="600"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span style="margin-left: 0px">{{
-                          scope.row.name
-                        }}</span>
-                      </template>
-                    </el-table-column>
-
-                    <el-table-column label="操作" width="200">
-                      <template slot-scope="scope">
-                        <el-button
-                          size="mini"
-                          @click="dialogFormVisible = true"
-                          >{{ scope.row.st !== 0 ? "编辑" : "上传" }}</el-button
-                        >
-                        <!-- Form -->
-                        <el-dialog
-                          title="收货地址"
-                          :visible.sync="dialogFormVisible"
-                          append-to-body
-                        >
-                          <el-form :model="form">
-                            <el-form-item
-                              label="上传文件"
-                              :label-width="formLabelWidth"
-                            >
-                              <el-upload
-                                class="upload-demo"
-                                accept=".csv .xlsx"
-                                action="#"
-                                :http-request="httpRequest"
-                                :before-upload="beforeUpload"
-                                :on-exceed="handleExceed"
-                                :limit="1"
-                                drag
-                                multiple
-                              >
-                                <i class="el-icon-upload"></i>
-                                <div class="el-upload__text">
-                                  将文件拖到此处，或<em>点击上传</em>
-                                </div>
-                                <div class="el-upload__tip" slot="tip">
-                                  只能上传jpg/png文件，且不超过500kb
-                                </div>
-                              </el-upload>
-                            </el-form-item>
-                          </el-form>
-                          <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogFormVisible = false"
-                              >取 消</el-button
-                            >
-                            <el-button type="primary" @click="submitImportForm"
-                              >确 定</el-button
-                            >
-                          </div>
-                        </el-dialog>
-                        <el-button
-                          size="mini"
-                          type="danger"
-                          @click="handleDelete(scope.$index, scope.row)"
-                          >删除</el-button
-                        >
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </div>
-                <div
-                  style="
-                    position: absolute;
-                    z-index: 2;
-                    bottom: 0px;
-                    right: 20px;
-                  "
-                >
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="submit"
-                    >提交</el-button
-                  >
-                </div>
-                <div
-                  style="
-                    display: none;
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    z-index: 3;
-                    top: 10px;
-                  "
-                >
-                  <draggable :group="groupB" animation="300"> </draggable>
-                </div>
-              </div>
-              <div class="text item"></div>
-            </el-card>
-          </el-col>
-          <!-- 平台显示信息 -->
+          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
+            ><csvImport @customEvent="getMessage">csv文件</csvImport></el-col
+          >
+          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
+            ><excelImport @customEvent="getMessage"
+              >EXCEL文件</excelImport
+            ></el-col
+          >
+          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
+            ><DBImport @customEvent="getMessage">DB文件</DBImport></el-col
+          >
+          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
+            ><unstructuredImport @customEvent="getMessage"
+              >非结构化数据</unstructuredImport
+            ></el-col
+          >
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv">数据预处理</div></el-col
+          >
           <el-col :span="8">
-            <el-card style="width: auto; min-height: 600px">
-              <div slot="header" class="clearfix">
-                <span>平台显示的信息</span>
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>缺失值处理</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <DeleteMissingColumns
+                  @customEvent="getMessage"
+                ></DeleteMissingColumns>
+                <ZeroCompletion @customEvent="getMessage"></ZeroCompletion>
               </div>
-            </el-card>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <MeanCompletion @customEvent="getMessage"></MeanCompletion
+                ><InterpolationCompletion
+                  @customEvent="getMessage"
+                ></InterpolationCompletion>
+              </div>
+            </div>
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <DatasetPartitioning
+                @customEvent="getMessage"
+              ></DatasetPartitioning>
+            </div>
+          </el-col>
+
+          <el-col :span="4">
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>异常值处理</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <DeleteAbnormalSamples
+                  @customEvent="getMessage"
+                ></DeleteAbnormalSamples>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <BCTransformation @customEvent="getMessage"></BCTransformation>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <LTTruncation @customEvent="getMessage"></LTTruncation>
+              </div>
+            </div>
+          </el-col>
+
+          <el-col :span="8">
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>数据转换</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <Normalization @customEvent="getMessage"></Normalization>
+                <Standardization @customEvent="getMessage"></Standardization>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <OnehotEncoding @customEvent="getMessage"></OnehotEncoding>
+                <LabelEncoding @customEvent="getMessage"></LabelEncoding>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <EquidistantDispersion
+                  @customEvent="getMessage"
+                ></EquidistantDispersion>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv">不平衡工程</div></el-col
+          >
+          <el-col :span="4"
+            ><RandomUndersampling
+              @customEvent="getMessage"
+            ></RandomUndersampling
+          ></el-col>
+          <el-col :span="4"
+            ><ENNUndersampling @customEvent="getMessage"></ENNUndersampling
+          ></el-col>
+          <el-col :span="4"
+            ><RepeatedOversampling
+              @customEvent="getMessage"
+            ></RepeatedOversampling
+          ></el-col>
+          <el-col :span="4"
+            ><SMOTEOversampling @customEvent="getMessage"></SMOTEOversampling
+          ></el-col>
+          <el-col :span="4"
+            ><GANOversampling @customEvent="getMessage"></GANOversampling
+          ></el-col>
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv">特征工程</div></el-col
+          >
+          <el-col :span="4"
+            ><PCADReduction @customEvent="getMessage"></PCADReduction
+          ></el-col>
+          <el-col :span="4"
+            ><LDADReduction @customEvent="getMessage"></LDADReduction
+          ></el-col>
+          <el-col :span="4"
+            ><CorrelationSelection
+              @customEvent="getMessage"
+            ></CorrelationSelection
+          ></el-col>
+          <el-col :span="4"
+            ><CIFSelection @customEvent="getMessage"></CIFSelection
+          ></el-col>
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv">深度学习</div></el-col
+          >
+          <el-col :span="8">
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>卷积神经网络</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <BCNN @customEvent="getMessage"></BCNN
+                ><AlexNet @customEvent="getMessage"></AlexNet>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <ResNet @customEvent="getMessage"></ResNet
+                ><VGG @customEvent="getMessage"></VGG>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>循环神经网络</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <BRNN @customEvent="getMessage"></BRNN
+                ><LSTM @customEvent="getMessage"></LSTM>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <GRU @customEvent="getMessage"></GRU>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div
+              style="
+                margin: 5px auto 5px auto;
+                border: 1px dashed #4874cb;
+                width: 80%;
+              "
+            >
+              <div>图神经网络</div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <BGNN @customEvent="getMessage"></BGNN>
+              </div>
+              <div style="margin-top: 5px; margin-bottom: 5px">
+                <SimGNN @customEvent="getMessage"></SimGNN>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="4" style="line-height: 25px"
+            ><div class="rowDiv">机器学习</div></el-col
+          >
+          <el-col :span="4"
+            ><div style="margin-top: 5px; margin-bottom: 5px">
+              <SVM @customEvent="getMessage"></SVM>
+            </div>
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <LightGBM @customEvent="getMessage"></LightGBM></div
+          ></el-col>
+          <el-col :span="4"
+            ><div style="margin-top: 5px; margin-bottom: 5px">
+              <NND @customEvent="getMessage"></NND>
+            </div>
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <Xgboost @customEvent="getMessage"></Xgboost></div
+          ></el-col>
+          <el-col :span="4"
+            ><div style="margin-top: 5px; margin-bottom: 5px">
+              <LR @customEvent="getMessage"></LR>
+            </div>
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <Catboost @customEvent="getMessage"></Catboost></div
+          ></el-col>
+          <el-col :span="4"
+            ><div style="margin-top: 5px; margin-bottom: 5px">
+              <DT @customEvent="getMessage"></DT>
+            </div>
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <Kmeans @customEvent="getMessage"></Kmeans></div
+          ></el-col>
+          <el-col :span="4"><RF @customEvent="getMessage"></RF></el-col>
+        </el-row>
+        <el-row class="menu">
+          <el-col :span="8" style="line-height: 25px"
+            ><div class="rowDiv">评估指标</div></el-col
+          >
+          <el-col :span="5"><Accuracy></Accuracy></el-col>
+          <el-col :span="5"><Precision></Precision></el-col>
+          <el-col :span="5"><Recall></Recall></el-col>
+          <el-col :span="5"><F1></F1></el-col>
+          <el-col :span="5"><AUC></AUC></el-col>
+          <el-col :span="5"><ROC></ROC></el-col>
+          <el-col :span="5"><MSE></MSE></el-col>
+          <el-col :span="5"><MAPE></MAPE></el-col>
+        </el-row>
+
+        <!-- 画布模块模块 -->
+        <el-row>
+          <el-col span:24 style="width: 100%; height: 200px; margin-top: 10px">
+            
+          </el-col>
+        </el-row>
+        <!-- 后端显示模块 -->
+        <el-row>
+          <el-col span:24>
+            <div></div>
           </el-col>
         </el-row>
       </el-main>
     </el-container>
   </div>
 </template>
-
+  
 <script>
 import Header from "@/components/Header/index.vue";
-import axios from "axios";
 import { Autocomplete } from "element-ui";
-//导入draggable组件
-import draggable from "vuedraggable";
+
+//组件导入
+import {
+  csvImport,
+  DBImport,
+  excelImport,
+  unstructuredImport,
+} from "@/components/DataImport";
+import {
+  DatasetPartitioning,
+  DeleteMissingColumns,
+  InterpolationCompletion,
+  MeanCompletion,
+  ZeroCompletion,
+  DeleteAbnormalSamples,
+  LTTruncation,
+  BCTransformation,
+  Normalization,
+  Standardization,
+  OnehotEncoding,
+  LabelEncoding,
+  EquidistantDispersion,
+} from "@/components/DataPreprocessing";
+import {
+  RandomUndersampling,
+  ENNUndersampling,
+  RepeatedOversampling,
+  SMOTEOversampling,
+  GANOversampling,
+} from "@/components/ImbalancedEngineering";
+import {
+  CIFSelection,
+  CorrelationSelection,
+  LDADReduction,
+  PCADReduction,
+} from "@/components/FeatureEngineering";
+import {
+  AlexNet,
+  BCNN,
+  BGNN,
+  BRNN,
+  GRU,
+  LSTM,
+  ResNet,
+  SimGNN,
+  VGG,
+} from "@/components/DeepLearning";
+import {
+  Catboost,
+  DT,
+  Kmeans,
+  LightGBM,
+  LR,
+  NND,
+  RF,
+  SVM,
+  Xgboost,
+} from "@/components/MachineLearning";
+import {
+  Accuracy,
+  AUC,
+  F1,
+  MAPE,
+  MSE,
+  Precision,
+  Recall,
+  ROC,
+} from "@/components/EvaluationIndicators";
 
 export default {
   name: "Train",
   components: {
     Header,
-    draggable,
+    csvImport,
+    DBImport,
+    excelImport,
+    unstructuredImport,
+    DatasetPartitioning,
+    DeleteMissingColumns,
+    InterpolationCompletion,
+    MeanCompletion,
+    ZeroCompletion,
+    DeleteAbnormalSamples,
+    LTTruncation,
+    BCTransformation,
+    Normalization,
+    Standardization,
+    OnehotEncoding,
+    LabelEncoding,
+    EquidistantDispersion,
+    RandomUndersampling,
+    ENNUndersampling,
+    RepeatedOversampling,
+    SMOTEOversampling,
+    GANOversampling,
+    CIFSelection,
+    CorrelationSelection,
+    LDADReduction,
+    PCADReduction,
+    AlexNet,
+    BCNN,
+    BGNN,
+    BRNN,
+    GRU,
+    LSTM,
+    ResNet,
+    SimGNN,
+    VGG,
+    Catboost,
+    DT,
+    Kmeans,
+    LightGBM,
+    LR,
+    NND,
+    RF,
+    SVM,
+    Xgboost,
+    Accuracy,
+    AUC,
+    F1,
+    MAPE,
+    MSE,
+    Precision,
+    Recall,
+    ROC,
   },
   data() {
     return {
       visible: false,
-      steps: [
-        "数据导入",
-        "数据预处理",
-        "特征工程",
-        "模型选择",
-        "模型评估",
-        "模型预测",
-      ],
-      methods: [
-        [
-          {
-            st: 0,
-            id: 0,
-            name: "关系型数据库导入数据",
-            content: "shujuguiyihua",
-          },
-          {
-            st: 0,
-            id: 1,
-            name: "本地csv导入数据",
-            content: "shujubiaozhunhua",
-          },
-          {
-            st: 0,
-            id: 2,
-            name: "从本地excel导入数据",
-            content: "shujubiaozhunhua",
-          },
-          {
-            st: 0,
-            id: 3,
-            name: "非结构化数据导入",
-            content: "shujubiaozhunhua",
-          },
-        ],
-        [
-          { st: 1, id: 4, name: "数据归一化", content: "shujuguiyihua" },
-          { st: 1, id: 5, name: "数据标准化", content: "shujubiaozhunhua" },
-          { st: 1, id: 6, name: "数据离散化", content: "shujulisanhua" },
-          { st: 1, id: 7, name: "onehot编码", content: "onehotbianma" },
-          { st: 1, id: 8, name: "label编码", content: "labelbianma" },
-          { st: 1, id: 9, name: "描述性统计", content: "miaoshuxingtongji" },
-          {
-            st: 1,
-            id: 10,
-            name: "词向量转化",
-            content: "cixiangliangzhuanhua",
-          },
-          { st: 1, id: 11, name: "相似度计算", content: "xiangsidujisuan" },
-          { st: 1, id: 12, name: "图像增强", content: "tuxiangzengqiang" },
-        ],
-      ],
-      messages: ["shuju", "yuchuli", "tezheng", "xuanze", "pinggu", "yuce"],
-      groupA: {
-        name: "itxst",
-        put: false, //不可以拖入
-        pull: "clone",
-      },
-      groupB: {
-        name: "itxst",
-        pull: false, //B组拖拽时克隆到A组
-        put: true,
-      },
-      arr: [],
-      x: 0,
-      y: 0,
-      index1: 0,
-      index2: 0,
-      gridData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
-      dialogFormVisible: false,
-      form: {
-        region: "",
-      },
-      formLabelWidth: "120px",
-      fileList: [],
+
+      //存储所有小组件的信息
+      listAll: [],
     };
   },
-  watch: {
-    arr: function (newV, old) {
-      // console.log(newV);
-      // console.log(old);
-    },
-    x: function (newX) {
-      if (newX > 100 && newX < 700 && this.y > 380 && this.y < 800) {
-        this.arr.push(this.$data.methods[this.index1][this.index2]);
-      }
-    },
-  },
+  mounted() {},
+  watch: {},
   methods: {
-    // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
-    httpRequest(option) {
-      this.fileList.push(option);
-    },
-    // 上传前处理
-    beforeUpload(file) {
-      let fileSize = file.size;
-      const FIVE_M = 5 * 1024 * 1024;
-      //大于5M，不允许上传
-      // if (fileSize > FIVE_M) {
-      //   this.$message.error("最大上传5M");
-      //   return false;
-      // }
-      //判断文件类型，必须是xlsx格式
-      let fileName = file.name;
-      // let reg = /^.+(\.csv)$/ ;
-      // if (!reg.test(fileName)) {
-      //   this.$message.error("只能上传xlsx!");
-      //   return false;
-      // }
-      return true;
-    },
-    // 文件数量过多时提醒
-    handleExceed() {
-      this.$message({ type: "error", message: "最多支持1个附件上传" });
-    },
-    //文件上传
-    submitImportForm() {
-      // 使用form表单的数据格式
-      const paramsData = new FormData();
-      // 将上传文件数组依次添加到参数paramsData中
-      this.fileList.forEach((x) => {
-        console.log(x);
-        paramsData.append("file", x.file);
-        console.log(x.file);
-      });
-      //这里根据自己封装的axios来进行调用后端接口
-      axios.post(
-      	  //后端接口，自行修改
-          "http://localhost:80/guo/test/upload",
-          paramsData,
-          {
-            headers: {'Content-Type': 'multipart/form-data'}
-          }
-      ).then(res => {
-        const url = res.data.url
-        console.log("==========" + res.data.url)
-        this.fileList = []; //集合清空
-        this.dialogFormVisible = false; //关闭对话框
-        axios.get(
-      	  //后端接口，自行修改
-          "http://localhost:80/guo/test/showDetail?url=" + url
-          ).then(res => {
-            console.log(res.data.detail)
-          })
-      })
-        // this.$refs.importFormRef.resetFields(); //清除表单信息
-        // this.$refs.upload.clearFiles(); //清空上传列表
-        
-      
-    },
-    submit(){
-      axios.post(
-      	  //后端接口，自行修改
-          "http://localhost:80/guo/test/upload",
-          JSON.stringify(this.arr),
-          {
-            headers: {'Content-Type': 'application/json'}
-          }
-      ).then(res => {
-
-      })
-    },
-
-    getXY(e, index1) {
-      this.$data.x = e.originalEvent.pageX;
-      this.$data.y = e.originalEvent.pageY;
-      this.$data.index1 = index1;
-      this.$data.index2 = e.oldIndex;
-    },
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      // console.log(row);
-      this.$confirm("此操作将删除此步骤, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          this.arr.splice(index, 1);
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
-    indexMethod(index) {
-      return index + 1;
+    //获取子组件的信息
+    getMessage(data) {
+      this.listAll.push(data);
+      // console.log(this.xy);
     },
   },
 };
 </script>
-
+  
 <style lang="less" scoped>
+//表格最左边的div
+.rowDiv {
+  background-color: #004088;
+  width: 100px;
+  height: 25px;
+  margin: 10px auto;
+  color: white;
+  border-radius: 5px;
+}
+
 // 自己写的
 .el-popover__reference {
   margin-right: 10px;
@@ -420,11 +442,16 @@ export default {
 }
 
 .box-card {
-  min-height: 300px;
+  height: 300px;
 }
 
 // Container
-.el-header,
+.el-header {
+  background-color: #fff;
+  line-height: 60px;
+  padding: 0;
+}
+
 .el-footer {
   background-color: #b3c0d1;
   color: #333;
@@ -440,7 +467,6 @@ export default {
 }
 
 .el-main {
-  background-color: #e9eef3;
   color: #333;
   text-align: center;
   line-height: auto;
@@ -460,20 +486,16 @@ body > .el-container {
 }
 
 // Layout
-.el-row {
-  margin-bottom: 20px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+.el-main .menu {
+  width: 80%;
+  margin: 2px auto;
+  border: 1px dashed #4874cb;
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  font-size: 13px;
 }
 
 .el-col {
-  border-radius: 4px;
-}
-
-.bg-purple-dark {
-  background: #99a9bf;
 }
 
 .bg-purple {
@@ -484,11 +506,6 @@ body > .el-container {
   background: #e5e9f2;
 }
 
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
@@ -496,7 +513,7 @@ body > .el-container {
 
 // el-card
 .text {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .item {
@@ -519,7 +536,7 @@ body > .el-container {
 
 // el-row
 .time {
-  font-size: 13px;
+  font-size: 12px;
   color: #999;
 }
 
