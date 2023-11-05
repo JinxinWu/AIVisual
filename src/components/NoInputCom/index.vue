@@ -4,21 +4,24 @@
     :title=name
     width="200"
     trigger="hover"
-    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+    :content=content
   >
-    <div class="hf-button" slot="reference">{{ this.name }}</div>
+    <div v-if="step !== 7 " class="hf-button" slot="reference" style="width: 120px;">{{ this.name }}</div>
+    <div v-else class="hf-button" slot="reference" style="width: 100px;">{{ this.name }}</div>
   </el-popover>
 </template>
   
 <script>
 import { Autocomplete } from "element-ui";
 export default {
+  name: "NoInputCom",
   data() {
     return {
-      step: 2,
-      id: 10,
-      name: "删除异常样本",
-      type: "DeleteAbnormalSample",
+      step: this.comData.step,
+      id: this.comData.id,
+      name: this.comData.name,
+      type: this.comData.type,
+      content: this.comData.content,
       width: 100,
       height: 60,
       x: 0,
@@ -42,6 +45,7 @@ export default {
       this.$emit("customEvent", myDate);
     },
   },
+  props: ['comData'],
   created() {
     this.sendMyData();
   },
@@ -51,6 +55,10 @@ export default {
 <style lang='less' scoped>
 @height: 25px;
 .hf-button {
+  margin: 2.5px 5px;
+  // 圆角
+  border-radius:6px;
+  // 小手形状
   cursor: pointer;
   background-color: #d6edf7;
   font-size: 13px;
@@ -59,7 +67,7 @@ export default {
   // height与line-height相同时文字居中
   height: @height;
   line-height: @height;
-  margin: auto;
-  width: 120px;
+  // 行内块
+  display: inline-block;
 }
 </style>
