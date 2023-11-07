@@ -1,5 +1,5 @@
 <template>
-  <el-button type="primary">{{ this.name }}</el-button>
+  <div>{{ this.name }}</div>
 </template>
   
   <script>
@@ -41,7 +41,19 @@ export default {
 </script>
  
   <style scoped>
-.el-button {
+div {
+  background-color: #d6edf7;
+  font-size: 13px;
+  color: black;
+  border: none;
+  height:25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  margin: auto;
+}
+.el-button:hover {
   background-color: #d6edf7;
   font-size: 13px;
   color: black;
