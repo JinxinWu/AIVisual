@@ -1,0 +1,674 @@
+{
+  "csvImport": {
+    "step": 1,
+    "id": 1,
+    "name": "csv文件",
+    "type": "csvImport",
+    "content": "这是导入csv的组件"
+  },
+  "ExcelImport": {
+    "step": 1,
+    "id": 2,
+    "name": "Excel文件",
+    "type": "ExcelImport",
+    "content": "这是导入Excel的组件"
+  },
+  "DBImport": {
+    "step": 1,
+    "id": 3,
+    "name": "DB文件",
+    "type": "DBImport",
+    "content": "这是导入DB文件的组件"
+  },
+  "unstructuredImport": {
+    "step": 1,
+    "id": 4,
+    "name": "非结构化数据",
+    "type": "unstructuredImport",
+    "content": "这是导入非结构化数据的组件"
+  },
+  "delMisCol": {
+    "step": 2,
+    "id": 5,
+    "name": "删除缺失列",
+    "type": "DeleteMissingColumns",
+    "content": "这是删除缺失值列的组件"
+  },
+  "zeroCom": {
+    "step": 2,
+    "id": 6,
+    "name": "0补全",
+    "type": "ZeroCompletion",
+    "content": "这是0补全的组件"
+  },
+  "meanCom": {
+    "step": 2,
+    "id": 7,
+    "name": "均值补全",
+    "type": "MeanCompletion",
+    "content": "这是均值补全的组件"
+  },
+  "interCom": {
+    "step": 2,
+    "id": 8,
+    "name": "插值补全",
+    "type": "InterpolationCompletion",
+    "content": "这是插值补全的组件"
+  },
+  "datasetPart": {
+    "step": 2,
+    "id": 9,
+    "name": "数据集划分",
+    "type": "DatasetPartitioning",
+    "content": "这是数据集划分的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "随机取30%"
+      },
+      {
+        "value": 1,
+        "label": "随机取50%"
+      },
+      {
+        "value": 2,
+        "label": "随机取70%"
+      },
+      {
+        "value": 3,
+        "label": "前向取30%"
+      },
+      {
+        "value": 4,
+        "label": "前向取50%"
+      },
+      {
+        "value": 5,
+        "label": "前向取70%"
+      },
+      {
+        "value": 6,
+        "label": "后向取30%"
+      },
+      {
+        "value": 7,
+        "label": "后向取50%"
+      },
+      {
+        "value": 8,
+        "label": "后向取70%"
+      }
+    ]
+  },
+  "delError": {
+    "step": 2,
+    "id": 10,
+    "name": "删除异常样本",
+    "type": "DeleteAbnormalSample",
+    "content": "这是删除异常样本的组件"
+  },
+  "bcTrans": {
+    "step": 2,
+    "id": 11,
+    "name": "Box-Cox变换",
+    "type": "BCTransformation",
+    "content": "这是Box-Cox变换的组件"
+  },
+  "ltTrun": {
+    "step": 2,
+    "id": 12,
+    "name": "长尾截断",
+    "type": "LTTruncation",
+    "content": "这是长尾截断的组件"
+  },
+  "normal": {
+    "step": 2,
+    "id": 13,
+    "name": "归一化",
+    "type": "Normalization",
+    "content": "这是归一化的组件"
+  },
+  "standard": {
+    "step": 2,
+    "id": 14,
+    "name": "标准化",
+    "type": "Standardization",
+    "content": "这是标准化的组件"
+  },
+  "onehot": {
+    "step": 2,
+    "id": 15,
+    "name": "One-hot编码",
+    "type": "OnehotEncoding",
+    "content": "这是One-hot编码的组件"
+  },
+  "label": {
+    "step": 2,
+    "id": 16,
+    "name": "Label编码",
+    "type": "LabelEncoding",
+    "content": "这是Label编码的组件"
+  },
+  "equi": {
+    "step": 2,
+    "id": 17,
+    "name": "等距离散化",
+    "type": "EquidistantDispersion",
+    "content": "这是等距离散化的组件"
+  },
+  "randomUnder": {
+    "step": 3,
+    "id": 18,
+    "name": "随机欠采样",
+    "type": "RandomUndersampling",
+    "content": "这是随机欠采样的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "减少20%"
+      },
+      {
+        "value": 1,
+        "label": "减少30%"
+      },
+      {
+        "value": 2,
+        "label": "减少40%"
+      },
+      {
+        "value": 3,
+        "label": "减少50%"
+      },
+      {
+        "value": 4,
+        "label": "减少60%"
+      },
+      {
+        "value": 5,
+        "label": "减少70%"
+      },
+      {
+        "value": 6,
+        "label": "减少80%"
+      }
+    ]
+  },
+  "ennUnder": {
+    "step": 3,
+    "id": 19,
+    "name": "ENN欠采样",
+    "type": "ENNUndersampling",
+    "content": "这是ENN欠采样的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "减少20%"
+      },
+      {
+        "value": 1,
+        "label": "减少30%"
+      },
+      {
+        "value": 2,
+        "label": "减少40%"
+      },
+      {
+        "value": 3,
+        "label": "减少50%"
+      },
+      {
+        "value": 4,
+        "label": "减少60%"
+      },
+      {
+        "value": 5,
+        "label": "减少70%"
+      },
+      {
+        "value": 6,
+        "label": "减少80%"
+      }
+    ]
+  },
+  "repeatedOver": {
+    "step": 3,
+    "id": 20,
+    "name": "重复过采样",
+    "type": "RepeatedOversampling",
+    "content": "这是重复过采样的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "增多2倍"
+      },
+      {
+        "value": 1,
+        "label": "增多3倍"
+      },
+      {
+        "value": 2,
+        "label": "增多4倍"
+      },
+      {
+        "value": 3,
+        "label": "增多5倍"
+      },
+      {
+        "value": 4,
+        "label": "增多6倍"
+      },
+      {
+        "value": 5,
+        "label": "增多8倍"
+      },
+      {
+        "value": 6,
+        "label": "增多10倍"
+      }
+    ]
+  },
+  "smoteOver": {
+    "step": 3,
+    "id": 21,
+    "name": "SMOTE过采样",
+    "type": "SMOTEOversampling",
+    "content": "这是SMOTE过采样的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "增多2倍"
+      },
+      {
+        "value": 1,
+        "label": "增多3倍"
+      },
+      {
+        "value": 2,
+        "label": "增多4倍"
+      },
+      {
+        "value": 3,
+        "label": "增多5倍"
+      },
+      {
+        "value": 4,
+        "label": "增多6倍"
+      },
+      {
+        "value": 5,
+        "label": "增多8倍"
+      },
+      {
+        "value": 6,
+        "label": "增多10倍"
+      }
+    ]
+  },
+  "ganOver": {
+    "step": 3,
+    "id": 22,
+    "name": "GAN过采样",
+    "type": "GANOversampling",
+    "content": "这是GAN过采样的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "增多2倍"
+      },
+      {
+        "value": 1,
+        "label": "增多3倍"
+      },
+      {
+        "value": 2,
+        "label": "增多4倍"
+      },
+      {
+        "value": 3,
+        "label": "增多5倍"
+      },
+      {
+        "value": 4,
+        "label": "增多6倍"
+      },
+      {
+        "value": 5,
+        "label": "增多8倍"
+      },
+      {
+        "value": 6,
+        "label": "增多10倍"
+      }
+    ]
+  },
+  "pca": {
+    "step": 4,
+    "id": 23,
+    "name": "PCA降维",
+    "type": "PCADReduction",
+    "content": "这是PCA降维的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "降维保留5%"
+      },
+      {
+        "value": 1,
+        "label": "降维保留10%"
+      },
+      {
+        "value": 2,
+        "label": "降维保留15%"
+      },
+      {
+        "value": 3,
+        "label": "降维保留20%"
+      },
+      {
+        "value": 4,
+        "label": "降维保留30%"
+      },
+      {
+        "value": 5,
+        "label": "降维保留40%"
+      },
+      {
+        "value": 6,
+        "label": "降维保留50%"
+      }
+    ]
+  },
+  "lda": {
+    "step": 4,
+    "id": 24,
+    "name": "LDA降维",
+    "type": "LDADReduction",
+    "content": "这是LDA降维的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "降维保留5%"
+      },
+      {
+        "value": 1,
+        "label": "降维保留10%"
+      },
+      {
+        "value": 2,
+        "label": "降维保留15%"
+      },
+      {
+        "value": 3,
+        "label": "降维保留20%"
+      },
+      {
+        "value": 4,
+        "label": "降维保留30%"
+      },
+      {
+        "value": 5,
+        "label": "降维保留40%"
+      },
+      {
+        "value": 6,
+        "label": "降维保留50%"
+      }
+    ]
+  },
+  "correlation": {
+    "step": 4,
+    "id": 25,
+    "name": "相关性选择",
+    "type": "CorrelationSelection",
+    "content": "这是相关性选择的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "选择5%"
+      },
+      {
+        "value": 1,
+        "label": "选择10%"
+      },
+      {
+        "value": 2,
+        "label": "选择15%"
+      },
+      {
+        "value": 3,
+        "label": "选择20%"
+      },
+      {
+        "value": 4,
+        "label": "选择30%"
+      },
+      {
+        "value": 5,
+        "label": "选择40%"
+      },
+      {
+        "value": 6,
+        "label": "选择50%"
+      }
+    ]
+  },
+  "cif": {
+    "step": 4,
+    "id": 26,
+    "name": "卡方信息特征选择",
+    "type": "CIFSelection",
+    "content": "这是卡方信息特征选择的组件",
+    "options": [
+      {
+        "value": 0,
+        "label": "选择5%"
+      },
+      {
+        "value": 1,
+        "label": "选择10%"
+      },
+      {
+        "value": 2,
+        "label": "选择15%"
+      },
+      {
+        "value": 3,
+        "label": "选择20%"
+      },
+      {
+        "value": 4,
+        "label": "选择30%"
+      },
+      {
+        "value": 5,
+        "label": "选择40%"
+      },
+      {
+        "value": 6,
+        "label": "选择50%"
+      }
+    ]
+  },
+  "bcnn": {
+    "step": 5,
+    "id": 27,
+    "name": "基本CNN",
+    "type": "BCNN",
+    "content": "这是基本CNN的组件"
+  },
+  "alexNet": {
+    "step": 5,
+    "id": 28,
+    "name": "AlexNet",
+    "type": "AlexNet",
+    "content": "这是AlexNet的组件"
+  },
+  "resNet": {
+    "step": 5,
+    "id": 29,
+    "name": "ResNet",
+    "type": "ResNet",
+    "content": "这是ResNet的组件"
+  },
+  "vgg": {
+    "step": 5,
+    "id": 30,
+    "name": "VGG",
+    "type": "VGG",
+    "content": "这是VGG的组件"
+  },
+  "brnn": {
+    "step": 5,
+    "id": 31,
+    "name": "基本RNN",
+    "type": "BRNN",
+    "content": "这是基本RNN的组件"
+  },
+  "lstm": {
+    "step": 5,
+    "id": 32,
+    "name": "LSTM",
+    "type": "LSTM",
+    "content": "这是LSTM的组件"
+  },
+  "gru": {
+    "step": 5,
+    "id": 33,
+    "name": "GRU",
+    "type": "GRU",
+    "content": "这是GRU的组件"
+  },
+  "bgnn": {
+    "step": 5,
+    "id": 34,
+    "name": "基本GNN",
+    "type": "BGNN",
+    "content": "这是基本GNN的组件"
+  },
+  "simgnn": {
+    "step": 5,
+    "id": 35,
+    "name": "SimGNN",
+    "type": "SimGNN",
+    "content": "这是SimGNN的组件"
+  },
+  "svm": {
+    "step": 6,
+    "id": 36,
+    "name": "支持向量机",
+    "type": "SVM",
+    "content": "这是SVM的组件"
+  },
+  "nnd": {
+    "step": 6,
+    "id": 37,
+    "name": "最近邻距离",
+    "type": "NND",
+    "content": "这是最近邻距离的组件"
+  },
+  "lr": {
+    "step": 6,
+    "id": 38,
+    "name": "逻辑回归",
+    "type": "LR",
+    "content": "这是逻辑回归的组件"
+  },
+  "dt": {
+    "step": 6,
+    "id": 39,
+    "name": "决策树",
+    "type": "DT",
+    "content": "这是决策树的组件"
+  },
+  "rf": {
+    "step": 6,
+    "id": 40,
+    "name": "随机森林",
+    "type": "RF",
+    "content": "这是随机森林的组件"
+  },
+  "lightgbm": {
+    "step": 6,
+    "id": 41,
+    "name": "LightGBM",
+    "type": "LightGBM",
+    "content": "这是LightGBM的组件"
+  },
+  "xgboost": {
+    "step": 6,
+    "id": 42,
+    "name": "Xgboost",
+    "type": "Xgboost",
+    "content": "这是Xgboost的组件"
+  },
+  "catboost": {
+    "step": 6,
+    "id": 43,
+    "name": "Catboost",
+    "type": "Catboost",
+    "content": "这是Catboost的组件"
+  },
+  "kmeans": {
+    "step": 6,
+    "id": 44,
+    "name": "Kmeans",
+    "type": "Kmeans",
+    "content": "这是Kmeans的组件"
+  },
+  "accuracy": {
+    "step": 7,
+    "id": 45,
+    "name": "正确率",
+    "type": "Accuracy",
+    "content": "这是准确率的组件"
+  },
+  "precision": {
+    "step": 7,
+    "id": 46,
+    "name": "精确率",
+    "type": "Precision",
+    "content": "这是精确率的组件"
+  },
+  "recall": {
+    "step": 7,
+    "id": 47,
+    "name": "召回率",
+    "type": "Recall",
+    "content": "这是召回率的组件"
+  },
+  "f1": {
+    "step": 7,
+    "id": 48,
+    "name": "F1",
+    "type": "F1",
+    "content": "这是F1的组件"
+  },
+  "auc": {
+    "step": 7,
+    "id": 49,
+    "name": "AUC",
+    "type": "AUC",
+    "content": "这是AUC的组件"
+  },
+  "roc": {
+    "step": 7,
+    "id": 50,
+    "name": "ROC",
+    "type": "ROC",
+    "content": "这是ROC的组件"
+  },
+  "mse": {
+    "step": 7,
+    "id": 51,
+    "name": "MSE",
+    "type": "MSE",
+    "content": "这是MSE的组件"
+  },
+  "mape": {
+    "step": 7,
+    "id": 52,
+    "name": "MAPE",
+    "type": "MAPE",
+    "content": "这是MAPE的组件"
+  }
+}

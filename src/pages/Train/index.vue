@@ -6,26 +6,21 @@
       </el-header>
       <el-main>
         <!-- 组件+步骤 -->
-        <el-row class="menu">
+        <el-row class="menu" style="border-top: 1px dashed #4874cb;">
           <el-col :span="4" style="line-height: 25px"
             ><div class="rowDiv" style="">加载数据</div></el-col
           >
-          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
-            ><csvImport @customEvent="getMessage">csv文件</csvImport></el-col
-          >
-          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
-            ><excelImport @customEvent="getMessage"
-              >EXCEL文件</excelImport
-            ></el-col
-          >
-          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
-            ><DBImport @customEvent="getMessage">DB文件</DBImport></el-col
-          >
-          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px"
-            ><unstructuredImport @customEvent="getMessage"
-              >非结构化数据</unstructuredImport
-            ></el-col
-          >
+          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px" 
+                  v-for="item in [myComponents.csvImport, 
+                                  myComponents.ExcelImport, 
+                                  myComponents.DBImport, 
+                                  myComponents.unstructuredImport]">
+            <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                :comData="item"
+            ></NoInputCom>
+          </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="4" style="line-height: 25px"
@@ -40,23 +35,26 @@
               "
             >
               <div>缺失值处理</div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <DeleteMissingColumns
+              <div style="margin-top: 5px">
+                <NoInputCom
                   @customEvent="getMessage"
-                ></DeleteMissingColumns>
-                <ZeroCompletion @customEvent="getMessage"></ZeroCompletion>
+                  v-for="item in [myComponents.delMisCol, myComponents.zeroCom]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <MeanCompletion @customEvent="getMessage"></MeanCompletion
-                ><InterpolationCompletion
+              <div style="margin-bottom: 5px">
+                <NoInputCom
                   @customEvent="getMessage"
-                ></InterpolationCompletion>
+                  v-for="item in [myComponents.meanCom, myComponents.interCom]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
             <div style="margin-top: 5px; margin-bottom: 5px">
-              <DatasetPartitioning
+              <InputCom
                 @customEvent="getMessage"
-              ></DatasetPartitioning>
+                :comData="myComponents.datasetPart"
+              ></InputCom>
             </div>
           </el-col>
 
@@ -70,15 +68,16 @@
             >
               <div>异常值处理</div>
               <div style="margin-top: 5px; margin-bottom: 5px">
-                <DeleteAbnormalSamples
+                <NoInputCom
+                  draggable="true"
                   @customEvent="getMessage"
-                ></DeleteAbnormalSamples>
-              </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <BCTransformation @customEvent="getMessage"></BCTransformation>
-              </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <LTTruncation @customEvent="getMessage"></LTTruncation>
+                  v-for="item in [
+                    myComponents.delError,
+                    myComponents.bcTrans,
+                    myComponents.ltTrun,
+                  ]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
           </el-col>
@@ -92,18 +91,26 @@
               "
             >
               <div>数据转换</div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <Normalization @customEvent="getMessage"></Normalization>
-                <Standardization @customEvent="getMessage"></Standardization>
-              </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <OnehotEncoding @customEvent="getMessage"></OnehotEncoding>
-                <LabelEncoding @customEvent="getMessage"></LabelEncoding>
-              </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <EquidistantDispersion
+              <div style="margin-top: 5px">
+                <NoInputCom
                   @customEvent="getMessage"
-                ></EquidistantDispersion>
+                  v-for="item in [myComponents.normal, myComponents.standard]"
+                  :comData="item"
+                ></NoInputCom>
+              </div>
+              <div>
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.onehot, myComponents.label]"
+                  :comData="item"
+                ></NoInputCom>
+              </div>
+              <div style="margin-bottom: 5px">
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.equi]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
           </el-col>
@@ -113,43 +120,33 @@
             ><div class="rowDiv">不平衡工程</div></el-col
           >
           <el-col :span="4"
-            ><RandomUndersampling
-              @customEvent="getMessage"
-            ></RandomUndersampling
-          ></el-col>
-          <el-col :span="4"
-            ><ENNUndersampling @customEvent="getMessage"></ENNUndersampling
-          ></el-col>
-          <el-col :span="4"
-            ><RepeatedOversampling
-              @customEvent="getMessage"
-            ></RepeatedOversampling
-          ></el-col>
-          <el-col :span="4"
-            ><SMOTEOversampling @customEvent="getMessage"></SMOTEOversampling
-          ></el-col>
-          <el-col :span="4"
-            ><GANOversampling @customEvent="getMessage"></GANOversampling
-          ></el-col>
+                  v-for="item in [myComponents.randomUnder, 
+                                  myComponents.ennUnder, 
+                                  myComponents.repeatedOver, 
+                                  myComponents.smoteOver,
+                                  myComponents.ganOver]">
+            <InputCom
+                draggable="true"
+                @customEvent="getMessage"
+                :comData="item"
+            ></InputCom>
+          </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="4" style="line-height: 25px"
             ><div class="rowDiv">特征工程</div></el-col
           >
           <el-col :span="4"
-            ><PCADReduction @customEvent="getMessage"></PCADReduction
-          ></el-col>
-          <el-col :span="4"
-            ><LDADReduction @customEvent="getMessage"></LDADReduction
-          ></el-col>
-          <el-col :span="4"
-            ><CorrelationSelection
-              @customEvent="getMessage"
-            ></CorrelationSelection
-          ></el-col>
-          <el-col :span="4"
-            ><CIFSelection @customEvent="getMessage"></CIFSelection
-          ></el-col>
+                  v-for="item in [myComponents.pca, 
+                                  myComponents.lda, 
+                                  myComponents.correlation, 
+                                  myComponents.cif,]">
+            <InputCom
+                draggable="true"
+                @customEvent="getMessage"
+                :comData="item"
+            ></InputCom>
+          </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="4" style="line-height: 25px"
@@ -164,13 +161,19 @@
               "
             >
               <div>卷积神经网络</div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <BCNN @customEvent="getMessage"></BCNN
-                ><AlexNet @customEvent="getMessage"></AlexNet>
+              <div style="margin-top: 5px">
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.bcnn, myComponents.alexNet]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <ResNet @customEvent="getMessage"></ResNet
-                ><VGG @customEvent="getMessage"></VGG>
+              <div style="margin-bottom: 5px">
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.resNet, myComponents.vgg]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
           </el-col>
@@ -183,12 +186,19 @@
               "
             >
               <div>循环神经网络</div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <BRNN @customEvent="getMessage"></BRNN
-                ><LSTM @customEvent="getMessage"></LSTM>
+              <div style="margin-top: 5px">
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.brnn, myComponents.lstm]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <GRU @customEvent="getMessage"></GRU>
+              <div style="margin-bottom: 5px">
+                <NoInputCom
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.gru]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
           </el-col>
@@ -202,10 +212,12 @@
             >
               <div>图神经网络</div>
               <div style="margin-top: 5px; margin-bottom: 5px">
-                <BGNN @customEvent="getMessage"></BGNN>
-              </div>
-              <div style="margin-top: 5px; margin-bottom: 5px">
-                <SimGNN @customEvent="getMessage"></SimGNN>
+                <NoInputCom
+                  draggable="true"
+                  @customEvent="getMessage"
+                  v-for="item in [myComponents.bgnn, myComponents.simgnn]"
+                  :comData="item"
+                ></NoInputCom>
               </div>
             </div>
           </el-col>
@@ -216,52 +228,80 @@
           >
           <el-col :span="4"
             ><div style="margin-top: 5px; margin-bottom: 5px">
-              <SVM @customEvent="getMessage"></SVM>
-            </div>
-            <div style="margin-top: 5px; margin-bottom: 5px">
-              <LightGBM @customEvent="getMessage"></LightGBM></div
+              <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                v-for="item in [myComponents.svm, myComponents.lightgbm]"
+                :comData="item"
+              ></NoInputCom></div
           ></el-col>
+          <el-col :span="4">
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                v-for="item in [myComponents.nnd, myComponents.xgboost]"
+                :comData="item"
+              ></NoInputCom>
+            </div>
+          </el-col>
           <el-col :span="4"
-            ><div style="margin-top: 5px; margin-bottom: 5px">
-              <NND @customEvent="getMessage"></NND>
-            </div>
+            >
             <div style="margin-top: 5px; margin-bottom: 5px">
-              <Xgboost @customEvent="getMessage"></Xgboost></div
-          ></el-col>
+              <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                v-for="item in [myComponents.lr, myComponents.catboost]"
+                :comData="item"
+              ></NoInputCom>
+            </div>
+            </el-col>
           <el-col :span="4"
-            ><div style="margin-top: 5px; margin-bottom: 5px">
-              <LR @customEvent="getMessage"></LR>
-            </div>
+            >
             <div style="margin-top: 5px; margin-bottom: 5px">
-              <Catboost @customEvent="getMessage"></Catboost></div
-          ></el-col>
-          <el-col :span="4"
-            ><div style="margin-top: 5px; margin-bottom: 5px">
-              <DT @customEvent="getMessage"></DT>
+              <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                v-for="item in [myComponents.dt, myComponents.kmeans]"
+                :comData="item"
+              ></NoInputCom>
             </div>
+            </el-col>
+          <el-col :span="4">
             <div style="margin-top: 5px; margin-bottom: 5px">
-              <Kmeans @customEvent="getMessage"></Kmeans></div
-          ></el-col>
-          <el-col :span="4"><RF @customEvent="getMessage"></RF></el-col>
+              <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                v-for="item in [myComponents.rf]"
+                :comData="item"
+              ></NoInputCom>
+            </div>
+            </el-col>
+          </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="8" style="line-height: 25px"
             ><div class="rowDiv">评估指标</div></el-col
           >
-          <el-col :span="5"><Accuracy></Accuracy></el-col>
-          <el-col :span="5"><Precision></Precision></el-col>
-          <el-col :span="5"><Recall></Recall></el-col>
-          <el-col :span="5"><F1></F1></el-col>
-          <el-col :span="5"><AUC></AUC></el-col>
-          <el-col :span="5"><ROC></ROC></el-col>
-          <el-col :span="5"><MSE></MSE></el-col>
-          <el-col :span="5"><MAPE></MAPE></el-col>
+          <el-col :span="5" v-for="item in [myComponents.accuracy,
+                                            myComponents.precision,
+                                            myComponents.recall, 
+                                            myComponents.f1, 
+                                            myComponents.auc, 
+                                            myComponents.roc, 
+                                            myComponents.mse, 
+                                            myComponents.mape]">
+            <NoInputCom
+                draggable="true"
+                @customEvent="getMessage"
+                :comData="item"
+            ></NoInputCom>
+          </el-col>
         </el-row>
 
         <!-- 画布模块模块 -->
         <el-row>
           <el-col span:24 style="width: 100%; height: 200px; margin-top: 10px">
-            
           </el-col>
         </el-row>
         <!-- 后端显示模块 -->
@@ -277,137 +317,19 @@
   
 <script>
 import Header from "@/components/Header/index.vue";
-import { Autocomplete } from "element-ui";
-
-//组件导入
-import {
-  csvImport,
-  DBImport,
-  excelImport,
-  unstructuredImport,
-} from "@/components/DataImport";
-import {
-  DatasetPartitioning,
-  DeleteMissingColumns,
-  InterpolationCompletion,
-  MeanCompletion,
-  ZeroCompletion,
-  DeleteAbnormalSamples,
-  LTTruncation,
-  BCTransformation,
-  Normalization,
-  Standardization,
-  OnehotEncoding,
-  LabelEncoding,
-  EquidistantDispersion,
-} from "@/components/DataPreprocessing";
-import {
-  RandomUndersampling,
-  ENNUndersampling,
-  RepeatedOversampling,
-  SMOTEOversampling,
-  GANOversampling,
-} from "@/components/ImbalancedEngineering";
-import {
-  CIFSelection,
-  CorrelationSelection,
-  LDADReduction,
-  PCADReduction,
-} from "@/components/FeatureEngineering";
-import {
-  AlexNet,
-  BCNN,
-  BGNN,
-  BRNN,
-  GRU,
-  LSTM,
-  ResNet,
-  SimGNN,
-  VGG,
-} from "@/components/DeepLearning";
-import {
-  Catboost,
-  DT,
-  Kmeans,
-  LightGBM,
-  LR,
-  NND,
-  RF,
-  SVM,
-  Xgboost,
-} from "@/components/MachineLearning";
-import {
-  Accuracy,
-  AUC,
-  F1,
-  MAPE,
-  MSE,
-  Precision,
-  Recall,
-  ROC,
-} from "@/components/EvaluationIndicators";
+import NoInputCom from "@/components/NoInputCom";
+import InputCom from "@/components/InputCom";
 
 export default {
   name: "Train",
   components: {
     Header,
-    csvImport,
-    DBImport,
-    excelImport,
-    unstructuredImport,
-    DatasetPartitioning,
-    DeleteMissingColumns,
-    InterpolationCompletion,
-    MeanCompletion,
-    ZeroCompletion,
-    DeleteAbnormalSamples,
-    LTTruncation,
-    BCTransformation,
-    Normalization,
-    Standardization,
-    OnehotEncoding,
-    LabelEncoding,
-    EquidistantDispersion,
-    RandomUndersampling,
-    ENNUndersampling,
-    RepeatedOversampling,
-    SMOTEOversampling,
-    GANOversampling,
-    CIFSelection,
-    CorrelationSelection,
-    LDADReduction,
-    PCADReduction,
-    AlexNet,
-    BCNN,
-    BGNN,
-    BRNN,
-    GRU,
-    LSTM,
-    ResNet,
-    SimGNN,
-    VGG,
-    Catboost,
-    DT,
-    Kmeans,
-    LightGBM,
-    LR,
-    NND,
-    RF,
-    SVM,
-    Xgboost,
-    Accuracy,
-    AUC,
-    F1,
-    MAPE,
-    MSE,
-    Precision,
-    Recall,
-    ROC,
+    InputCom,
+    NoInputCom,
   },
   data() {
     return {
-      visible: false,
-
+      myComponents: this.$store.state.myComponents,
       //存储所有小组件的信息
       listAll: [],
     };
@@ -427,7 +349,7 @@ export default {
 <style lang="less" scoped>
 //表格最左边的div
 .rowDiv {
-  background-color: #004088;
+  background-color: #2932e1;
   width: 100px;
   height: 25px;
   margin: 10px auto;
@@ -488,8 +410,10 @@ body > .el-container {
 // Layout
 .el-main .menu {
   width: 80%;
-  margin: 2px auto;
-  border: 1px dashed #4874cb;
+  margin: 0px auto;
+  border-right: 1px dashed #4874cb;
+  border-left: 1px dashed #4874cb;
+  border-bottom: 1px dashed #4874cb;
   display: flex;
   align-items: center; /* 垂直居中 */
   font-size: 13px;
