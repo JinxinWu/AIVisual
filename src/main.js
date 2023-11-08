@@ -10,11 +10,21 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueRouter from 'vue-router';
 // 引入路由配置
 import router from './router';
+//导入iview的js文件
+import iView from 'iview';
+//导入iview的css文件
+import 'iview/dist/styles/iview.css';
+//右键菜单
+import Contextmenu from "vue-contextmenujs"
+
+
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
+Vue.use(iView);
+Vue.use(Contextmenu);
 
 new Vue({
   render: h => h(App),

@@ -6,20 +6,22 @@
       </el-header>
       <el-main>
         <!-- 组件+步骤 -->
-        <el-row class="menu" style="border-top: 1px dashed #4874cb;">
+        <el-row class="menu" style="border-top: 1px dashed #4874cb">
           <el-col :span="4" style="line-height: 25px"
             ><div class="rowDiv" style="">加载数据</div></el-col
           >
-          <el-col :span="4" style="margin-top: 5px; margin-bottom: 5px" 
-                  v-for="item in [myComponents.csvImport, 
-                                  myComponents.ExcelImport, 
-                                  myComponents.DBImport, 
-                                  myComponents.unstructuredImport]">
-            <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
-                :comData="item"
-            ></NoInputCom>
+          <el-col
+            :span="4"
+            style="margin-top: 5px; margin-bottom: 5px"
+            v-for="item in [
+              myComponents.csvImport,
+              myComponents.ExcelImport,
+              myComponents.DBImport,
+              myComponents.unstructuredImport,
+            ]"
+            :key="item.id"
+          >
+            <NoInputCom :comData="item" @start-drag="drag"></NoInputCom>
           </el-col>
         </el-row>
         <el-row class="menu">
@@ -37,23 +39,25 @@
               <div>缺失值处理</div>
               <div style="margin-top: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.delMisCol, myComponents.zeroCom]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
               <div style="margin-bottom: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.meanCom, myComponents.interCom]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
             <div style="margin-top: 5px; margin-bottom: 5px">
               <InputCom
-                @customEvent="getMessage"
                 :comData="myComponents.datasetPart"
+                @start-drag="drag"
               ></InputCom>
             </div>
           </el-col>
@@ -69,14 +73,14 @@
               <div>异常值处理</div>
               <div style="margin-top: 5px; margin-bottom: 5px">
                 <NoInputCom
-                  draggable="true"
-                  @customEvent="getMessage"
                   v-for="item in [
                     myComponents.delError,
                     myComponents.bcTrans,
                     myComponents.ltTrun,
                   ]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
@@ -93,23 +97,26 @@
               <div>数据转换</div>
               <div style="margin-top: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.normal, myComponents.standard]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
               <div>
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.onehot, myComponents.label]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
               <div style="margin-bottom: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.equi]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
@@ -119,33 +126,35 @@
           <el-col :span="4" style="line-height: 25px"
             ><div class="rowDiv">不平衡工程</div></el-col
           >
-          <el-col :span="4"
-                  v-for="item in [myComponents.randomUnder, 
-                                  myComponents.ennUnder, 
-                                  myComponents.repeatedOver, 
-                                  myComponents.smoteOver,
-                                  myComponents.ganOver]">
-            <InputCom
-                draggable="true"
-                @customEvent="getMessage"
-                :comData="item"
-            ></InputCom>
+          <el-col
+            :span="4"
+            v-for="item in [
+              myComponents.randomUnder,
+              myComponents.ennUnder,
+              myComponents.repeatedOver,
+              myComponents.smoteOver,
+              myComponents.ganOver,
+            ]"
+            :key="item.id"
+          >
+            <InputCom :comData="item" @start-drag="drag"></InputCom>
           </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="4" style="line-height: 25px"
             ><div class="rowDiv">特征工程</div></el-col
           >
-          <el-col :span="4"
-                  v-for="item in [myComponents.pca, 
-                                  myComponents.lda, 
-                                  myComponents.correlation, 
-                                  myComponents.cif,]">
-            <InputCom
-                draggable="true"
-                @customEvent="getMessage"
-                :comData="item"
-            ></InputCom>
+          <el-col
+            :span="4"
+            v-for="item in [
+              myComponents.pca,
+              myComponents.lda,
+              myComponents.correlation,
+              myComponents.cif,
+            ]"
+            :key="item.id"
+          >
+            <InputCom :comData="item" @start-drag="drag"></InputCom>
           </el-col>
         </el-row>
         <el-row class="menu">
@@ -163,16 +172,18 @@
               <div>卷积神经网络</div>
               <div style="margin-top: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.bcnn, myComponents.alexNet]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
               <div style="margin-bottom: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.resNet, myComponents.vgg]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
@@ -188,16 +199,18 @@
               <div>循环神经网络</div>
               <div style="margin-top: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.brnn, myComponents.lstm]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
               <div style="margin-bottom: 5px">
                 <NoInputCom
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.gru]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
@@ -213,10 +226,10 @@
               <div>图神经网络</div>
               <div style="margin-top: 5px; margin-bottom: 5px">
                 <NoInputCom
-                  draggable="true"
-                  @customEvent="getMessage"
                   v-for="item in [myComponents.bgnn, myComponents.simgnn]"
                   :comData="item"
+                  :key="item.id"
+                  @start-drag="drag"
                 ></NoInputCom>
               </div>
             </div>
@@ -229,81 +242,156 @@
           <el-col :span="4"
             ><div style="margin-top: 5px; margin-bottom: 5px">
               <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
                 v-for="item in [myComponents.svm, myComponents.lightgbm]"
                 :comData="item"
+                :key="item.id"
+                @start-drag="drag"
               ></NoInputCom></div
           ></el-col>
           <el-col :span="4">
             <div style="margin-top: 5px; margin-bottom: 5px">
               <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
                 v-for="item in [myComponents.nnd, myComponents.xgboost]"
                 :comData="item"
+                :key="item.id"
+                @start-drag="drag"
               ></NoInputCom>
             </div>
           </el-col>
-          <el-col :span="4"
-            >
-            <div style="margin-top: 5px; margin-bottom: 5px">
-              <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
-                v-for="item in [myComponents.lr, myComponents.catboost]"
-                :comData="item"
-              ></NoInputCom>
-            </div>
-            </el-col>
-          <el-col :span="4"
-            >
-            <div style="margin-top: 5px; margin-bottom: 5px">
-              <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
-                v-for="item in [myComponents.dt, myComponents.kmeans]"
-                :comData="item"
-              ></NoInputCom>
-            </div>
-            </el-col>
           <el-col :span="4">
             <div style="margin-top: 5px; margin-bottom: 5px">
               <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
-                v-for="item in [myComponents.rf]"
+                v-for="item in [myComponents.lr, myComponents.catboost]"
                 :comData="item"
+                :key="item.id"
+                @start-drag="drag"
               ></NoInputCom>
             </div>
-            </el-col>
+          </el-col>
+          <el-col :span="4">
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <NoInputCom
+                v-for="item in [myComponents.dt, myComponents.kmeans]"
+                :comData="item"
+                :key="item.id"
+                @start-drag="drag"
+              ></NoInputCom>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div style="margin-top: 5px; margin-bottom: 5px">
+              <NoInputCom
+                v-for="item in [myComponents.rf]"
+                :comData="item"
+                :key="item.id"
+                @start-drag="drag"
+              ></NoInputCom>
+            </div>
           </el-col>
         </el-row>
         <el-row class="menu">
           <el-col :span="8" style="line-height: 25px"
             ><div class="rowDiv">评估指标</div></el-col
           >
-          <el-col :span="5" v-for="item in [myComponents.accuracy,
-                                            myComponents.precision,
-                                            myComponents.recall, 
-                                            myComponents.f1, 
-                                            myComponents.auc, 
-                                            myComponents.roc, 
-                                            myComponents.mse, 
-                                            myComponents.mape]">
-            <NoInputCom
-                draggable="true"
-                @customEvent="getMessage"
-                :comData="item"
-            ></NoInputCom>
+          <el-col
+            :span="5"
+            v-for="item in [
+              myComponents.accuracy,
+              myComponents.precision,
+              myComponents.recall,
+              myComponents.f1,
+              myComponents.auc,
+              myComponents.roc,
+              myComponents.mse,
+              myComponents.mape,
+            ]"
+            :key="item.id"
+          >
+            <NoInputCom :comData="item" @start-drag="drag"></NoInputCom>
           </el-col>
         </el-row>
 
         <!-- 画布模块模块 -->
-        <el-row>
-          <el-col span:24 style="width: 100%; height: 200px; margin-top: 10px">
-          </el-col>
-        </el-row>
+        <div
+          id="flowWrap"
+          ref="flowWrap"
+          class="flow-wrap"
+          @drop="drop($event)"
+          @dragover="allowDrop($event)"
+        >
+          <div id="flow">
+            <div
+              v-show="auxiliaryLine.isShowXLine"
+              class="auxiliary-line-x"
+              :style="{
+                width: auxiliaryLinePos.width,
+                top: auxiliaryLinePos.y + 'px',
+                left: auxiliaryLinePos.offsetX + 'px',
+              }"
+            ></div>
+            <div
+              v-show="auxiliaryLine.isShowYLine"
+              class="auxiliary-line-y"
+              :style="{
+                height: auxiliaryLinePos.height,
+                left: auxiliaryLinePos.x + 'px',
+                top: auxiliaryLinePos.offsetY + 'px',
+              }"
+            ></div>
+            <div
+              v-for="item in data.nodeList"
+              :id="item.uid"
+              :key="item.uid"
+              :node="item"
+              class="node-anchor item"
+              @changeLineState="changeLineState"
+              @contextmenu.prevent="handleContextMenu(item,$event)"
+              :style="{
+                width: item.width + 'px',
+                height: item.height + 'px',
+                left: item.left,
+                top: item.top,
+                background: item.color,
+              }"
+            >
+              <!-- 四锚点 -->
+              <div class="node-anchor anchor-top"></div>
+              <div class="node-anchor anchor-bottom"></div>
+              <div class="node-anchor anchor-right"></div>
+              <div class="node-anchor anchor-left"></div>
+              {{ item.name }}
+            </div>
+            <!-- 画布中的按钮 -->
+            <el-button
+              size="medium"
+              round
+              @click="sendData"
+              style="
+                z-index: 999;
+                position: absolute;
+                color: white;
+                background-color: #004088;
+                top: 250px;
+                left: 1150px;
+              "
+              >发送信息</el-button
+            >
+            <el-button
+              size="medium"
+              round
+              @click="deleALL"
+              style="
+                z-index: 999;
+                position: absolute;
+                color: white;
+                background-color: #004088;
+                top: 250px;
+                left: 1250px;
+              "
+              >清空画布</el-button
+            >
+          </div>
+        </div>
         <!-- 后端显示模块 -->
         <el-row>
           <el-col span:24>
@@ -319,6 +407,17 @@
 import Header from "@/components/Header/index.vue";
 import NoInputCom from "@/components/NoInputCom";
 import InputCom from "@/components/InputCom";
+//导入jsplumb
+import { jsPlumb } from "jsplumb";
+//导入jsplumb的一些配置，（data中声明）
+import {
+  jsplumbSetting,
+  jsplumbConnectOptions,
+  jsplumbSourceOptions,
+  jsplumbTargetOptions,
+} from "@/utils/commonConfig";
+//导入基本函数，在method中声明
+import methods from "@/utils/methods";
 
 export default {
   name: "Train",
@@ -330,23 +429,191 @@ export default {
   data() {
     return {
       myComponents: this.$store.state.myComponents,
+      visible: false,
+
+      jsPlumb: null,
+      currentItem: null,
+      jsplumbSetting: jsplumbSetting,
+      jsplumbConnectOptions: jsplumbConnectOptions,
+      jsplumbSourceOptions: jsplumbSourceOptions,
+      jsplumbTargetOptions: jsplumbTargetOptions,
+      auxiliaryLine: { isShowXLine: false, isShowYLine: false }, //对齐辅助线是否显示
+      auxiliaryLinePos: {
+        width: "100%",
+        height: "100%",
+        offsetX: 0,
+        offsetY: 0,
+        x: 20,
+        y: 20,
+      },
+      commonGrid: [5, 5], //节点移动最小距离
+      selectModuleFlag: false, //多选标识
+
       //存储所有小组件的信息
-      listAll: [],
+      // listAll: [],
+      //画布中的数据
+      data: {
+        nodeList: [],
+        lineList: [],
+      },
     };
   },
-  mounted() {},
+  mounted() {
+    this.jsPlumb = jsPlumb.getInstance();
+    this.jsPlumb.setContainer(this.$refs.flowWrap);
+    this.fixNodesPosition();
+    this.$nextTick(() => {
+      this.init();
+    });
+  },
   watch: {},
   methods: {
-    //获取子组件的信息
-    getMessage(data) {
-      this.listAll.push(data);
-      // console.log(this.xy);
+    //导入methods中的函数
+    ...methods,
+    //传输画布中的信息给后端
+    sendData() {
+      // 创建一个空数组来存储拓扑排序后的节点列表
+      const sortedNodeList = [];
+      // 创建一个字典来存储每个节点的入度（即指向该节点的边的数量）
+      const inDegrees = {};
+      // 初始化每个节点的入度为0
+      this.data.nodeList.forEach((node) => {
+        inDegrees[node.uid] = 0;
+      });
+      // 计算每个节点的入度
+      this.data.lineList.forEach((line) => {
+        const toNodeId = line.to;
+        inDegrees[toNodeId]++;
+      });
+      // 创建一个队列来存储入度为0的节点
+      const queue = this.data.nodeList.filter(
+        (node) => inDegrees[node.uid] === 0 && this.isNodeConnected(node.uid)
+      );
+      // 进行拓扑排序
+      while (queue.length > 0) {
+        const node = queue.shift(); // 取出队列中的第一个节点
+        sortedNodeList.push(node);
+        // 遍历与该节点相邻的节点
+        this.data.lineList.forEach((line) => {
+          if (line.from === node.uid) {
+            const toNode = this.data.nodeList.find(
+              (node) => node.uid === line.to
+            );
+            inDegrees[toNode.uid]--;
+            // 如果相邻节点的入度变为0，将其加入队列
+            if (inDegrees[toNode.uid] === 0) {
+              queue.push(toNode);
+            }
+          }
+        });
+      }
+      console.log(sortedNodeList);
+    },
+    //判断节点是否被连接
+    isNodeConnected(nodeId) {
+      // 遍历 lineList，检查该节点是否作为源节点或目标节点出现在任何连线中
+      for (const line of this.data.lineList) {
+        if (line.from === nodeId || line.to === nodeId) {
+          return true; // 如果该节点在任何连线中出现，则返回 true
+        }
+      }
+      return false; // 如果该节点未在任何连线中出现，则返回 false
+    },
+    //右键菜单，删除节点
+    handleContextMenu(item,$event) {
+      this.$contextmenu({
+        x: $event.x,
+        y: $event.y,
+        customLayoutClass: "customLayoutClass",
+        items: [
+          {
+            icon: "el-icon-delete",
+            label: "删除",
+            onClick: () => {
+              this.deleteNode(item);
+            },
+          },
+        ],
+        zIndex: 3,
+        minWidth: 100,
+      });
+
+    },
+    //清空画布
+    deleALL(){
+      this.data.nodeList.some((v,index) => {       
+        this.jsPlumb.remove(v.uid)     
+    })
+      this.data.nodeList=[];
     },
   },
 };
 </script>
   
 <style lang="less" scoped>
+.jtk-connector.active {
+  z-index: 9999;
+  path {
+    stroke: #150042;
+    stroke-width: 1.5;
+    animation: ring;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    stroke-dasharray: 5;
+  }
+}
+@keyframes ring {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+//节点
+.item {
+  position: absolute;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 25px;
+}
+//节点的锚点
+.node-anchor {
+  width: 7px;
+  height: 7px;
+  border: 1px solid #a9a9a9;
+  z-index: 333;
+}
+.anchor-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 48%;
+  margin-top: -7px;
+}
+.anchor-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-left: 48%;
+  margin-bottom: -7px;
+}
+.anchor-right {
+  position: absolute;
+  right: 0;
+  margin-right: -7px;
+  top: 35%;
+}
+.anchor-left {
+  position: absolute;
+  left: 0;
+  margin-left: -7px;
+  top: 35%;
+}
+
 //表格最左边的div
 .rowDiv {
   background-color: #2932e1;
@@ -355,6 +622,43 @@ export default {
   margin: 10px auto;
   color: white;
   border-radius: 5px;
+}
+//组件
+.node {
+  &:hover {
+    cursor: grab;
+  }
+  &:active {
+    cursor: grabbing;
+  }
+}
+//画布
+.flow-wrap {
+  height: 300px;
+  width: 1400px;
+  position: relative;
+  overflow: hidden;
+  outline: none !important;
+  flex-grow: 1;
+  margin: 20px auto auto auto;
+  border: 1px solid #dcdcdc;
+
+  border-radius: 20px;
+  #flow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .auxiliary-line-x {
+      position: absolute;
+      border: 0.5px dashed #2ab1e8;
+      z-index: 9999;
+    }
+    .auxiliary-line-y {
+      position: absolute;
+      border: 0.5px dashed #2ab1e8;
+      z-index: 9999;
+    }
+  }
 }
 
 // 自己写的
@@ -419,9 +723,6 @@ body > .el-container {
   font-size: 13px;
 }
 
-.el-col {
-}
-
 .bg-purple {
   background: #d3dce6;
 }
@@ -438,10 +739,6 @@ body > .el-container {
 // el-card
 .text {
   font-size: 12px;
-}
-
-.item {
-  margin-bottom: 18px;
 }
 
 .clearfix:before,

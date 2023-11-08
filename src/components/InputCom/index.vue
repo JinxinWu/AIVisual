@@ -1,15 +1,16 @@
 <template>
-  <el-popover placement="right" width="160" trigger="click" :title="name">
+  <el-popover placement="right" width="160" trigger="click" :title="name" style="position: relative;">
     <p>{{ content }}</p>
     <div
       v-for="option in options"
       :class="option.value === value ? 'opts-click' : 'opts'"
       @click="chooseOpt(option.value)"
+      :key="option.value"
     >
       {{ option.label }}
     </div>
-    <div v-if="step === 2" class="hf-button-2" slot="reference">{{ this.name }}</div>
-    <div v-else class="hf-button-3" slot="reference">{{ this.name }}</div>
+    <div v-if="step === 2" class="hf-button-2" slot="reference"  @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
+    <div v-else class="hf-button-3" slot="reference"  @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
   </el-popover>
 </template>
 
@@ -24,28 +25,32 @@ export default {
       type: this.comData.type,
       content: this.comData.content,
       options: this.comData.options,
-      width: 100,
+      width: 120,
       height: 25,
-      x: 0,
-      y: 0,
       value: 0, // 传递option的value
     };
   },
   props: ['comData'],
   methods: {
     //将信息传给父组件
-    sendMyData() {
-      const myDate = {
+    startDrag(event) {
+      // 当鼠标按下时触发拖拽操作
+      const draggableElement = this.$refs.draggable;
+
+      // 将拖拽数据传递给jsPlumb以创建连接
+      const dragData = {
+        element: draggableElement,
         step: this.step,
         id: this.id,
         name: this.name,
         type: this.type,
-        x: this.x,
-        y: this.y,
         height: this.height,
         width: this.width,
+        value:this.value,
+        color: "#409EFF",
       };
-      this.$emit("customEvent", myDate);
+      // 开始拖拽
+      this.$emit('start-drag', dragData);
     },
     // 选择option，传递value
     chooseOpt(value) {
@@ -53,8 +58,7 @@ export default {
     },
   },
   created() {
-    // 初始数据
-    this.sendMyData();
+  
   },
 };
 </script>

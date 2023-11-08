@@ -5,9 +5,10 @@
     width="200"
     trigger="hover"
     :content=content
+    style="position: relative;"
   >
-    <div v-if="step !== 7 " class="hf-button" slot="reference" style="width: 120px;">{{ this.name }}</div>
-    <div v-else class="hf-button" slot="reference" style="width: 100px;">{{ this.name }}</div>
+    <div v-if="step !== 7 " class="hf-button" slot="reference" style="width: 120px;" @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
+    <div v-else class="hf-button" slot="reference" style="width: 100px;" @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
   </el-popover>
 </template>
   
@@ -23,32 +24,32 @@ export default {
       type: this.comData.type,
       content: this.comData.content,
       width: 100,
-      height: 60,
-      x: 0,
-      y: 0,
+      height: 25,
       data: "",
     };
   },
   methods: {
     //将信息传给父组件
-    sendMyData() {
-      const myDate = {
+    startDrag(event) {
+      // 当鼠标按下时触发拖拽操作
+      const draggableElement = this.$refs.draggable;
+      // 将拖拽数据传递给jsPlumb以创建连接
+      const dragData = {
+        element: draggableElement,
         step: this.step,
         id: this.id,
         name: this.name,
         type: this.type,
-        x: this.x,
-        y: this.y,
         height: this.height,
         width: this.width,
+        color: "#d6edf7",
       };
-      this.$emit("customEvent", myDate);
+      // 开始拖拽
+      this.$emit('start-drag', dragData);
     },
   },
   props: ['comData'],
-  created() {
-    this.sendMyData();
-  },
+
 };
 </script>
   
