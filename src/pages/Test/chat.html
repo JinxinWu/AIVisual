@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网址检测</title>
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- 网上摘抄的 -->
+    <link href="../Test/assets/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            word-spacing: 0.5px;
+            line-height: 20px;
+            font-family: 'Microsoft Yahei';
+        }
+
+        .answer {
+            width: 100%;
+            position: relative;
+            height: 70vh;
+        }
+
+        .ipt {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: -20px;
+            margin: auto;
+            padding-right: 15px;
+            border-radius: 15px;
+            width: calc(100% - 30px);
+            height: 50px;
+            border: 1px solid #e7eaec;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+            left: 0;
+            right: 0;
+        }
+
+        .ipt textarea {
+            resize: none;
+            overflow-y: auto;
+            border: none;
+            box-shadow: none;
+            font-size: 14px;
+            text-indent: 8px;
+        }
+
+        .ipt textarea:focus {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        button {
+            border-style: none;
+            background-color: #ffffff
+        }
+
+        #chatWindow {
+            max-height: calc(70vh - 60px);
+            height: auto;
+            overflow-y: auto;
+            width: 650px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .message-bubble {
+            padding: 0 5px;
+            margin: 10px 5px 5px 5px;
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px dashed #8a8a8a;
+        }
+
+
+        .message-bubble p {
+            margin-left: 8px;
+            word-spacing: 0.5px;
+            font-family: 'Microsoft Yahei';
+            font-size: 14px;
+            letter-spacing: 1px;
+            line-height: 20px;
+        }
+
+        .chat-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 网站最上方的导航栏模块 -->
+    <header>
+        <div class="sHeader">
+            <!-- 最左侧的logo设置 -->
+            <div class="sHeader_left">
+                <a class="sHeader_logo" href="#" style="display: block;"></a>
+            </div>
+            <!-- 右侧的三个导航 -->
+            <div class="sHeader_right">
+                <div class="sHeader_navList">
+                    <div class="sHeader_navItem">
+                        <a href="index.html">网址检测</a>
+                    </div>
+                    <div class="sHeader_navItem">
+                        <a href="analysis.html">检测结果</a>
+                    </div>
+                    <div class="sHeader_navItem">
+                        <a href="publicity.html">反诈宣传</a>
+                    </div>
+                    <div class="sHeader_navItem">
+                        <a href="chat.html">反诈智聊</a>
+                    </div>
+                    <div class="sHeader_navItem">
+                        <a href="api.html">API</a>
+                        <i class="sHeader_fire"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 网站主体架构 -->
+
+    <div style="margin-top: 20px;">
+        <!-- <div class="row"> -->
+        <div class="col-xs-12">
+            <div>
+                <h1 class="text-center m-b-lg">诈骗知多少，你问我答</h1>
+            </div>
+            <div class="answer">
+                <div id="chatWindow" class="mb-3"></div>
+                <div class="input-group ipt" style="width: 650px;">
+                    <div class="col-xs-12" style="width: 95%;">
+                        <textarea placeholder="Send a message" id="chatInput" class="form-control" rows="1"></textarea>
+                    </div>
+                    <button id="chatBtn" type="button">
+                        <svg t="1690170211730" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="2290" width="16" height="16">
+                            <path d="M0 1024l106.496-474.112 588.8-36.864-588.8-39.936L0 0l1024 512z" fill="#cdcdcd"
+                                p-id="2291"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+    </div>
+
+
+
+</body>
+
+<script src="../js/jquery-3.6.4.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/layer.js"></script>
+<script src="../../static/js/common.js"></script>
+
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+    $(document).ready(function () {
+        var chatBtn = $('#chatBtn');
+        var chatInput = $('#chatInput');
+        var chatWindow = $('#chatWindow');
+        var userIcon = '../images/person.svg';
+        var botIcon = '../images/favicon.ico';
+
+
+        // 添加用户消息到窗口
+        function addUserMessage(message) {
+            var messageElement = $('<div class="row message-bubble"><span style="width:25px"><img class="chat-icon" src="' + userIcon + '"></span><span style="width:600px"><p class="message-text">' + message + '</p></span></div>');
+            chatWindow.append(messageElement);
+            chatInput.val('');
+            chatWindow.animate({ scrollTop: chatWindow.prop('scrollHeight') }, 500);
+        }
+
+        // 添加回复消息到窗口
+        function addBotMessage(message) {
+            var messageElement = $('<div class="row message-bubble"><span style="width:25px"><img class="chat-icon" src="' + botIcon + '"></span><span style="width:600px"><p class="message-text">' + message + '</p></span></div>');
+            chatWindow.append(messageElement);
+            chatInput.val('');
+            chatWindow.animate({ scrollTop: chatWindow.prop('scrollHeight') }, 500);
+        }
+
+        // 处理用户输入
+        chatBtn.click(function () {
+            var message = chatInput.val();
+            if (message.length == 0) {
+                common_ops.alert("请输入内容！")
+                return
+            }
+            addUserMessage(message);
+
+            // messages.push({"role": "user", "content": message})
+
+            chatBtn.attr('disabled', true) // 消息发送后让提交按钮不可点击
+
+            // 发送信息到后台
+            $.ajax({
+                url: '/chat/message',
+                method: 'POST',
+                data: message,
+                //     {
+                //     message
+                // },
+                success: function (res) {
+                    addBotMessage('<span>' + res + '</span>');
+                    chatBtn.attr('disabled', false)  // 成功接受消息后让提交按钮再次可以点击
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    addBotMessage('<span style="color:red;">' + '出错啦！请稍后再试!' + '</span>');
+                    chatBtn.attr('disabled', false)
+                }
+            });
+        });
+
+        // 处理 Enter 键按下
+        chatInput.keypress(function (e) {
+            if (e.which == 13) {
+                chatBtn.click();
+            }
+        });
+    });
+</script>
+
+</html>

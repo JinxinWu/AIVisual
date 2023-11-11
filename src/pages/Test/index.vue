@@ -1,64 +1,258 @@
 <template>
-  <el-popover placement="right" width="160" trigger="click" title="数据集划分">
-    <div class="opts" v-for="option in options">{{ option.label }}</div>
-    <div class="hf-button" slot="reference">数据集划分</div>
-  </el-popover>
+  <el-container>
+    <el-header>
+      <Header></Header>
+    </el-header>
+    <el-main>
+      <div>
+        <h1
+          style="margin-top: 20px; margin-bottom: 25px"
+          class="text-center m-b-lg"
+        >
+          诈骗知多少，你问我答
+        </h1>
+      </div>
+      <el-row
+        v-for="(item, idx) in chatMessages"
+        style="padding-top: 10px; padding-bottom: 10px"
+        :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }"
+      >
+        <el-col :span="1" :offset="7"
+          ><div class="size-icon"><i class="el-icon-user-solid"></i></div
+        ></el-col>
+        <el-col :span="8"
+          ><div>
+            <p class="chat">
+              {{ item.content }}
+            </p>
+          </div></el-col
+        >
+      </el-row>
+    </el-main>
+    <el-footer style="height: 100px">
+      <div class="input-group ipt" style="width: 650px">
+        <div class="col-xs-12" style="width: 95%">
+          <textarea
+            placeholder="Send a message"
+            id="chatInput"
+            class="form-control"
+            rows="1"
+            v-model="textareaData"
+          ></textarea>
+        </div>
+        <button
+          id="chatBtn"
+          type="button"
+          :disabled="textareaData.length === 0"
+          @click="sendMessage"
+          :style="{ 'background-color': buttonColor }"
+        >
+          <svg
+            t="1690170211730"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="2290"
+            width="16"
+            height="16"
+          >
+            <path
+              d="M0 1024l106.496-474.112 588.8-36.864-588.8-39.936L0 0l1024 512z"
+              :fill="fill"
+              p-id="2291"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
+import Header from "@/components/Header/index.vue";
+import axios from "axios";
+
 export default {
+  components: {
+    Header,
+  },
   data() {
     return {
-      options: [{
-          value: '选项1',
-          label: '随机取30%'
-        }, {
-          value: '选项2',
-          label: '随机取30%'
-        }, {
-          value: '选项3',
-          label: '随机取30%'
-        }, {
-          value: '选项4',
-          label: '向前取30%'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: ''
+      fill: "#cdcdcd",
+      buttonColor: "",
+      textareaData: "",
+      chatMessages: [
+        {
+          role: "user",
+          content: "你好",
+        },
+        {
+          role: "assistant",
+          content: "你好，很高兴和你交流。有什么我可以帮助你的吗？",
+        },
+        {
+          role: "user",
+          content: "帮我写一段代码",
+        },
+      ],
+    };
+  },
+  methods: {
+    sendMessage() {
+      if (this.textareaData.length > 0) {
+        this.chatMessages.push({
+          role: "assistant",
+          content: this.textareaData,
+        });
+        this.textareaData = "";
+        axios
+          .post("/guo/sendMessage", {
+            message: this.chatMessages,
+          })
+          .then((response) => {
+            this.chatMessages.push(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
+    },
+  },
+  watch: {
+    textareaData() {
+      if (this.textareaData.length > 0) {
+        this.buttonColor = "#409eff";
+        this.fill = "#ffffff";
+      } else {
+        this.buttonColor = "";
+        this.fill = "#cdcdcd";
+      }
+    },
   },
 };
 </script>
 
-<style scoped>
-.hf-button {
-  background-color: #458ecd;
-  font-size: 13px;
-  color: black;
-  border: none;
-  height: 25px;
+<style lang="less" scoped>
+@import "assets/bootstrap.min.css";
+//
+.chat {
+  font-size: 1rem;
+}
+
+* {
+  word-spacing: 0.5px;
+  // line-height: 20px;
+  font-family: "Microsoft Yahei";
+}
+
+.answer {
+  width: 100%;
+  position: relative;
+  height: 70vh;
+}
+
+.ipt {
   display: flex;
   align-items: center;
-  justify-content: center;
+  position: absolute;
+  bottom: 40px;
   margin: auto;
-  width: 220px;
+  padding-right: 15px;
+  border-radius: 15px;
+  width: calc(100% - 30px);
+  height: 50px;
+  border: 1px solid #e7eaec;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  left: 0;
+  right: 0;
 }
 
-.opts {
-  background-color: #a1cdf3;
-  font-size: 13px;
-  color: black;
+.ipt textarea {
+  resize: none;
+  overflow-y: auto;
   border: none;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5px;
-  width: auto;
+  box-shadow: none;
+  font-size: 14px;
+  text-indent: 8px;
+  overflow: hidden;
 }
 
-.opts:hover {
-  background-color: #458ecd;
+.ipt textarea:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+button {
+  border-style: none;
+  background-color: #ffffff;
+  width: 31px;
+  height: 31px;
+  border-radius: 5px;
+}
+
+.icon {
+  margin-bottom: 31px;
+}
+
+.size-icon {
+  font-size: 25px;
+  color: #409eff;
+  text-align: center;
+  line-height: 25px;
+  margin-top: 5px;
+}
+
+#input {
+  width: 768px;
+  margin: auto;
+  max-height: 200px;
+  overflow-y: hidden;
+}
+
+//
+.el-header {
+  // background-color: #b3c0d1;
+  color: #333;
+  line-height: 60px;
+  padding: 0;
+}
+
+.el-footer {
+  // background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  height: calc(100vh - 70px); // 设置左侧 aside 高度
+  background-color: #d3dce6;
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
+
+.el-main {
+  padding: 0;
+  height: calc(100vh - 170px); // 设置主体 main 高度
+  // background-color: #e9eef3;
+  color: #333;
+  text-align: left;
+  // line-height: auto;
+}
+
+body > .el-container {
+  height: 96vh;
+  margin-bottom: 0px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
 }
 </style>

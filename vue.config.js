@@ -5,7 +5,6 @@ module.exports = defineConfig({
   lintOnSave: false,
   // 开启代理服务器
   devServer: {
-    port: 80,
     proxy: {
       '/guo': {
         target: 'http://localhost:8000',
@@ -13,9 +12,9 @@ module.exports = defineConfig({
         changeOrigin: true,
         ws: true,
       },
-      '/foo': {
-        target: 'http://localhost:5001',
-        pathRewrite: {'^/foo': ''},
+      '/wjx': {
+        target: 'https://aip.baidubce.com',
+        pathRewrite: {'^/wjx': ''},
         ws: true,
         changeOrigin: true
       },
