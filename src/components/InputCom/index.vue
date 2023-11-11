@@ -1,5 +1,11 @@
 <template>
-  <el-popover placement="right" width="160" trigger="click" :title="name" style="position: relative;">
+  <el-popover
+    placement="right"
+    width="160"
+    trigger="click"
+    :title="name"
+    style="position: relative"
+  >
     <p>{{ content }}</p>
     <div
       v-for="option in options"
@@ -9,8 +15,26 @@
     >
       {{ option.label }}
     </div>
-    <div v-if="step === 2" class="hf-button-2" slot="reference"  @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
-    <div v-else class="hf-button-3" slot="reference"  @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
+    <div
+      v-if="step === 2"
+      class="hf-button-2"
+      slot="reference"
+      @mousedown="startDrag"
+      ref="draggable"
+      draggable="true"
+    >
+      {{ this.name }}
+    </div>
+    <div
+      v-else
+      class="hf-button-3"
+      slot="reference"
+      @mousedown="startDrag"
+      ref="draggable"
+      draggable="true"
+    >
+      {{ this.name }}
+    </div>
   </el-popover>
 </template>
 
@@ -30,7 +54,7 @@ export default {
       value: 0, // 传递option的value
     };
   },
-  props: ['comData'],
+  props: ["comData"],
   methods: {
     //将信息传给父组件
     startDrag(event) {
@@ -46,20 +70,18 @@ export default {
         type: this.type,
         height: this.height,
         width: this.width,
-        value:this.value,
+        value: this.value,
         color: "#409EFF",
       };
       // 开始拖拽
-      this.$emit('start-drag', dragData);
+      this.$emit("start-drag", dragData);
     },
     // 选择option，传递value
     chooseOpt(value) {
       this.value = value;
     },
   },
-  created() {
-  
-  },
+  created() {},
 };
 </script>
   
@@ -71,7 +93,7 @@ export default {
 // 小组件div的样式
 .hf-button-2 {
   cursor: pointer; // 小手图标
-  background-color: #409EFF;
+  background-color: #409eff;
   font-size: 13px;
   color: black;
   border: none;
@@ -90,7 +112,7 @@ export default {
   // border-radius:6px;
   // 小手形状
   cursor: pointer;
-  background-color: #409EFF;
+  background-color: #409eff;
   font-size: 13px;
   color: black;
   border: none;
