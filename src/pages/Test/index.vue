@@ -14,11 +14,17 @@
       </div>
       <el-row
         v-for="(item, idx) in chatMessages"
-        style="padding-top: 10px; padding-bottom: 10px"
+        style="padding-top: 15px; padding-bottom: 15px"
         :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }"
       >
         <el-col :span="1" :offset="7"
-          ><div class="size-icon"><i class="el-icon-user-solid"></i></div
+          ><div class="size-icon">
+            <img
+              v-if="item.role === 'assistant'"
+              src="https://nlp-eb.cdn.bcebos.com/static/eb/asset/robin.e9dc83e5.png"
+              alt="头像"
+            />
+            <i v-else class="el-icon-user-solid"></i></div
         ></el-col>
         <el-col :span="8"
           ><div>
@@ -196,11 +202,17 @@ button {
 }
 
 .size-icon {
+  width: 26px;
+  height: 26px;
   font-size: 25px;
   color: #409eff;
   text-align: center;
   line-height: 25px;
-  margin-top: 5px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
 }
 
 #input {
