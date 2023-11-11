@@ -16,6 +16,9 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 //右键菜单
 import Contextmenu from "vue-contextmenujs"
+// main.js
+import jsCookie from 'js-cookie'
+Vue.prototype.$cookie = jsCookie;  // 在页面里可直接用 this.$cookie 调用
 
 
 
