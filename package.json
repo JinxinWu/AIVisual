@@ -13,6 +13,7 @@
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
     "iview": "^3.5.4",
+    "js-cookie": "^3.0.5",
     "jsplumb": "^2.15.6",
     "node-sass": "^9.0.0",
     "panzoom": "^9.4.3",
