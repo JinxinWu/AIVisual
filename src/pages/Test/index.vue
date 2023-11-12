@@ -16,6 +16,7 @@
         v-for="(item, idx) in chatMessages"
         style="padding-top: 15px; padding-bottom: 15px"
         :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }"
+        :key="item.content"
       >
         <el-col :span="1" :offset="7"
           ><div class="size-icon">
