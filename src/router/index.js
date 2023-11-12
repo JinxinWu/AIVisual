@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Train from "../pages/Train";
 import Login from "../pages/Login";
 import Test from "../pages/Test";
+import Log from "../pages/Log";
 
 const router = new VueRouter({
   routes: [
@@ -20,6 +21,11 @@ const router = new VueRouter({
       path: '/Test',
       name: 'Test',
       component: Test,
+    },
+    {
+      path: '/Log',
+      name: 'Log',
+      component: Log,
     },
   ],
 });
