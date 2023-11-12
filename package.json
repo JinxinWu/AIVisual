@@ -11,6 +11,7 @@
     "axios": "^1.5.1",
     "axois": "^0.0.1-security",
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.10",
     "element-ui": "^2.15.14",
     "iview": "^3.5.4",
     "js-cookie": "^3.0.5",
