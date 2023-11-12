@@ -9,9 +9,10 @@
           style="margin-top: 20px; margin-bottom: 25px"
           class="text-center m-b-lg"
         >
-          诈骗知多少，你问我答
+          建模知多少
         </h1>
       </div>
+      <el-divider></el-divider>
       <el-row
         v-for="(item, idx) in chatMessages"
         style="padding-top: 15px; padding-bottom: 15px"

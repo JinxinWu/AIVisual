@@ -2,7 +2,9 @@ import VueRouter from 'vue-router';
 
 import Train from "../pages/Train";
 import Login from "../pages/Login";
-import Test from "../pages/Test";
+import Log from "../pages/Log";
+import Chat from "../pages/Chat";
+import Predict from "../pages/Predict";
 
 const router = new VueRouter({
   routes: [
@@ -17,10 +19,20 @@ const router = new VueRouter({
       component: Login,
     },
     {
-      path: '/Test',
-      name: 'Test',
-      component: Test,
+      path: '/Log',
+      name: 'Log',
+      component: Log,
     },
+    {
+      path: '/Chat',
+      name: 'Chat',
+      component: Chat,
+    },
+    {
+      path: '/Predict',
+      name: 'Predict',
+      component: Predict,
+    }
   ],
 });
 

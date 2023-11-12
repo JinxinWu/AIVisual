@@ -6,6 +6,7 @@
     trigger="hover"
     :content=content
     style="position: relative;"
+    :open-delay="500"
   >
     <div v-if="step !== 7 " class="hf-button" slot="reference" style="width: 120px;" @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>
     <div v-else class="hf-button" slot="reference" style="width: 100px;" @mousedown="startDrag" ref="draggable" draggable="true">{{ this.name }}</div>

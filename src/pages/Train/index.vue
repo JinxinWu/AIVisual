@@ -345,7 +345,7 @@
               :node="item"
               class="node-anchor item"
               @changeLineState="changeLineState"
-              @contextmenu.prevent="handleContextMenu(item,$event)"
+              @contextmenu.prevent="handleContextMenu(item, $event)"
               :style="{
                 width: item.width + 'px',
                 height: item.height + 'px',
@@ -362,6 +362,59 @@
               {{ item.name }}
             </div>
             <!-- 画布中的按钮 -->
+            <p
+              v-show="!data.nodeList.length"
+              style="
+                font-size: 16px;
+                text-align: left;
+                z-index: 999;
+                position: absolute;
+                color: black;
+                top: 50px;
+                left: 160px;
+              "
+            >
+              建模提示：<br />
+              先加载数据，再选择算法建立模型。建模时，请按照数据预处理->不平衡工程->特征工程-深度学习->机器学习->评估指标得顺序选择合适的算法。
+            </p>
+
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :on-error="handleError"
+              :limit="1"
+              :on-exceed="handleExceed"
+              :accept="fileType"
+            >
+              <el-button
+                size="medium"
+                round
+                style="
+                  z-index: 999;
+                  position: absolute;
+                  color: white;
+                  background-color: #004088;
+                  top: 250px;
+                  left: 960px;
+                "
+                >加载数据</el-button
+              >
+              <div
+                v-show="fileType !== ''"
+                slot="tip"
+                class="el-upload__tip"
+                style="
+                  z-index: 999;
+                  position: absolute;
+                  top: 225px;
+                  left: 960px;
+                "
+              >
+                只能上传{{ fileType }}文件
+              </div>
+            </el-upload>
             <el-button
               size="medium"
               round
@@ -372,9 +425,23 @@
                 color: white;
                 background-color: #004088;
                 top: 250px;
+                left: 1060px;
+              "
+              >模型训练</el-button
+            >
+            <el-button
+              size="medium"
+              round
+              @click="modelSave"
+              style="
+                z-index: 999;
+                position: absolute;
+                color: white;
+                background-color: #004088;
+                top: 250px;
                 left: 1150px;
               "
-              >模型创建</el-button
+              >模型保存</el-button
             >
             <el-button
               size="medium"
@@ -428,9 +495,20 @@ export default {
   },
   data() {
     return {
+      dialogLoadVisible: false,
       myComponents: this.$store.state.myComponents,
       visible: false,
-
+      fileType: "",
+      fileList: [
+        {
+          name: "food.jpeg",
+          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+        },
+        {
+          name: "food2.jpeg",
+          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+        },
+      ],
       jsPlumb: null,
       currentItem: null,
       jsplumbSetting: jsplumbSetting,
@@ -466,8 +544,42 @@ export default {
       this.init();
     });
   },
-  watch: {},
+  watch: {
+    data: {
+      handler(newval, oldval) {
+        newval.nodeList.forEach((item) => {
+          if (item.id <= 4) {
+            const type = [".csv", ".xlsx", ".db", ".txt"];
+            this.fileType = type[item.id - 1];
+          }
+        });
+      },
+      deep: true,
+    },
+  },
   methods: {
+    // 点击文件列表中已上传的文件时的钩子
+    handlePreview(file) {
+      console.log(file);
+    },
+    // 文件上传失败时的钩子
+    handleError(err, file, fileList) {
+      this.$message.warning(`文件格式不符合要求！`);
+    },
+    // 文件超出个数限制时的钩子
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    // 文件列表移除文件时的钩子
+    handleRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    sendData() {},
+    modelSave() {},
     //导入methods中的函数
     ...methods,
     //传输画布中的信息给后端
@@ -520,7 +632,7 @@ export default {
       return false; // 如果该节点未在任何连线中出现，则返回 false
     },
     //右键菜单，删除节点
-    handleContextMenu(item,$event) {
+    handleContextMenu(item, $event) {
       this.$contextmenu({
         x: $event.x,
         y: $event.y,
@@ -537,14 +649,13 @@ export default {
         zIndex: 3,
         minWidth: 100,
       });
-
     },
     //清空画布
-    deleALL(){
-      this.data.nodeList.some((v,index) => {       
-        this.jsPlumb.remove(v.uid)     
-    })
-      this.data.nodeList=[];
+    deleALL() {
+      this.data.nodeList.some((v, index) => {
+        this.jsPlumb.remove(v.uid);
+      });
+      this.data.nodeList = [];
     },
   },
 };
