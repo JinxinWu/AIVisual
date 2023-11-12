@@ -19,7 +19,8 @@ import Contextmenu from "vue-contextmenujs"
 // main.js
 import jsCookie from 'js-cookie'
 Vue.prototype.$cookie = jsCookie;  // 在页面里可直接用 this.$cookie 调用
-
+import dayjs from "dayjs"
+Vue.prototype.$dayjs = dayjs;
 
 
 Vue.config.productionTip = false
