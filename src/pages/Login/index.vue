@@ -1,79 +1,75 @@
 <template>
-  <div class="main-container" 
-  style="
-  
-  background-size:100% 100%;  
-  ">
-    <el-row style="width: 100vw;"><el-col :span="10"><div class="login-main">
-        <el-row class="login-title">
-          <el-col align="center">
-            <img
-            src="~@/assets/img/labooc_tr.png"
-            style="height:70px"
-          /> </el-col>
-        </el-row>
-        <el-row class="login-swicth" type="flex">
-          <el-col :span="24" align="center">
-            <el-radio-group v-model="userType">
-              <el-radio-button label="user">用户登录</el-radio-button>
-              <el-radio-button label="admin">管理员登录</el-radio-button>
-            </el-radio-group>
-          </el-col>
-        </el-row>
-        <el-form
-          :model="dataForm"
-          :rules="dataRule"
-          ref="dataForm"
-          @keyup.enter.native="dataFormSubmit()"
-          status-icon
-        >
-          <el-form-item prop="userName">
-            <el-input
-              v-model="dataForm.userName"
-              placeholder="帐号"
-              prefix-icon="el-icon-user-solid"
-            ></el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              v-model="dataForm.password"
-              type="password"
-              placeholder="密码"
-              prefix-icon="el-icon-view"
-            ></el-input>
-          </el-form-item>
-          <el-form-item prop="captcha">
-            <el-row :gutter="20" type="flex" align="middle">
-              <el-col :span="9">
-                <el-input v-model="dataForm.captcha" placeholder="验证码">
-                </el-input>
-              </el-col>
-              <el-col :span="15" class="login-captcha">
-                <img :src="captchaPath" @click="getCaptcha()" alt="" />
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item>
-            <el-row type="flex">
-              <el-col :span="24" align="center"
-                ><el-button
-                  class="login-btn-submit"
-                  type="primary"
-                  @click="dataFormSubmit()"
-                  >登录</el-button
-                ></el-col
+  <div class="main-container" style="background-size: 100% 100%">
+    <el-row style="width: 100vw"
+      ><el-col :span="10"
+        ><div class="login-main">
+          <el-row class="login-title">
+            <el-col align="center">
+              <img src="~@/assets/img/labooc_tr.png" style="height: 70px" />
+            </el-col>
+          </el-row>
+          <el-row class="login-swicth" type="flex">
+            <el-col :span="24" align="center">
+              <el-radio-group v-model="userType">
+                <el-radio-button label="user">用户登录</el-radio-button>
+                <el-radio-button label="admin">管理员登录</el-radio-button>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-form
+            :model="dataForm"
+            :rules="dataRule"
+            ref="dataForm"
+            @keyup.enter.native="dataFormSubmit()"
+            status-icon
+          >
+            <el-form-item prop="userName">
+              <el-input
+                v-model="dataForm.userName"
+                placeholder="帐号"
+                prefix-icon="el-icon-user-solid"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                v-model="dataForm.password"
+                type="password"
+                placeholder="密码"
+                prefix-icon="el-icon-view"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="captcha">
+              <el-row :gutter="20" type="flex" align="middle">
+                <el-col :span="9">
+                  <el-input v-model="dataForm.captcha" placeholder="验证码">
+                  </el-input>
+                </el-col>
+                <el-col :span="15" class="login-captcha">
+                  <img :src="captchaPath" @click="getCaptcha()" alt="" />
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item>
+              <el-row type="flex">
+                <el-col :span="24" align="center"
+                  ><el-button
+                    class="login-btn-submit"
+                    type="primary"
+                    @click="dataFormSubmit()"
+                    >登录</el-button
+                  ></el-col
+                >
+              </el-row>
+              <el-row
+                ><el-col align="right">
+                  <span class="sign-up-text">注册账号</span>
+                </el-col></el-row
               >
-            </el-row>
-            <el-row><el-col align="right">
-              <span class="sign-up-text">注册账号</span>
-            </el-col></el-row>
-          </el-form-item>
-        </el-form>
-      </div></el-col></el-row>
-      
-
-
-    
+            </el-form-item>
+          </el-form>
+        </div></el-col
+      ></el-row
+    >
   </div>
 </template>
 
@@ -139,12 +135,14 @@ export default {
                 if (res.status === 200) {
                   if (res.data.msg === "登录成功") {
                     console.log("res.data", res.data);
-                    if (res.data.userType === "1") {  // 管理员端
+                    if (res.data.userType === "1") {
+                      // 管理员端
                       this.$cookie.set("token", res.data.token);
-                      console.log("1111111111111111111111")
+                      console.log("1111111111111111111111");
                       this.$router.replace({ name: "Train" });
-                    } else if (res.data.userType === "0") {  // 用户端
-                      console.log("222222222222222222222")
+                    } else if (res.data.userType === "0") {
+                      // 用户端
+                      console.log("222222222222222222222");
                       this.$cookie.set("token", res.data.token);
                       this.$router.replace({ name: "Train" });
                     }
@@ -230,7 +228,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../../assets/img/login_cover.png');
+  background-image: url("../../assets/img/login_cover.png");
   .login-card {
     height: 500px;
     width: 500px;

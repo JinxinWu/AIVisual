@@ -17,7 +17,7 @@
         v-for="(item, idx) in chatMessages"
         style="padding-top: 15px; padding-bottom: 15px"
         :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }"
-        :key="item.content"
+        :key="item.id"
       >
         <el-col :span="1" :offset="7"
           ><div class="size-icon">
@@ -46,6 +46,7 @@
             class="form-control"
             rows="1"
             v-model="textareaData"
+            @keyup.enter="sendMessage"
           ></textarea>
         </div>
         <button
@@ -78,7 +79,7 @@
 </template>
 
 <script>
-import Header from "@/components/Header/index.vue";
+import Header from "../../components/Header/index.vue"
 import axios from "axios";
 
 export default {
@@ -92,38 +93,47 @@ export default {
       textareaData: "",
       chatMessages: [
         {
-          role: "user",
-          content: "你好",
-        },
-        {
+          id:1,
           role: "assistant",
           content: "你好，很高兴和你交流。有什么我可以帮助你的吗？",
         },
-        {
-          role: "user",
-          content: "帮我写一段代码",
-        },
       ],
+      id:1,
     };
   },
   methods: {
     sendMessage() {
-      if (this.textareaData.length > 0) {
+      console.log(this.textareaData.length)
+      const textWithoutEnter = this.textareaData.replace(/\n/g, '');
+      if (textWithoutEnter.length > 0) {
+        const message=textWithoutEnter;
         this.chatMessages.push({
-          role: "assistant",
-          content: this.textareaData,
+          id:this.id+1,
+          role: "user",
+          content: message,
         });
+        this.id=this.id+1;
         this.textareaData = "";
-        axios
-          .post("/guo/sendMessage", {
-            message: this.chatMessages,
+        axios.post("/guo/test/message", {
+            message: message,
           })
           .then((response) => {
-            this.chatMessages.push(response.data);
+            console.log(response.data);
+            this.chatMessages.push({
+              id:this.id+1,
+              role:"assistant",
+              content : response.data});
+              this.id=this.id+1;
           })
           .catch((error) => {
-            console.log(error);
+            this.chatMessages.push({
+              id:this.id+1,
+              role:"assistant",
+              content : "好的",});
+              this.id=this.id+1;
           });
+      }else {
+        console.log("error");
       }
     },
   },
