@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Log from "../pages/Log";
 import Chat from "../pages/Chat";
 import Predict from "../pages/Predict";
+import Test from "../pages/Test"
 
 const router = new VueRouter({
   routes: [
@@ -32,6 +33,11 @@ const router = new VueRouter({
       path: '/Predict',
       name: 'Predict',
       component: Predict,
+    },
+    {
+      path: '/Test',
+      name: 'Test',
+      component: Test,
     }
   ],
 });

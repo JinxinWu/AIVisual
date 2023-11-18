@@ -4,11 +4,18 @@
       <Header></Header>
     </el-header>
     <el-main>
-      <el-row type="flex" class="row-bg" justify="center">
+      <p class="title">应用中心</p>
+      <el-divider></el-divider>
+      <el-row
+        type="flex"
+        class="row-bg"
+        justify="center"
+        v-for="(o, index) in models.length/3+1"
+      >
         <el-col
           :span="5"
-          v-for="(o, index) in 4"
-          :key="o"
+          v-for="(model, index) in models.slice(index*3, index*3+3)"
+          :key="index"
           :offset="index > 0 ? 1 : 0"
         >
           <el-card :body-style="{ padding: '0px' }">
@@ -17,7 +24,7 @@
               class="image"
             />
             <div style="padding: 14px">
-              <span style="font-size: 18px">好吃的汉堡</span>
+              <span style="font-size: 18px">{{ model.name }}</span>
               <div class="bottom clearfix">
                 <time class="time">{{ currentDate }}</time>
                 <el-button type="text" class="button">操作按钮</el-button>
@@ -25,13 +32,6 @@
             </div>
           </el-card>
         </el-col>
-        <!-- <el-col :span="6"
-          ><div class="grid-content bg-purple-light"></div
-        ></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="6"
-          ><div class="grid-content bg-purple-light"></div
-        ></el-col> -->
       </el-row>
     </el-main>
   </el-container>
@@ -47,7 +47,32 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date().getFullYear() + "-" + new Date().getMonth() + '-' + new Date().getDate(),
+      models: [
+        {
+          name: "AI绘画",
+        },
+        {
+          name: "ERNIE-Bot",
+        },
+        {
+          name: "chat-python",
+        },
+        {
+          name: "erciyuan",
+        },
+        {
+          name: "lamade",
+        },
+        {
+          name: "aidiahdiahd",
+        },
+      ],
+      currentDate:
+        new Date().getFullYear() +
+        "-" +
+        new Date().getMonth() +
+        "-" +
+        new Date().getDate(),
     };
   },
   methods: {},
@@ -56,6 +81,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.title {
+  margin-top: 20px;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-size: 2em;
+  text-align: center;
+}
+
+.el-card {
+  transition: all 0.5s;
+}
+
+.el-card:hover {
+  margin-top: -5px;
+}
+
 // Container
 .el-header {
   // background-color: #b3c0d1;
@@ -119,7 +159,7 @@ body > .el-container {
 }
 .row-bg {
   padding: 10px 0;
-  background-color: #f9fafc;
+  // background-color: #f9fafc;
 }
 
 // Card

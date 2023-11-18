@@ -15,9 +15,9 @@
           router
         >
           <el-menu-item index="/login">登录/个人信息</el-menu-item>
+          <el-menu-item index="/log">建模日志</el-menu-item>
           <el-menu-item index="/chat">智聊自助</el-menu-item>
           <el-menu-item index="/predict">模型应用</el-menu-item>
-          <el-menu-item index="/log">建模日志</el-menu-item>
           <el-menu-item index="/train">数据训练</el-menu-item>
         </el-menu>
       </div>
