@@ -11,12 +11,14 @@ const actions = {
     //     context.commit('JIA', value)
     // }
 }
+
 // 用于操作数据
 const mutations = {
     // JIA(state, value) {
     //     state.sum += value
     // }
 }
+
 // 用于存储数据
 const state = {
     // sum: 0,

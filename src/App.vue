@@ -4,13 +4,14 @@
 
 <script>
 import Header from '@/components/Header/index.vue'
-import Train from './pages/Train/index.vue'
+
+
 
 export default {
   name: 'App',
   components: {
     Header,
-    Train
+
   },
 }
 </script>

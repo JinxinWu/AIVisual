@@ -76,6 +76,7 @@
 <script>
 import { getUUID } from "@/utils";
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -134,16 +135,11 @@ export default {
               .then((res) => {
                 if (res.status === 200) {
                   if (res.data.msg === "登录成功") {
-                    console.log("res.data", res.data);
-                    if (res.data.userType === "1") {
-                      // 管理员端
-                      this.$cookie.set("token", res.data.token);
-                      console.log("1111111111111111111111");
-                      this.$router.replace({ name: "Train" });
-                    } else if (res.data.userType === "0") {
+                    if (res.data.userType === "0") {
                       // 用户端
-                      console.log("222222222222222222222");
-                      this.$cookie.set("token", res.data.token);
+                      //登录记录
+                      sessionStorage.setItem("isLogin", 1);
+                      VueCookies.set("token", res.data.token);
                       this.$router.replace({ name: "Train" });
                     }
                   } else {
@@ -171,8 +167,9 @@ export default {
               }),
             }).then(({ data }) => {
               if (data && data.code === 0) {
-                this.$cookie.set("token", data.token);
-                this.$router.replace({ name: "home" });
+                sessionStorage.setItem("isLogin", 1);
+                VueCookies.set("token", res.data.token);
+                this.$router.replace({ name: "Administrator" });
               } else {
                 this.getCaptcha();
                 this.$message.error(data.msg);

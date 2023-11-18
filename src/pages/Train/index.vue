@@ -464,8 +464,8 @@
           ">
             <div style="font-size: 16px; margin-top: 5px;
                 ">平台输出信息</div>
-            <div id="rely" ref="rely" style="text-align: left;"></div>
-          
+            <div id="reply" ref="reply" style="text-align: left;"></div>
+      
         </el-row>
       </el-main>
     </el-container>
@@ -476,6 +476,8 @@
 import Header from "@/components/Header/index.vue";
 import NoInputCom from "@/components/NoInputCom";
 import InputCom from "@/components/InputCom";
+
+import VueCookies from 'vue-cookies';
 //导入jsplumb
 import { jsPlumb } from "jsplumb";
 //导入jsplumb的一些配置，（data中声明）
@@ -538,11 +540,20 @@ export default {
         nodeList: [],
         lineList: [],
       },
+      //信息
+      //用户token
+      token:"",
+      //本次建模唯一id
       trainId: "0",
+      //用户类型：1为普通用户
       user_id: "1",
+      //数据存储地址
       data_url: "",
+      //模型存储地址
+      model_url:"",
     };
   },
+
   mounted() {
     this.jsPlumb = jsPlumb.getInstance();
     this.jsPlumb.setContainer(this.$refs.flowWrap);
@@ -550,6 +561,9 @@ export default {
     this.$nextTick(() => {
       this.init();
     });
+    const a=VueCookies.get("token");
+    this.token=VueCookies.get("token");
+    console.log(a);
   },
   watch: {
     data: {
@@ -568,6 +582,7 @@ export default {
     // 点击文件列表中已上传的文件时的钩子
     handlePreview(file) {
       // console.log(file);
+      
     },
     // 文件超出个数限制时的钩子
     handleExceed(files, fileList) {
@@ -581,6 +596,7 @@ export default {
     handleRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}`);
     },
+
     uploadFile(item) {
       console.log("文件上传中........");
       const suffix = item.file.name.slice(
@@ -624,6 +640,7 @@ export default {
               headers: this.headers,
             }).then((res) => {
                const reply = res.data.reply;
+               this.$refs.reply.innerHTML=reply
             });
           } else {
             this.$message.warning(`文件上传失败，请重新上传`);
