@@ -122,7 +122,7 @@ export default {
             this.chatMessages.push({
               id:this.id+1,
               role:"assistant",
-              content : response.data});
+              content : response.data.reply});
               this.id=this.id+1;
           })
           .catch((error) => {

@@ -58,9 +58,9 @@
               :formatter="formatDate"
             >
             </el-table-column>
-            <el-table-column prop="user" label="用户" width="80">
+            <el-table-column prop="dataName" label="数据集名称" width="120">
             </el-table-column>
-            <el-table-column prop="feature" label="数据特点" width="160">
+            <el-table-column prop="guidance" label="建模指引" width="160">
             </el-table-column>
             <el-table-column prop="model" label="模型(算法组合)" width="300">
             </el-table-column>
@@ -137,42 +137,13 @@ export default {
           index: "1",
           date: "2023-11-02 00:00:00",
           user: "王小虎",
-          feature: "王小虎",
+          guidance: "存在缺失值 缺失值数量：414 缺失值数量占比：9.00%<br>特征列序号 特征名称 缺失值数量 缺失值占比: <br>4         ['Age']    86 20.57% <br>8        ['Fare']     1 0.24% <br>9       ['Cabin']   327 78.23% <br>第[4, 9]列建议进行缺失值处理—删除缺失列<br>第[8]列建议进行缺失值处理—缺失值填充<br>",
+          dataName: "鸢尾花数据集",
           model: "上海市普陀区金沙江路 1518 弄",
           type: "自主建模",
           result: "成功",
           isAble: false,
-        },
-        {
-          index: "2",
-          date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1517 弄",
-          type: "模型应用",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "3",
-          date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1519 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "4",
-          date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1516 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
+        }
       ],
       pickerOptions: {
         shortcuts: [
@@ -210,6 +181,15 @@ export default {
     };
   },
   methods: {
+    // download(filename, link) {
+    //     let DownloadLink = document.createElement('a'); 
+    //     DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
+    //     DownloadLink.download = filename;
+    //     DownloadLink.href = link;
+    //     document.body.appendChild(DownloadLink);
+    //     DownloadLink.click(); // 触发a标签的click事件
+    //     document.body.removeChild(DownloadLink);
+    // },
     handleClick(row) {
       this.details = row;
       console.log(this.details);

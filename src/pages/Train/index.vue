@@ -585,7 +585,9 @@ export default {
     uploadFile(item) {
       console.log("文件上传中........");
       console.log();
+      // item.file.name获取的是完整的文件名
       const suffix = item.file.name.slice((item.file.name.lastIndexOf(".") - 1 >>> 0) + 1)
+      const dataName = item.file.name.slice(0, (item.file.name.lastIndexOf(".") - 1 >>> 0) + 1)
       let type = "0";
       if (suffix == ".csv") {
         type = "1"
@@ -604,7 +606,7 @@ export default {
         FormDatas.append("file", item.file);
         axios({
           method: "post",
-          url: "/guo/test/upload?user_id=" + this.user_id,
+          url: `/guo/test/upload?user_id=${this.user_id}&data_name=${dataName}`,
           headers: this.headers,
           timeout: 30000,
           data: FormDatas,

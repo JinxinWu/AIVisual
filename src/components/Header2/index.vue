@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="8">
-      <div class="logo">项目名称</div>
+      <div class="logo">灵智启业</div>
     </el-col>
 
     <el-col :span="16">
