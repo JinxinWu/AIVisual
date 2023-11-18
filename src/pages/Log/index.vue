@@ -5,19 +5,17 @@
     </el-header>
     <el-main>
       <el-row style="margin-top: 20px">
-        <el-col :span="6" :offset="4"
-          >
-            <span class="demonstration">按照模型类型检索</span>
-            <el-select v-model="value" clearable placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-         
+        <el-col :span="6" :offset="4">
+          <span class="demonstration">按照模型类型检索</span>
+          <el-select v-model="value" clearable placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-col>
         <el-col :span="8" :offset="4"
           ><div>
@@ -41,7 +39,7 @@
             border
             style="width: 100%; margin: auto"
             :header-cell-style="rowStyle"
-            :default-sort = "{prop: 'date', order: 'descending'}"
+            :default-sort="{ prop: 'date', order: 'descending' }"
           >
             <el-table-column
               prop="index"
@@ -64,29 +62,46 @@
             </el-table-column>
             <el-table-column prop="model" label="模型(算法组合)" width="300">
             </el-table-column>
-            <el-table-column
-              prop="type"
-              label="类型"
-              width="80"
-              align="center"
-            >
+            <el-table-column prop="type" label="类型" width="80" align="center">
             </el-table-column>
-            <el-table-column prop="result" label="结果" width="274">
+            <el-table-column prop="result" label="结果" width="263">
             </el-table-column>
             <el-table-column label="操作" width="100" align="center">
               <template slot-scope="scope">
                 <el-button
-                  @click="handleClick(scope.row); dialogTableVisible = true;"
+                  @click="
+                    handleClick(scope.row);
+                    dialogTableVisible = true;
+                  "
                   type="text"
                   size="small"
                   >查看</el-button
                 >
-                <el-button type="text" size="small" @click="apply(scope.row)" :disabled="scope.row.isAble">应用</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="apply(scope.row)"
+                  :disabled="scope.row.isAble"
+                  >应用</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
         </div></el-col
       >
+      <el-col :span="10" :offset="14">
+        <div class="block" style="margin-top: 20px">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage3"
+            :page-size="10"
+            layout="prev, pager, next, jumper"
+            :total="tableDataPages.length"
+          >
+          </el-pagination>
+        </div>
+      </el-col>
       <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="时间">
@@ -118,6 +133,7 @@ export default {
   },
   data() {
     return {
+      currentPage3: 1,
       details: {},
       dialogTableVisible: false,
       options: [
@@ -132,7 +148,128 @@ export default {
       ],
       value: "",
       tableDataShow: [],
+      tableDataPages: [],
       tableData: [
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          user: "王小虎",
+          feature: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          user: "王小虎",
+          feature: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          user: "王小虎",
+          feature: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          user: "王小虎",
+          feature: "普陀区",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
         {
           index: "1",
           date: "2023-11-02 00:00:00",
@@ -210,6 +347,12 @@ export default {
     };
   },
   methods: {
+    handleSizeChange() {
+      
+    },
+    handleCurrentChange() {
+
+    },
     handleClick(row) {
       this.details = row;
       console.log(this.details);
@@ -249,28 +392,96 @@ export default {
   },
   watch: {
     value(val) {
-      if (val === "") this.tableDataShow = this.tableData;
-      else {
-        this.tableDataShow = this.tableData.filter((item) => {
-          return item.type === val;
-        });
+      if (this.value2 === null) {
+        if (val === "") {
+          this.tableDataPages = this.tableData;
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        } else {
+          this.tableDataPages = this.tableData.filter((item) => {
+            return item.type === val;
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        }
+      } else {
+        if (val === "") {
+          this.tableDataPages = this.tableData.filter((item) => {
+            const dt = new Date(item.date);
+            return (
+              dt.getTime() >= this.value2[0].getTime() &&
+              dt.getTime() <= this.value2[1].getTime()
+            );
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        } else {
+          this.tableDataPages = this.tableDataPages.filter((item) => {
+            const dt = new Date(item.date);
+            return (
+              dt.getTime() >= this.value2[0].getTime() &&
+              dt.getTime() <= this.value2[1].getTime()
+            );
+          });
+          this.tableDataPages = this.tableDataPages.filter((item) => {
+            return item.type === val;
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        }
       }
     },
     value2(val) {
-      if (val === "") this.tableDataShow = this.tableData;
-      else {
-        this.tableDataShow = this.tableData.filter((item) => {
-          const dt = new Date(item.date);
-          return (
-            dt.getTime() >= val[0].getTime() && dt.getTime() <= val[1].getTime()
-          );
-        });
+      // 类型值为空
+      if (this.value === "") {
+        // 时间为空
+        if (val === null) {
+          this.tableDataPages = this.tableData;
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        } else {
+          // 时间不为空
+          this.tableDataPages = this.tableData.filter((item) => {
+            const dt = new Date(item.date);
+            return (
+              dt.getTime() >= val[0].getTime() &&
+              dt.getTime() <= val[1].getTime()
+            );
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        }
+      } else {
+        console.log(val);
+        if (val === null) {
+          this.tableDataPages = this.tableData.filter((item) => {
+            return item.type === this.value;
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        } else {
+          this.tableDataPages = this.tableDataPages.filter((item) => {
+            const dt = new Date(item.date);
+            return (
+              dt.getTime() >= val[0].getTime() &&
+              dt.getTime() <= val[1].getTime()
+            );
+          });
+          this.currentPage3 = 1;
+          this.tableDataShow = this.tableDataPages.slice(0, 10);
+        }
       }
+    },
+    currentPage3() {
+      this.tableDataShow = this.tableDataPages.slice(
+        (this.currentPage3 - 1) * 10,
+        this.currentPage3 * 10
+      );
     },
   },
   mounted() {
-    this.tableDataShow = this.tableData;
-    
+    this.tableDataPages = this.tableData;
+    this.tableDataShow = this.tableData.slice(0, 10);
   },
 };
 </script>
