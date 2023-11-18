@@ -461,12 +461,20 @@
           </div>
         </div>
         <!-- 后端显示模块 -->
-        <el-row style="margin-top: 10px;color:black;font-size:14px;min-height: 100px;with:80%;border: 1px solid #dcdcdc;
-          ">
-            <div style="font-size: 16px; margin-top: 5px;
-                ">平台提示信息</div>
-            <div id="reply" ref="reply" style="text-align: left;"></div>
+        <el-row
+          style="
+            margin-top: 10px;
+            color: black;
+            font-size: 14px;
+            min-height: 100px;
+            with: 80%;
+            border: 1px solid #dcdcdc;
+          "
+        >
+          <div style="font-size: 16px; margin-top: 5px">平台提示信息</div>
+          <div id="reply" ref="reply" style="text-align: left"></div>
         </el-row>
+        <Loading :visible.sync="visible"></Loading>
       </el-main>
     </el-container>
   </div>
@@ -489,6 +497,7 @@ import {
 import methods from "@/utils/methods";
 //引入axios
 import axios from "axios";
+import Loading from "@/components/Loading";
 
 export default {
   name: "Train",
@@ -496,6 +505,7 @@ export default {
     Header,
     InputCom,
     NoInputCom,
+    Loading,
   },
   data() {
     return {
@@ -538,10 +548,13 @@ export default {
         nodeList: [],
         lineList: [],
       },
-      token:"",
-      trainId:"0",
-      user_id:"1",
-      data_url:"",
+      token: "",
+      trainId: "0",
+      user_id: "1",
+      data_url: "",
+      //弹窗等待
+      visible: false,
+      message: "",
     };
   },
   mounted() {
@@ -585,16 +598,18 @@ export default {
     uploadFile(item) {
       console.log("文件上传中........");
       console.log();
-      const suffix = item.file.name.slice((item.file.name.lastIndexOf(".") - 1 >>> 0) + 1)
+      const suffix = item.file.name.slice(
+        ((item.file.name.lastIndexOf(".") - 1) >>> 0) + 1
+      );
       let type = "0";
       if (suffix == ".csv") {
-        type = "1"
+        type = "1";
       } else if (suffix == ".xlsx") {
-        type = "2"
+        type = "2";
       } else if (suffix == ".db") {
-        type = "3"
+        type = "3";
       } else {
-        type = "4"
+        type = "4";
       }
       if (!this.isValidFile(item.file)) {
         this.$message.warning(`文件格式不符合要求！`);
@@ -610,32 +625,45 @@ export default {
           data: FormDatas,
         }).then((res) => {
           const result = res.data;
-          if (result.msg.includes('文件上传成功')) {
-            this.$message.success('文件上传成功');
+          if (result.msg.includes("文件上传成功")) {
+            this.$message.success("文件上传成功");
             //将后端传来的数据存储
-            this.trainId=result.trainId;
-            this.data_url=result.url;
+            this.trainId = result.trainId;
+            this.data_url = result.url;
+            this.message = "文件上传成功,正在分析，请稍作等待";
+            this.visible = true;
             axios({
               method: "get",
               url: `/guo/test/showDetail?url=${this.data_url}&type=${type}`,
               headers: this.headers,
-            }).then((res) => {
-              let reply = res.data.reply
-              this.$refs.reply.innerHTML = reply
-              console.log(reply)
             })
-        }else {
-          this.$message.warning(`文件上传失败，请重新上传`);
-        }
+              .then((res) => {
+                this.message = "";
+                this.visible = false;
+                let reply = res.data.reply;
+                this.$refs.reply.innerHTML = reply;
+                console.log(reply);
+              })
+              .catch((err) => {
+                this.message = "";
+                this.visible = false;
+              });
+          } else {
+            this.$message.warning(`文件上传失败，请重新上传`);
+          }
         });
       }
     },
     //文件检测
     isValidFile(file) {
       // 定义允许的文件类型和大小
-      const allowedTypes = [this.fileType]; 
+      const allowedTypes = [this.fileType];
       // 检测文件类型
-      if (!allowedTypes.includes(file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 1))) {
+      if (
+        !allowedTypes.includes(
+          file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 1)
+        )
+      ) {
         return false;
       }
       return true;
@@ -644,6 +672,8 @@ export default {
     ...methods,
     //传输画布中的信息给后端
     modelTrain() {
+      this.message = "正在构建模型，请稍作等待……";
+      this.visible = true;
       // 创建一个空数组来存储拓扑排序后的节点列表
       const sortedNodeList = [];
       // 创建一个字典来存储每个节点的入度（即指向该节点的边的数量）
@@ -679,34 +709,36 @@ export default {
           }
         });
       }
-      console.log(sortedNodeList);
-      const idArray = sortedNodeList.map(node => node.id);
-      const idString = idArray.join(',')
-      console.log(idArray);
-      console.log(idString);
+      const idArray = sortedNodeList.map((node) => node.id);
+      const idString = idArray.join(",");
       axios({
-          method: "get",
-          url: `/guo/test/train?trainId=${this.trainId}&idString=${idString}`,
-          headers: this.headers,
-          data: idString,
-        }).then((res) => {
-          const result = res.data.retInfo;
-          this.$refs.reply.innerHTML = result
-          console.log(result)
-        });
+        method: "get",
+        url: `/guo/test/train?trainId=${this.trainId}&idString=${idString}`,
+        headers: this.headers,
+        data: idString,
+      }).then((res) => {
+        this.message = "";
+        this.visible = false;
+        const result = res.data.retInfo;
+        this.$refs.reply.innerHTML = result;
+        console.log(result);
+      }).catch((err)=>{
+        this.message="";
+        this.visible=false;
+      });
     },
-    
+    //下载辅助函数
     download(filename, link) {
-        let DownloadLink = document.createElement('a'); 
-        DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
-        DownloadLink.download = filename;
-        DownloadLink.href = link;
-        document.body.appendChild(DownloadLink);
-        DownloadLink.click(); // 触发a标签的click事件
-        document.body.removeChild(DownloadLink);
+      let DownloadLink = document.createElement("a");
+      DownloadLink.style = "display: none"; // 创建一个隐藏的a标签
+      DownloadLink.download = filename;
+      DownloadLink.href = link;
+      document.body.appendChild(DownloadLink);
+      DownloadLink.click(); // 触发a标签的click事件
+      document.body.removeChild(DownloadLink);
     },
+    //下载函数
     modelDownload() {
-      
       if (this.trainId) {
         axios({
           method: "get",
@@ -716,13 +748,14 @@ export default {
         }).then((res) => {
           const url = res.data.modelUrl;
           if (url) {
-            this.download("model",url);
+            this.download("model", url);
             window.URL.revokeObjectURL(url);
-            this.$message.success('模型下载成功');
-          }
-          else {
+            this.$message.success("模型下载成功");
+          } else {
             this.$message.warning(`未存在已训练好的模型`);
           }
+        }).catch((err)=>{
+          
         });
       }
     },
@@ -913,7 +946,6 @@ export default {
   text-align: center;
   line-height: auto;
   padding-top: 10px;
-  
 }
 
 body > .el-container {
