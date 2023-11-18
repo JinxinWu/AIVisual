@@ -17,7 +17,7 @@
               >
               </el-option>
             </el-select>
-          </div>
+         
         </el-col>
         <el-col :span="8" :offset="4"
           ><div>
@@ -270,6 +270,7 @@ export default {
   },
   mounted() {
     this.tableDataShow = this.tableData;
+    
   },
 };
 </script>
