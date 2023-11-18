@@ -7005,6 +7005,11 @@ vue-contextmenujs@^1.4.11:
   resolved "https://registry.npmmirror.com/vue-contextmenujs/-/vue-contextmenujs-1.4.11.tgz"
   integrity sha512-k8y0ExOL5yn7fRRCo6UDT81ekq/Ls1JBz70eBBpIgcf1p++84amDL6uCMmlt6D6WK5a9f0NhW2kc2pkCUb2bHA==
 
+vue-cookies@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.npmmirror.com/vue-cookies/-/vue-cookies-1.8.3.tgz"
+  integrity sha512-VBRsyRMVdahBgFfh389TMHPmDdr4URDJNMk4FKSCfuNITs7+jitBDhwyL4RJd3WUsfOYNNjPAkfbehyH9AFuoA==
+
 vue-eslint-parser@^8.0.1:
   version "8.3.0"
   resolved "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-8.3.0.tgz"

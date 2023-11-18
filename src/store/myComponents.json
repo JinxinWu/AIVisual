@@ -156,6 +156,13 @@
     "type": "EquidistantDispersion",
     "content": "这是等距离散化的组件"
   },
+  "ordi": {
+    "step": 2,
+    "id": 53,
+    "name": "Ordinal编码",
+    "type": "Ordinal_Encoder",
+    "content": "这是ordinal编码的组件"
+  },
   "randomUnder": {
     "step": 3,
     "id": 18,
