@@ -113,7 +113,7 @@
               </div>
               <div style="margin-bottom: 5px">
                 <NoInputCom
-                  v-for="item in [myComponents.equi]"
+                  v-for="item in [myComponents.equi, myComponents.ordi]"
                   :comData="item"
                   :key="item.id"
                   @start-drag="drag"
@@ -418,7 +418,7 @@
             <el-button
               size="medium"
               round
-              @click="sendData"
+              @click="modelTrain"
               style="
                 z-index: 999;
                 position: absolute;
@@ -432,7 +432,7 @@
             <el-button
               size="medium"
               round
-              @click="modelSave"
+              @click="modelDownload"
               style="
                 z-index: 999;
                 position: absolute;
@@ -443,6 +443,7 @@
               "
               >模型下载</el-button
             >
+            <!-- 添加一个模型下载按钮 -->
             <el-button
               size="medium"
               round
@@ -463,9 +464,8 @@
         <el-row style="margin-top: 10px;color:black;font-size:14px;min-height: 100px;with:80%;border: 1px solid #dcdcdc;
           ">
             <div style="font-size: 16px; margin-top: 5px;
-                ">平台输出信息</div>
+                ">平台提示信息</div>
             <div id="reply" ref="reply" style="text-align: left;"></div>
-      
         </el-row>
       </el-main>
     </el-container>
@@ -476,8 +476,6 @@
 import Header from "@/components/Header/index.vue";
 import NoInputCom from "@/components/NoInputCom";
 import InputCom from "@/components/InputCom";
-
-import VueCookies from 'vue-cookies';
 //导入jsplumb
 import { jsPlumb } from "jsplumb";
 //导入jsplumb的一些配置，（data中声明）
@@ -540,20 +538,12 @@ export default {
         nodeList: [],
         lineList: [],
       },
-      //信息
-      //用户token
       token:"",
-      //本次建模唯一id
-      trainId: "0",
-      //用户类型：1为普通用户
-      user_id: "1",
-      //数据存储地址
-      data_url: "",
-      //模型存储地址
-      model_url:"",
+      trainId:"0",
+      user_id:"1",
+      data_url:"",
     };
   },
-
   mounted() {
     this.jsPlumb = jsPlumb.getInstance();
     this.jsPlumb.setContainer(this.$refs.flowWrap);
@@ -561,9 +551,6 @@ export default {
     this.$nextTick(() => {
       this.init();
     });
-    const a=VueCookies.get("token");
-    this.token=VueCookies.get("token");
-    console.log(a);
   },
   watch: {
     data: {
@@ -582,7 +569,6 @@ export default {
     // 点击文件列表中已上传的文件时的钩子
     handlePreview(file) {
       // console.log(file);
-      
     },
     // 文件超出个数限制时的钩子
     handleExceed(files, fileList) {
@@ -596,25 +582,20 @@ export default {
     handleRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}`);
     },
-
     uploadFile(item) {
       console.log("文件上传中........");
-      const suffix = item.file.name.slice(
-        ((item.file.name.lastIndexOf(".") - 1) >>> 0) + 1
-      );
-      //文件类型转化
-      const type = 0;
+      console.log();
+      const suffix = item.file.name.slice((item.file.name.lastIndexOf(".") - 1 >>> 0) + 1)
+      let type = "0";
       if (suffix == ".csv") {
-        type = 1;
+        type = "1"
       } else if (suffix == ".xlsx") {
-        type = 2;
+        type = "2"
       } else if (suffix == ".db") {
-        type = 3;
+        type = "3"
       } else {
-        type = 4;
+        type = "4"
       }
-      console.log(type);
-
       if (!this.isValidFile(item.file)) {
         this.$message.warning(`文件格式不符合要求！`);
       } else {
@@ -629,45 +610,40 @@ export default {
           data: FormDatas,
         }).then((res) => {
           const result = res.data;
-          if (result.msg.includes("文件上传成功")) {
-            this.$message.success("文件上传成功");
+          if (result.msg.includes('文件上传成功')) {
+            this.$message.success('文件上传成功');
             //将后端传来的数据存储
-            this.trainId = result.trainId;
-            this.data_url = result.url;
+            this.trainId=result.trainId;
+            this.data_url=result.url;
             axios({
               method: "get",
-              url: `/guo/test/upload?url=${this.data_url}&type=${type}`,
+              url: `/guo/test/showDetail?url=${this.data_url}&type=${type}`,
               headers: this.headers,
             }).then((res) => {
-               const reply = res.data.reply;
-               this.$refs.reply.innerHTML=reply
-            });
-          } else {
-            this.$message.warning(`文件上传失败，请重新上传`);
-          }
+              let reply = res.data.reply
+              this.$refs.reply.innerHTML = reply
+              console.log(reply)
+            })
+        }else {
+          this.$message.warning(`文件上传失败，请重新上传`);
+        }
         });
       }
     },
     //文件检测
     isValidFile(file) {
       // 定义允许的文件类型和大小
-      const allowedTypes = [this.fileType];
+      const allowedTypes = [this.fileType]; 
       // 检测文件类型
-      if (
-        !allowedTypes.includes(
-          file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 1)
-        )
-      ) {
+      if (!allowedTypes.includes(file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 1))) {
         return false;
       }
       return true;
     },
-
-    modelSave() {},
     //导入methods中的函数
     ...methods,
     //传输画布中的信息给后端
-    sendData() {
+    modelTrain() {
       // 创建一个空数组来存储拓扑排序后的节点列表
       const sortedNodeList = [];
       // 创建一个字典来存储每个节点的入度（即指向该节点的边的数量）
@@ -703,18 +679,52 @@ export default {
           }
         });
       }
-      const idArray = sortedNodeList.map((node) => node.id);
-      const idString = idArray.join(",");
+      console.log(sortedNodeList);
+      const idArray = sortedNodeList.map(node => node.id);
+      const idString = idArray.join(',')
+      console.log(idArray);
       console.log(idString);
       axios({
-        method: "get",
-        url: `/guo/test/train?trainId=${this.trainId}&idString=${idString}`,
-        headers: this.headers,
-        timeout: 30000,
-        data: idString,
-      }).then((res) => {
-        // const result = res.data.;
-      });
+          method: "get",
+          url: `/guo/test/train?trainId=${this.trainId}&idString=${idString}`,
+          headers: this.headers,
+          data: idString,
+        }).then((res) => {
+          const result = res.data.retInfo;
+          this.$refs.reply.innerHTML = result
+          console.log(result)
+        });
+    },
+    
+    download(filename, link) {
+        let DownloadLink = document.createElement('a'); 
+        DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
+        DownloadLink.download = filename;
+        DownloadLink.href = link;
+        document.body.appendChild(DownloadLink);
+        DownloadLink.click(); // 触发a标签的click事件
+        document.body.removeChild(DownloadLink);
+    },
+    modelDownload() {
+      
+      if (this.trainId) {
+        axios({
+          method: "get",
+          url: `/guo/test/modelDownload?trainId=${this.trainId}`,
+          // url: "/guo/test/modelDownload?trainId=4a432dddeb77f581be8d250380ab49b9",
+          headers: this.headers,
+        }).then((res) => {
+          const url = res.data.modelUrl;
+          if (url) {
+            this.download("model",url);
+            window.URL.revokeObjectURL(url);
+            this.$message.success('模型下载成功');
+          }
+          else {
+            this.$message.warning(`未存在已训练好的模型`);
+          }
+        });
+      }
     },
     //判断节点是否被连接
     isNodeConnected(nodeId) {
@@ -846,7 +856,7 @@ export default {
   overflow: hidden;
   outline: none !important;
   flex-grow: 1;
-  margin: 20px auto auto auto;
+  margin: 10px auto auto auto;
   border: 1px solid #dcdcdc;
 
   border-radius: 20px;
@@ -902,6 +912,8 @@ export default {
   color: #333;
   text-align: center;
   line-height: auto;
+  padding-top: 10px;
+  
 }
 
 body > .el-container {
