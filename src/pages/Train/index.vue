@@ -380,10 +380,10 @@
 
             <el-upload
               class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action
+              :http-request="uploadFile"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
-              :on-error="handleError"
               :limit="1"
               :on-exceed="handleExceed"
               :accept="fileType"
@@ -396,7 +396,7 @@
                   position: absolute;
                   color: white;
                   background-color: #004088;
-                  top: 250px;
+                  top: 200px;
                   left: 960px;
                 "
                 >加载数据</el-button
@@ -408,7 +408,7 @@
                 style="
                   z-index: 999;
                   position: absolute;
-                  top: 225px;
+                  top: 175px;
                   left: 960px;
                 "
               >
@@ -424,7 +424,7 @@
                 position: absolute;
                 color: white;
                 background-color: #004088;
-                top: 250px;
+                top: 200px;
                 left: 1060px;
               "
               >模型训练</el-button
@@ -438,10 +438,10 @@
                 position: absolute;
                 color: white;
                 background-color: #004088;
-                top: 250px;
+                top: 200px;
                 left: 1150px;
               "
-              >模型保存</el-button
+              >模型下载</el-button
             >
             <el-button
               size="medium"
@@ -452,7 +452,7 @@
                 position: absolute;
                 color: white;
                 background-color: #004088;
-                top: 250px;
+                top: 200px;
                 left: 1250px;
               "
               >清空画布</el-button
@@ -460,10 +460,12 @@
           </div>
         </div>
         <!-- 后端显示模块 -->
-        <el-row>
-          <el-col span:24>
-            <div></div>
-          </el-col>
+        <el-row style="margin-top: 10px;color:black;font-size:14px;min-height: 100px;with:80%;border: 1px solid #dcdcdc;
+          ">
+            <div style="font-size: 16px; margin-top: 5px;
+                ">平台输出信息</div>
+            <div id="rely" ref="rely" style="text-align: left;"></div>
+          
         </el-row>
       </el-main>
     </el-container>
@@ -485,6 +487,8 @@ import {
 } from "@/utils/commonConfig";
 //导入基本函数，在method中声明
 import methods from "@/utils/methods";
+//引入axios
+import axios from "axios";
 
 export default {
   name: "Train",
@@ -534,6 +538,9 @@ export default {
         nodeList: [],
         lineList: [],
       },
+      trainId: "0",
+      user_id: "1",
+      data_url: "",
     };
   },
   mounted() {
@@ -560,11 +567,7 @@ export default {
   methods: {
     // 点击文件列表中已上传的文件时的钩子
     handlePreview(file) {
-      console.log(file);
-    },
-    // 文件上传失败时的钩子
-    handleError(err, file, fileList) {
-      this.$message.warning(`文件格式不符合要求！`);
+      // console.log(file);
     },
     // 文件超出个数限制时的钩子
     handleExceed(files, fileList) {
@@ -576,9 +579,73 @@ export default {
     },
     // 文件列表移除文件时的钩子
     handleRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
+      return this.$confirm(`确定移除 ${file.name}`);
     },
-    sendData() {},
+    uploadFile(item) {
+      console.log("文件上传中........");
+      const suffix = item.file.name.slice(
+        ((item.file.name.lastIndexOf(".") - 1) >>> 0) + 1
+      );
+      //文件类型转化
+      const type = 0;
+      if (suffix == ".csv") {
+        type = 1;
+      } else if (suffix == ".xlsx") {
+        type = 2;
+      } else if (suffix == ".db") {
+        type = 3;
+      } else {
+        type = 4;
+      }
+      console.log(type);
+
+      if (!this.isValidFile(item.file)) {
+        this.$message.warning(`文件格式不符合要求！`);
+      } else {
+        //上传文件的需要formdata类型;所以要转
+        let FormDatas = new FormData();
+        FormDatas.append("file", item.file);
+        axios({
+          method: "post",
+          url: "/guo/test/upload?user_id=" + this.user_id,
+          headers: this.headers,
+          timeout: 30000,
+          data: FormDatas,
+        }).then((res) => {
+          const result = res.data;
+          if (result.msg.includes("文件上传成功")) {
+            this.$message.success("文件上传成功");
+            //将后端传来的数据存储
+            this.trainId = result.trainId;
+            this.data_url = result.url;
+            axios({
+              method: "get",
+              url: `/guo/test/upload?url=${this.data_url}&type=${type}`,
+              headers: this.headers,
+            }).then((res) => {
+               const reply = res.data.reply;
+            });
+          } else {
+            this.$message.warning(`文件上传失败，请重新上传`);
+          }
+        });
+      }
+    },
+    //文件检测
+    isValidFile(file) {
+      // 定义允许的文件类型和大小
+      const allowedTypes = [this.fileType];
+      // 检测文件类型
+      if (
+        !allowedTypes.includes(
+          file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 1)
+        )
+      ) {
+        return false;
+      }
+      return true;
+    },
+
     modelSave() {},
     //导入methods中的函数
     ...methods,
@@ -619,7 +686,18 @@ export default {
           }
         });
       }
-      console.log(sortedNodeList);
+      const idArray = sortedNodeList.map((node) => node.id);
+      const idString = idArray.join(",");
+      console.log(idString);
+      axios({
+        method: "get",
+        url: `/guo/test/train?trainId=${this.trainId}&idString=${idString}`,
+        headers: this.headers,
+        timeout: 30000,
+        data: idString,
+      }).then((res) => {
+        // const result = res.data.;
+      });
     },
     //判断节点是否被连接
     isNodeConnected(nodeId) {
@@ -745,7 +823,7 @@ export default {
 }
 //画布
 .flow-wrap {
-  height: 300px;
+  height: 250px;
   width: 1400px;
   position: relative;
   overflow: hidden;
