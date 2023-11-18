@@ -4,7 +4,7 @@
       <Header></Header>
     </el-header>
     <el-main>
-      <p class="title">应用中心</p>
+      <p class="title">模型应用中心</p>
       <el-divider></el-divider>
       <el-row
         type="flex"
@@ -18,15 +18,16 @@
           :key="index"
           :offset="index > 0 ? 1 : 0"
         >
+        
           <el-card :body-style="{ padding: '0px' }">
             <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+              :src="model.coverUrl"
               class="image"
             />
             <div style="padding: 14px">
-              <span style="font-size: 18px">{{ model.name }}</span>
+              <span style="font-size: 18px">{{ model.modelName }}</span>
               <div class="bottom clearfix">
-                <time class="time">{{ currentDate }}</time>
+                
                 <el-button
                   type="text"
                   class="button"
@@ -72,33 +73,18 @@ export default {
       dialogVisible: false,
       resultShow: false,
       resultUrl: "",
-      models: [
-        {
-          name: "AI绘画",
-        },
-        {
-          name: "ERNIE-Bot",
-        },
-        {
-          name: "chat-python",
-        },
-        {
-          name: "erciyuan",
-        },
-        {
-          name: "lamade",
-        },
-        {
-          name: "aidiahdiahd",
-        },
-      ],
-      currentDate:
-        new Date().getFullYear() +
-        "-" +
-        new Date().getMonth() +
-        "-" +
-        new Date().getDate(),
+      models: []
     };
+  },
+  mounted() {
+    axios({
+        method: "get",
+        url: "/guo/test/getModel",
+        headers: this.headers,
+        timeout: 30000,
+      }).then((res) => {
+        this.models = res.data.models
+      });
   },
   methods: {
     uploadFile(item) {
@@ -151,6 +137,7 @@ export default {
         });
       }
     },
+    
   },
   watch: {},
 };
