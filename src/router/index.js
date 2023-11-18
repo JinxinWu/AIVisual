@@ -5,11 +5,7 @@ import Login from "../pages/Login";
 import Log from "../pages/Log";
 import Chat from "../pages/Chat";
 import Predict from "../pages/Predict";
-import Administrator from "../pages/Administrator"
-import AdLog from "../pages/AdLog"
-
-
-
+import Test from "../pages/Test"
 const router = new VueRouter({
   routes: [
     {
@@ -51,26 +47,12 @@ const router = new VueRouter({
       path: '/Predict',
       name: 'Predict',
       component: Predict,
-      meta: {
-				requireAuth: true
-			},
     },
     {
-      path: '/Administrator',
-      name: 'Administrator',
-      component: Administrator,
-      meta: {
-				requireAuth: true
-			},
-    },
-    {
-      path: '/AdLog',
-      name: 'AdLog',
-      component: AdLog,
-      meta: {
-				requireAuth: true
-			},
-    },
+      path: '/Test',
+      name: 'Test',
+      component: Test,
+    }
   ],
 });
 

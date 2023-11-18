@@ -87,12 +87,21 @@
           </el-table>
         </div></el-col
       >
-      <el-dialog title="日志详情" :visible.sync="dialogTableVisible">
-        <el-table :data="gridData">
-          <el-table-column property="date" label="日期" width="150"></el-table-column>
-          <el-table-column property="name" label="姓名" width="200"></el-table-column>
-          <el-table-column property="address" label="地址"></el-table-column>
-        </el-table>
+      <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="时间">
+            <span>{{ details.date }}</span>
+          </el-form-item>
+          <el-form-item label="数据特点">
+            <span>{{ details.feature }}</span>
+          </el-form-item>
+          <el-form-item label="算法组合">
+            <span>{{ details.index }}</span>
+          </el-form-item>
+          <el-form-item label="结果">
+            <span>{{ details.result }}</span>
+          </el-form-item>
+        </el-form>
       </el-dialog>
     </el-main>
   </el-container>
@@ -109,28 +118,7 @@ export default {
   },
   data() {
     return {
-      gridData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      details: {},
       dialogTableVisible: false,
       options: [
         {
@@ -223,7 +211,8 @@ export default {
   },
   methods: {
     handleClick(row) {
-      console.log(row);
+      this.details = row;
+      console.log(this.details);
     },
     rowStyle() {
       return "text-align:center; background-color: #f5f7fa;";
@@ -291,6 +280,10 @@ export default {
   font-size: 14px;
   margin-bottom: 10px;
   color: #8492a6;
+  display: block;
+}
+
+.el-form-item {
   display: block;
 }
 
