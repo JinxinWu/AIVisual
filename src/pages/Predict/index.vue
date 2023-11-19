@@ -18,7 +18,6 @@
           :key="index"
           :offset="index > 0 ? 1 : 0"
         >
-        
           <el-card :body-style="{ padding: '0px' }">
             <img
               :src="model.coverUrl"

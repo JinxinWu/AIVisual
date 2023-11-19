@@ -57,14 +57,46 @@
             >
             </el-table-column>
             <el-table-column prop="dataName" label="数据集名称" width="120">
+              <template slot-scope="scope">
+                <span v-if="scope.row.dataName.length <= 6">{{
+                  scope.row.dataName
+                }}</span>
+                <span v-if="scope.row.dataName.length > 6">{{
+                  scope.row.dataName.substr(0, 6) + "..."
+                }}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="guidance" label="建模指引" width="160">
+              <template slot-scope="scope">
+                <span v-if="scope.row.guidance.length <= 10">{{
+                  scope.row.guidance
+                }}</span>
+                <span v-if="scope.row.guidance.length > 10">{{
+                  scope.row.guidance.substr(0, 10) + "..."
+                }}</span>
+              </template>
             </el-table-column>
-            <el-table-column prop="model" label="模型(算法组合)" width="300">
+            <el-table-column prop="model" label="模型(算法组合)" width="260">
+              <template slot-scope="scope">
+                <span v-if="scope.row.model.length <= 10">{{
+                  scope.row.model
+                }}</span>
+                <span v-if="scope.row.model.length > 10">{{
+                  scope.row.model.substr(0, 10) + "..."
+                }}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="type" label="类型" width="80" align="center">
             </el-table-column>
             <el-table-column prop="result" label="结果" width="263">
+              <template slot-scope="scope">
+                <span v-if="scope.row.result.length <= 10">{{
+                  scope.row.result
+                }}</span>
+                <span v-if="scope.row.result.length > 10">{{
+                  scope.row.result.substr(0, 10) + "..."
+                }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="操作" width="100" align="center">
               <template slot-scope="scope">
@@ -104,14 +136,23 @@
       </el-col>
       <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
         <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="序号">
+            <span>{{ details.index }}</span>
+          </el-form-item>
           <el-form-item label="时间">
             <span>{{ details.date }}</span>
           </el-form-item>
-          <el-form-item label="数据特点">
-            <span>{{ details.feature }}</span>
+          <el-form-item label="数据集名称">
+            <span>{{ details.dataName }}</span>
+          </el-form-item>
+          <el-form-item label="建模指引">
+            <span v-html="details.guidance"></span>
           </el-form-item>
           <el-form-item label="算法组合">
-            <span>{{ details.index }}</span>
+            <span>{{ details.model }}</span>
+          </el-form-item>
+          <el-form-item label="类型">
+            <span>{{ details.type }}</span>
           </el-form-item>
           <el-form-item label="结果">
             <span>{{ details.result }}</span>
@@ -153,8 +194,8 @@ export default {
         {
           index: "1",
           date: "2023-11-02 00:00:00",
-          user: "王小虎",
-          feature: "王小虎",
+          dataName: "王小虎",
+          guidance: "王小虎iuhuihihiuhiuhiuuhiuhiuh",
           model: "上海市普陀区金沙江路 1518 弄",
           type: "自主建模",
           result: "成功",
@@ -163,8 +204,8 @@ export default {
         {
           index: "2",
           date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1517 弄",
           type: "模型应用",
           result: "成功",
@@ -173,8 +214,8 @@ export default {
         {
           index: "3",
           date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1519 弄",
           type: "自主建模",
           result: "成功",
@@ -183,8 +224,128 @@ export default {
         {
           index: "4",
           date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1516 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "1",
+          date: "2023-11-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1518 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "2",
+          date: "2023-12-02 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1517 弄",
+          type: "模型应用",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "3",
+          date: "2023-11-06 00:00:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
+          model: "上海市普陀区金沙江路 1519 弄",
+          type: "自主建模",
+          result: "成功",
+          isAble: false,
+        },
+        {
+          index: "4",
+          date: "2023-11-02 00:08:00",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1516 弄",
           type: "自主建模",
           result: "成功",
@@ -203,8 +364,8 @@ export default {
         {
           index: "2",
           date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1517 弄",
           type: "模型应用",
           result: "成功",
@@ -213,8 +374,8 @@ export default {
         {
           index: "3",
           date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1519 弄",
           type: "自主建模",
           result: "成功",
@@ -223,8 +384,8 @@ export default {
         {
           index: "4",
           date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1516 弄",
           type: "自主建模",
           result: "成功",
@@ -243,8 +404,8 @@ export default {
         {
           index: "2",
           date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1517 弄",
           type: "模型应用",
           result: "成功",
@@ -253,8 +414,8 @@ export default {
         {
           index: "3",
           date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1519 弄",
           type: "自主建模",
           result: "成功",
@@ -263,8 +424,8 @@ export default {
         {
           index: "4",
           date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
+          dataName: "王小虎",
+          guidance: "王小虎",
           model: "上海市普陀区金沙江路 1516 弄",
           type: "自主建模",
           result: "成功",
@@ -274,133 +435,14 @@ export default {
           index: "1",
           date: "2023-11-02 00:00:00",
           user: "王小虎",
-          feature: "王小虎",
-          model: "上海市普陀区金沙江路 1518 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "2",
-          date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1517 弄",
-          type: "模型应用",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "3",
-          date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1519 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "4",
-          date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1516 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "1",
-          date: "2023-11-02 00:00:00",
-          user: "王小虎",
-          feature: "王小虎",
-          model: "上海市普陀区金沙江路 1518 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "2",
-          date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1517 弄",
-          type: "模型应用",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "3",
-          date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1519 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "4",
-          date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1516 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "1",
-          date: "2023-11-02 00:00:00",
-          user: "王小虎",
-          feature: "王小虎",
-          model: "上海市普陀区金沙江路 1518 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "2",
-          date: "2023-12-02 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1517 弄",
-          type: "模型应用",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "3",
-          date: "2023-11-06 00:00:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1519 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "4",
-          date: "2023-11-02 00:08:00",
-          user: "王小虎",
-          feature: "普陀区",
-          model: "上海市普陀区金沙江路 1516 弄",
-          type: "自主建模",
-          result: "成功",
-          isAble: false,
-        },
-        {
-          index: "1",
-          date: "2023-11-02 00:00:00",
-          user: "王小虎",
-          guidance: "存在缺失值 缺失值数量：414 缺失值数量占比：9.00%<br>特征列序号 特征名称 缺失值数量 缺失值占比: <br>4         ['Age']    86 20.57% <br>8        ['Fare']     1 0.24% <br>9       ['Cabin']   327 78.23% <br>第[4, 9]列建议进行缺失值处理—删除缺失列<br>第[8]列建议进行缺失值处理—缺失值填充<br>",
+          guidance:
+            "存在缺失值 缺失值数量：414 缺失值数量占比：9.00%<br>特征列序号 特征名称 缺失值数量 缺失值占比: <br>4         ['Age']    86 20.57% <br>8        ['Fare']     1 0.24% <br>9       ['Cabin']   327 78.23% <br>第[4, 9]列建议进行缺失值处理—删除缺失列<br>第[8]列建议进行缺失值处理—缺失值填充<br>",
           dataName: "鸢尾花数据集",
           model: "上海市普陀区金沙江路 1518 弄",
           type: "自主建模",
           result: "成功",
           isAble: false,
-        }
+        },
       ],
       pickerOptions: {
         shortcuts: [
@@ -439,7 +481,7 @@ export default {
   },
   methods: {
     // download(filename, link) {
-    //     let DownloadLink = document.createElement('a'); 
+    //     let DownloadLink = document.createElement('a');
     //     DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
     //     DownloadLink.download = filename;
     //     DownloadLink.href = link;
@@ -447,12 +489,8 @@ export default {
     //     DownloadLink.click(); // 触发a标签的click事件
     //     document.body.removeChild(DownloadLink);
     // },
-    handleSizeChange() {
-      
-    },
-    handleCurrentChange() {
-
-    },
+    handleSizeChange() {},
+    handleCurrentChange() {},
     handleClick(row) {
       this.details = row;
       console.log(this.details);
