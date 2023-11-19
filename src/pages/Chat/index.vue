@@ -82,6 +82,7 @@
 import Header from "../../components/Header/index.vue"
 import axios from "axios";
 
+
 export default {
   components: {
     Header,
@@ -122,7 +123,7 @@ export default {
             this.chatMessages.push({
               id:this.id+1,
               role:"assistant",
-              content : response.data.reply});
+              content : response.data});
               this.id=this.id+1;
           })
           .catch((error) => {
