@@ -16,7 +16,7 @@
       <el-col
         :span="4"
       >
-        <span style="font-size: 15px; margin-right: 10px">用户名</span>
+        <span style="font-size: 15px; margin-right: 10px;color: #8492a6;">用户名</span>
         <el-autocomplete
           class="inline-input"
           v-model="user"
@@ -32,7 +32,7 @@
         :span="10"
         style="font-size: 15px;"
       >
-        <span style="margin-right: 10px;font-size: 15px;">时间区间</span>
+        <span style="margin-right: 10px;font-size: 15px;color: #8492a6;">时间区间</span>
         从
         <el-autocomplete
           class="inline-input"
