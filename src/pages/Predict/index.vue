@@ -10,23 +10,21 @@
         type="flex"
         class="row-bg"
         justify="center"
-        v-for="(o, index) in models.length / 3 + 1"
+        v-for="(o, index) in Math.ceil(models.length / 3)"
       >
         <el-col
           :span="5"
-          v-for="(model, index) in models.slice(index * 3, index * 3 + 3)"
+          v-for="(model, index) in index == Math.ceil(models.length / 3) - 1
+            ? models.slice(index * 3)
+            : models.slice(index * 3, index * 3 + 3)"
           :key="index"
           :offset="index > 0 ? 1 : 0"
         >
           <el-card :body-style="{ padding: '0px' }">
-            <img
-              :src="model.coverUrl"
-              class="image"
-            />
+            <img :src="model.coverUrl" class="image" />
             <div style="padding: 14px">
               <span style="font-size: 18px">{{ model.modelName }}</span>
               <div class="bottom clearfix">
-                
                 <el-button
                   type="text"
                   class="button"
@@ -39,21 +37,27 @@
         </el-col>
       </el-row>
       <el-dialog title="应用体验" :visible.sync="dialogVisible">
-        <div style="font-size: 18px; margin-bottom: 10px;"><p>请上传测试集</p></div>
-        <el-upload
-          class="upload-demo"
-          drag
-          :http-request="uploadFile"
-          multiple
-        >
+        <div style="font-size: 18px; margin-bottom: 10px">
+          <p>请上传测试集</p>
+        </div>
+        <el-upload class="upload-demo" drag :http-request="uploadFile" multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">
             只能上传csv文件，且不超过500kb
           </div>
         </el-upload>
-        <div v-show="resultShow" style="font-size: 18px; margin-top: 20px; margin-bottom: 10px;"><p>请下载结果文件</p></div>
-        <a v-show="resultShow" :href="resultUrl"><el-button type="primary" icon="el-icon-download">结果文件</el-button></a>
+        <div
+          v-show="resultShow"
+          style="font-size: 18px; margin-top: 20px; margin-bottom: 10px"
+        >
+          <p>请下载结果文件</p>
+        </div>
+        <a v-show="resultShow" :href="resultUrl"
+          ><el-button type="primary" icon="el-icon-download"
+            >结果文件</el-button
+          ></a
+        >
       </el-dialog>
     </el-main>
   </el-container>
@@ -72,18 +76,44 @@ export default {
       dialogVisible: false,
       resultShow: false,
       resultUrl: "",
-      models: []
+      models: [
+        {
+          name: "iajdiajid",
+          url: "oijadiajdoai",
+          id: "ahdiaihd",
+        },
+        {
+          name: "iajdiajid",
+          url: "oijadiajdoai",
+          modelId: "ahdiaihd",
+        },
+        {
+          name: "iajdiajid",
+          url: "oijadiajdoai",
+          modelId: "ahdiaihd",
+        },
+        {
+          name: "iajdiajid",
+          url: "oijadiajdoai",
+          modelId: "ahdiaihd",
+        },
+        {
+          name: "iajdiajid",
+          url: "oijadiajdoai",
+          modelId: "ahdiaihd",
+        },
+      ],
     };
   },
   mounted() {
-    axios({
-        method: "get",
-        url: "/guo/test/getModel",
-        headers: this.headers,
-        timeout: 30000,
-      }).then((res) => {
-        this.models = res.data.models
-      });
+    // axios({
+    //     method: "get",
+    //     url: "/guo/test/getModel",
+    //     headers: this.headers,
+    //     timeout: 30000,
+    //   }).then((res) => {
+    //     this.models = res.data.models
+    //   });
   },
   methods: {
     uploadFile(item) {
@@ -128,7 +158,7 @@ export default {
               url: `/guo/test/upload?url=${this.data_url}&type=${type}`,
               headers: this.headers,
             }).then((res) => {
-               const reply = res.data.reply;
+              const reply = res.data.reply;
             });
           } else {
             this.$message.warning(`文件上传失败，请重新上传`);
@@ -136,7 +166,6 @@ export default {
         });
       }
     },
-    
   },
   watch: {},
 };
