@@ -36,8 +36,6 @@
           </div></el-col
         >
       </el-row>
-    </el-main>
-    <el-footer style="height: 100px">
       <div class="input-group ipt" style="width: 650px">
         <div class="col-xs-12" style="width: 95%">
           <textarea
@@ -74,7 +72,7 @@
           </svg>
         </button>
       </div>
-    </el-footer>
+    </el-main>
   </el-container>
 </template>
 
@@ -242,32 +240,17 @@ img {
   padding: 0;
 }
 
-.el-footer {
-  // background-color: #b3c0d1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-
-.el-aside {
-  height: calc(100vh - 70px); // 设置左侧 aside 高度
-  background-color: #d3dce6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-
 .el-main {
   padding: 0;
-  height: calc(100vh - 170px); // 设置主体 main 高度
-  background: white;
+  height: calc(100vh - 60px); // 设置主体 main 高度
+  // background: white;
   color: #333;
   text-align: left;
   // line-height: auto;
 }
 
 body > .el-container {
-  height: 96vh;
+  height: 100vh;
   margin-bottom: 0px;
 }
 
