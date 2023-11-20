@@ -3,17 +3,31 @@
 </template>
 
 <script>
-import Header from '@/components/Header/index.vue'
+import Header from "@/components/Header/index.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Header,
-
   },
-}
+};
 </script>
 
-<style lang="less" scoped>
-
+<style lang="less">
+.el-main {
+  content: "";
+  display: inline-block;
+  // position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: url(//aistudio-fe-online.cdn.bcebos.com/aistudio/dist/1700195597809/images/application/center/page-bg-right.png)
+      no-repeat,
+    url(//aistudio-fe-online.cdn.bcebos.com/aistudio/dist/1700195597809/images/common/page-bg-left.png)
+      no-repeat;
+  background-size: 1080px 420px, 800px 1050px;
+  background-position: top -60px right -372px, top -60px left;
+}
 </style>

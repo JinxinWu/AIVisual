@@ -260,7 +260,7 @@ img {
 .el-main {
   padding: 0;
   height: calc(100vh - 170px); // 设置主体 main 高度
-  // background-color: #e9eef3;
+  background: white;
   color: #333;
   text-align: left;
   // line-height: auto;
