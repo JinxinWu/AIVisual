@@ -27,10 +27,7 @@
             <div style="padding: 14px">
               <span style="font-size: 18px">{{ model.name }}</span>
               <div class="bottom clearfix">
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="showdialog(model)"
+                <el-button type="text" class="button" @click="showdialog(model)"
                   >立即体验</el-button
                 >
               </div>
@@ -38,16 +35,18 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog title="应用体验" :visible.sync="dialogVisible">
+      <el-dialog
+        title="应用体验"
+        :visible.sync="dialogVisible"
+        :append-to-body="true"
+      >
         <div style="font-size: 18px; margin-bottom: 10px">
           <p>{{ this.reactModel.modelInform }}</p>
         </div>
         <el-upload class="upload-demo" drag :http-request="uploadFile" multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">
-            上传后请耐心等待
-          </div>
+          <div class="el-upload__tip" slot="tip">上传后请耐心等待</div>
         </el-upload>
         <div
           v-show="resultShow"
@@ -83,46 +82,45 @@ export default {
           name: "应用名称",
           url: "应用网图地址",
           modelId: "应用id",
-          modelInform:"应用说明",
-
+          modelInform: "应用说明",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
-          modelInform:"应用说明2",
+          modelInform: "应用说明2",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
-          modelInform:"应用说明3",
+          modelInform: "应用说明3",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
-          modelInform:"应用说明4",
+          modelInform: "应用说明4",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
-          modelInform:"应用说明5",
+          modelInform: "应用说明5",
         },
       ],
-      reactModel:'',
+      reactModel: "",
     };
   },
   mounted() {
     axios({
-        method: "get",
-        url: "/guo/test/getModel",
-        headers: this.headers,
-        timeout: 30000,
-      }).then((res) => {
-        this.models = res.data.models
-      });
+      method: "get",
+      url: "/guo/test/getModel",
+      headers: this.headers,
+      timeout: 30000,
+    }).then((res) => {
+      this.models = res.data.models;
+    });
   },
   methods: {
     uploadFile(item) {
@@ -175,11 +173,11 @@ export default {
         });
       }
     },
-    showdialog(model){
+    showdialog(model) {
       console.log(model);
-      this.reactModel=model;
-      this.dialogVisible=true;
-    }
+      this.reactModel = model;
+      this.dialogVisible = true;
+    },
   },
   watch: {},
 };

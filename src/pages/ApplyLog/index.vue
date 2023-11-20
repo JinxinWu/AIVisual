@@ -90,13 +90,6 @@
                   size="small"
                   >查看</el-button
                 >
-                <el-button
-                  type="text"
-                  size="small"
-                  @click="apply(scope.row)"
-                  :disabled="scope.row.isAble"
-                  >应用</el-button
-                >
               </template>
             </el-table-column>
           </el-table>
@@ -115,7 +108,11 @@
           </el-pagination>
         </div>
       </el-col>
-      <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
+      <el-dialog
+        title="建模详情"
+        :visible.sync="dialogTableVisible"
+        :append-to-body="true"
+      >
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="序号">
             <span>{{ details.id }}</span>
@@ -252,26 +249,6 @@ export default {
       }
       let dt = new Date(date);
       return dayjs(dt).format("YYYY-MM-DD\nHH:mm:ss");
-    },
-    apply(row) {
-      this.$confirm("此操作会将此模型加入模型应用中, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          row.isAble = true;
-          this.$message({
-            type: "success",
-            message: "应用成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消应用",
-          });
-        });
     },
   },
   watch: {

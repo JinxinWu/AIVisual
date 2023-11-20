@@ -93,7 +93,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="apply(scope.row)"
+                  @click="showdialog(model)"
                   :disabled="scope.row.isAble"
                   >应用</el-button
                 >
@@ -115,7 +115,11 @@
           </el-pagination>
         </div>
       </el-col>
-      <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
+      <el-dialog
+        title="建模详情"
+        :visible.sync="dialogTableVisible"
+        :append-to-body="true"
+      >
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="序号">
             <span>{{ details.id }}</span>
@@ -137,6 +141,31 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog
+        title="应用体验"
+        :visible.sync="dialogVisible"
+        :append-to-body="true"
+      >
+        <div style="font-size: 18px; margin-bottom: 10px">
+          <p>{{ this.reactModel.modelInform }}</p>
+        </div>
+        <el-upload class="upload-demo" drag :http-request="uploadFile" multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">上传后请耐心等待</div>
+        </el-upload>
+        <div
+          v-show="resultShow"
+          style="font-size: 18px; margin-top: 20px; margin-bottom: 10px"
+        >
+          <p>请下载结果文件</p>
+        </div>
+        <a v-show="resultShow" :href="resultUrl"
+          ><el-button type="primary" icon="el-icon-download"
+            >结果文件</el-button
+          ></a
+        >
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -156,6 +185,8 @@ export default {
       currentPage3: 1,
       details: {},
       dialogTableVisible: false,
+      dialogVisible: false,
+      reactModel: "",
       options: [
         {
           value: "自主建模",
@@ -253,26 +284,31 @@ export default {
       let dt = new Date(date);
       return dayjs(dt).format("YYYY-MM-DD\nHH:mm:ss");
     },
-    apply(row) {
-      this.$confirm("此操作会将此模型加入模型应用中, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          row.isAble = true;
-          this.$message({
-            type: "success",
-            message: "应用成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消应用",
-          });
-        });
-    },
+    showdialog(model) {
+      console.log(model);
+      this.reactModel = model;
+      this.dialogVisible = true;
+    }
+    // apply(row) {
+    //   this.$confirm("此操作会将此模型加入模型应用中, 是否继续?", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning",
+    //   })
+    //     .then(() => {
+    //       row.isAble = true;
+    //       this.$message({
+    //         type: "success",
+    //         message: "应用成功!",
+    //       });
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: "info",
+    //         message: "已取消应用",
+    //       });
+    //     });
+    // },
   },
   watch: {
     value(val) {
