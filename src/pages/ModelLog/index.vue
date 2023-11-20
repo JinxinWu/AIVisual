@@ -43,7 +43,7 @@
               :formatter="formatDate"
             >
             </el-table-column>
-            <el-table-column prop="dataName" label="数据集名称">
+            <el-table-column prop="dataName" label="数据集名称" width="100">
               <template slot-scope="scope">
                 <span v-if="scope.row.dataName.length <= 6">{{
                   scope.row.dataName
@@ -55,31 +55,31 @@
             </el-table-column>
             <el-table-column prop="dataAnalysis" label="建模指引">
               <template slot-scope="scope">
-                <span v-if="scope.row.dataAnalysis.length <= 10">{{
+                <span v-if="scope.row.dataAnalysis.length <= 16">{{
                   scope.row.dataAnalysis
                 }}</span>
-                <span v-if="scope.row.dataAnalysis.length > 10">{{
-                  scope.row.dataAnalysis.substr(0, 10) + "..."
+                <span v-if="scope.row.dataAnalysis.length > 16">{{
+                  scope.row.dataAnalysis.substr(0, 16) + "..."
                 }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="method" label="模型(算法组合)">
               <template slot-scope="scope">
-                <span v-if="scope.row.method.length <= 10">{{
+                <span v-if="scope.row.method.length <= 17">{{
                   scope.row.method
                 }}</span>
-                <span v-if="scope.row.method.length > 10">{{
-                  scope.row.method.substr(0, 10) + "..."
+                <span v-if="scope.row.method.length > 17">{{
+                  scope.row.method.substr(0, 17) + "..."
                 }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="result" label="结果">
               <template slot-scope="scope">
-                <span v-if="scope.row.result.length <= 10">{{
+                <span v-if="scope.row.result.length <= 17">{{
                   scope.row.result
                 }}</span>
-                <span v-if="scope.row.result.length > 10">{{
-                  scope.row.result.substr(0, 10) + "..."
+                <span v-if="scope.row.result.length > 17">{{
+                  scope.row.result.substr(0, 17) + "..."
                 }}</span>
               </template>
             </el-table-column>
@@ -325,7 +325,7 @@ export default {
     },
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
     this.tableDataPages = this.tableData;
     this.tableDataShow = this.tableData.slice(0, 10);
   },

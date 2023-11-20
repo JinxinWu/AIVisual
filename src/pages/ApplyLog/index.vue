@@ -41,9 +41,10 @@
               label="时间"
               align="center"
               :formatter="formatDate"
+              width="170"
             >
             </el-table-column>
-            <el-table-column prop="dataName" label="数据集名称">
+            <el-table-column prop="dataName" label="数据集名称" width="160" align="center">
               <template slot-scope="scope">
                 <span v-if="scope.row.dataName.length <= 6">{{
                   scope.row.dataName
@@ -53,37 +54,19 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="dataAnalysis" label="建模指引">
+            <el-table-column prop="method" label="模型(算法组合)" width="510">
               <template slot-scope="scope">
-                <span v-if="scope.row.dataAnalysis.length <= 10">{{
-                  scope.row.dataAnalysis
-                }}</span>
-                <span v-if="scope.row.dataAnalysis.length > 10">{{
-                  scope.row.dataAnalysis.substr(0, 10) + "..."
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="method" label="模型(算法组合)">
-              <template slot-scope="scope">
-                <span v-if="scope.row.method.length <= 10">{{
+                <span v-if="scope.row.method.length <= 50">{{
                   scope.row.method
                 }}</span>
-                <span v-if="scope.row.method.length > 10">{{
-                  scope.row.method.substr(0, 10) + "..."
+                <span v-if="scope.row.method.length > 50">{{
+                  scope.row.method.substr(0, 50) + "..."
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="result" label="结果">
-              <template slot-scope="scope">
-                <span v-if="scope.row.result.length <= 10">{{
-                  scope.row.result
-                }}</span>
-                <span v-if="scope.row.result.length > 10">{{
-                  scope.row.result.substr(0, 10) + "..."
-                }}</span>
-              </template>
+            <el-table-column prop="type" label="类型" width="100" align="center">
             </el-table-column>
-            <el-table-column label="操作" width="100" align="center">
+            <el-table-column label="操作" width="160" align="center">
               <template slot-scope="scope">
                 <el-button
                   @click="
@@ -93,6 +76,14 @@
                   type="text"
                   size="small"
                   >查看</el-button
+                >
+                <el-button
+                  @click="
+                    downloadResult(scope.row.resultDataUrl);
+                  "
+                  type="text"
+                  size="small"
+                  >下载结果文件</el-button
                 >
               </template>
             </el-table-column>
@@ -127,14 +118,11 @@
           <el-form-item label="数据集名称">
             <span>{{ details.dataName }}</span>
           </el-form-item>
-          <el-form-item label="建模指引">
-            <span v-html="details.dataAnalysis"></span>
-          </el-form-item>
           <el-form-item label="算法组合">
             <span>{{ details.method }}</span>
           </el-form-item>
-          <el-form-item label="结果">
-            <span>{{ details.result }}</span>
+          <el-form-item label="类型">
+            <span>{{ details.type }}</span>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -174,10 +162,10 @@ export default {
         {
           id: "1",
           gmtCreateTime: "2023-11-02 00:00:00",
-          dataName: "王小虎",
-          dataAnalysis: "王小虎iuhuihihiuhiuhiuuhiuhiuh",
-          method: "上海市普陀区金沙江路 1518 弄",
-          result: "成功",
+          dataName: "泰坦尼克号",
+          type: "自主建模",
+          method: "删除缺失列 ->插值补全->One-hot编码->Ordinal编码->归一化->Box-Cox变换->正确率->精确率->召回率->F1->AUC->MSE->MAPE",
+          resultDataUrl: "https://aivisual-1316343005.cos.ap-shanghai.myqcloud.com/2023/11/18/83d22fe8508345a58c6a967e8a7d429dtest.csv",
         },
       ],
       pickerOptions: {
@@ -215,27 +203,36 @@ export default {
   },
 
   methods: {
+    downloadResult(resultDataUrl) {
+      if(resultDataUrl) {
+        this.download("resultDataSet", resultDataUrl);
+        window.URL.revokeObjectURL(resultDataUrl);
+        this.$message.success("模型下载成功");
+      } else {
+        this.$message.warning("未存在训练好的结果数据");
+      }
+    },
     getTableData() {
       axios({
         method: "get",
-        url: "/guo/test/getTrainLog?user_id=" + this.user_id,
+        url: "/guo/test/getPredictLog?user_id=" + this.user_id,
         headers: this.headers,
         timeout: 30000,
       }).then((res) => {
-        this.tableData = res.data.trainLogs;
+        this.tableData = res.data.predictLogs;
         this.tableDataPages = this.tableData;
         this.tableDataShow = this.tableData.slice(0, 10);
       });
     },
-    // download(filename, link) {
-    //     let DownloadLink = document.createElement('a');
-    //     DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
-    //     DownloadLink.download = filename;
-    //     DownloadLink.href = link;
-    //     document.body.appendChild(DownloadLink);
-    //     DownloadLink.click(); // 触发a标签的click事件
-    //     document.body.removeChild(DownloadLink);
-    // },
+    download(filename, link) {
+        let DownloadLink = document.createElement('a');
+        DownloadLink.style = 'display: none'; // 创建一个隐藏的a标签
+        DownloadLink.download = filename;
+        DownloadLink.href = link;
+        document.body.appendChild(DownloadLink);
+        DownloadLink.click(); // 触发a标签的click事件
+        document.body.removeChild(DownloadLink);
+    },
     handleSizeChange() {},
     handleCurrentChange() {},
     handleClick(row) {
@@ -280,9 +277,9 @@ export default {
     },
   },
   mounted() {
-    // this.getTableData();
-    this.tableDataPages = this.tableData;
-    this.tableDataShow = this.tableData.slice(0, 10);
+    this.getTableData();
+    // this.tableDataPages = this.tableData;
+    // this.tableDataShow = this.tableData.slice(0, 10);
   },
 };
 </script>
