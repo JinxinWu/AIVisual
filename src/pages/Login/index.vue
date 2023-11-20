@@ -1,11 +1,11 @@
 <template>
   <div class="main-container" style="background-size: 100% 100%">
     <el-row style="width: 100vw"
-      ><el-col :span="10"
+      ><el-col :span="10" :offset="14"
         ><div class="login-main">
           <el-row class="login-title">
             <el-col align="center">
-              <img src="~@/assets/img/labooc_tr.png" style="height: 70px" />
+              <img src="~@/assets/img/logo.png" style="height: 100px" />
             </el-col>
           </el-row>
           <el-row class="login-swicth" type="flex">
