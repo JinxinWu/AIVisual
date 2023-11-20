@@ -21,7 +21,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  min-height: calc(100vh - 60px);
   z-index: 1;
   background: url(//aistudio-fe-online.cdn.bcebos.com/aistudio/dist/1700195597809/images/application/center/page-bg-right.png)
       no-repeat,
