@@ -5,7 +5,12 @@
     </el-header>
     <el-main>
       <el-row style="margin-top: 20px">
-        <el-col :span="8" :offset="4"
+        <el-col :span="8" :offset="6">
+          <span style="font-size: 40px; font-weight: bold"
+            >模型日志</span
+          ></el-col
+        >
+        <el-col :span="8"
           ><div>
             <span class="demonstration">按照日期检索</span>
             <el-date-picker
@@ -90,10 +95,7 @@
                   size="small"
                   >查看</el-button
                 >
-                <el-button
-                  type="text"
-                  size="small"
-                  @click="showdialog(model)"
+                <el-button type="text" size="small" @click="showdialog(model)"
                   >应用</el-button
                 >
               </template>
@@ -277,7 +279,7 @@ export default {
       // console.log(model);
       // this.reactModel = model;
       this.dialogVisible = true;
-    }
+    },
     // apply(row) {
     //   this.$confirm("此操作会将此模型加入模型应用中, 是否继续?", "提示", {
     //     confirmButtonText: "确定",

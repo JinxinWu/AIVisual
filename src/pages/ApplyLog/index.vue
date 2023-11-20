@@ -5,7 +5,12 @@
     </el-header>
     <el-main>
       <el-row style="margin-top: 20px">
-        <el-col :span="8" :offset="4"
+        <el-col :span="8" :offset="6">
+          <span style="font-size: 40px; font-weight: bold"
+            >应用日志</span
+          ></el-col
+        >
+        <el-col :span="8"
           ><div>
             <span class="demonstration">按照日期检索</span>
             <el-date-picker
