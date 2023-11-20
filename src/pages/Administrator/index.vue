@@ -8,58 +8,60 @@
     <div class="mod-menu" style="">
       <!-- 操作按钮 -->
 
-      <div style="margin-top: 20px;margin-bottom: 20px;width: 100%;height: 40px;">
-      <el-col :span="3"
-        :offset="2"  style=" font-size: 15px;line-height: 40px;">快速搜索：</el-col>
-      <!-- 用户查询 -->
-
-      <el-col
-        :span="4"
+      <div
+        style="margin-top: 20px; margin-bottom: 20px; width: 100%; height: 40px"
       >
-        <span style="font-size: 15px; margin-right: 10px;color: #8492a6;">用户名</span>
-        <el-autocomplete
-          class="inline-input"
-          v-model="user"
-          :fetch-suggestions="userSearch"
-          placeholder=""
-          clearable
-          style="width: 140px;font-size: 15px;"
-        ></el-autocomplete>
-      </el-col>
+        <el-col :span="3" :offset="3" style="font-size: 15px; line-height: 40px"
+          >快速搜索：</el-col
+        >
+        <!-- 用户查询 -->
 
-      <!-- 时间查询 -->
-      <el-col
-        :span="10"
-        style="font-size: 15px;"
-      >
-        <span style="margin-right: 10px;font-size: 15px;color: #8492a6;">时间区间</span>
-        从
-        <el-autocomplete
-          class="inline-input"
-          v-model="from"
-          :fetch-suggestions="dateSearch"
-          placeholder="请输入起始时间"
-          clearable
-          style="width: 145px;font-size: 15px;"
-        ></el-autocomplete>
-        到
-        <el-autocomplete
-          class="inline-input"
-          v-model="to"
-          :fetch-suggestions="dateSearch"
-          placeholder="请输入终止时间"
-          clearable
-          style="width: 145px;font-size: 15px;"
-        ></el-autocomplete>
-      </el-col>
-    </div>
+        <el-col :span="4">
+          <span style="font-size: 15px; margin-right: 10px">用户名</span>
+          <el-autocomplete
+            class="inline-input"
+            v-model="user"
+            :fetch-suggestions="userSearch"
+            placeholder=""
+            clearable
+            style="width: 140px; font-size: 15px"
+          ></el-autocomplete>
+        </el-col>
+
+        <!-- 时间查询 -->
+        <el-col :span="10" style="font-size: 15px">
+          <span style="margin-right: 10px; font-size: 15px; color: #8492a6"
+            >时间区间</span
+          >
+          从
+          <el-autocomplete
+            class="inline-input"
+            v-model="from"
+            :fetch-suggestions="dateSearch"
+            placeholder="请输入起始时间"
+            clearable
+            style="width: 145px; font-size: 15px"
+          ></el-autocomplete>
+          到
+          <el-autocomplete
+            class="inline-input"
+            v-model="to"
+            :fetch-suggestions="dateSearch"
+            placeholder="请输入终止时间"
+            clearable
+            style="width: 145px; font-size: 15px"
+          ></el-autocomplete>
+        </el-col>
+      </div>
       <!-- 数据显示 -->
+
       <el-table
         row-key="menuId"
         ref="filterTable"
         border
-        style="width: 85%; margin: auto"
+        style="width: 80%; margin: auto"
         :default-sort="{ prop: 'date', order: 'descending' }"
+        :header-cell-style="{ text: 'center', background: '#f5f7fa' }"
         :data="
           this.dataList.slice(
             (currentPage - 1) * pageSize,
@@ -90,6 +92,7 @@
           align="center"
           width="200"
           label="时间"
+          :formatter="formatDate"
           sortable
         >
         </el-table-column>
@@ -103,35 +106,65 @@
         >
         </el-table-column>
         <el-table-column
+          prop="dataName"
+          label="数据集名称"
+          width="120"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.dataName.length <= 6">{{
+              scope.row.dataName
+            }}</span>
+            <span v-if="scope.row.dataName.length > 6">{{
+              scope.row.dataName.substr(0, 6) + "..."
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="guidance" label="建模指引" width="160">
+          <template slot-scope="scope">
+            <span v-if="scope.row.guidance.length <= 10">{{
+              scope.row.guidance
+            }}</span>
+            <span v-if="scope.row.guidance.length > 10">{{
+              scope.row.guidance.substr(0, 10) + "..."
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="model" label="模型(算法组合)" width="260">
+          <template slot-scope="scope">
+            <span v-if="scope.row.model.length <= 10">{{
+              scope.row.model
+            }}</span>
+            <span v-if="scope.row.model.length > 10">{{
+              scope.row.model.substr(0, 10) + "..."
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="model_url"
           header-align="center"
           align="center"
-          width="450"
+          width="200"
           label="模型地址"
         >
         </el-table-column>
-        <el-table-column
-          prop="type"
-          header-align="center"
-          align="center"
-          width="100"
-          label="类型"
-          :filters="[
-            { text: '自主建模', value: '自主建模' },
-            { text: '模型应用', value: '模型应用' },
-          ]"
-          :filter-method="filterHandler"
-        >
-        </el-table-column>
+
         <el-table-column
           prop="result"
           header-align="center"
           align="center"
-          width="350"
+          width="200"
           label="结果"
-        >
+          ><template slot-scope="scope">
+            <span v-if="scope.row.result.length <= 10">{{
+              scope.row.result
+            }}</span>
+            <span v-if="scope.row.result.length > 10">{{
+              scope.row.result.substr(0, 10) + "..."
+            }}</span>
+          </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="deleteRow(scope.$index, dataList)"
@@ -140,10 +173,18 @@
             >
               移除
             </el-button>
+            <el-button
+              @click="
+                handleClick(scope.row);
+                dialogTableVisible = true;
+              "
+              type="text"
+              size="small"
+              >查看</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
-
       <!-- 分页 -->
       <div class="block" style="margin-top: 15px">
         <el-pagination
@@ -159,60 +200,95 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
+      <el-form label-position="left" inline class="demo-table-expand">
+        <el-form-item label="时间">
+          <span>{{ details.date }}</span>
+        </el-form-item>
+        <el-form-item label="数据集名称">
+          <span>{{ details.dataName }}</span>
+        </el-form-item>
+        <el-form-item label="建模指引">
+          <span v-html="details.guidance"></span>
+        </el-form-item>
+        <el-form-item label="算法组合">
+          <span>{{ details.model }}</span>
+        </el-form-item>
+        <el-form-item label="类型">
+          <span>{{ details.type }}</span>
+        </el-form-item>
+        <el-form-item label="结果">
+          <span>{{ details.result }}</span>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
   
   <script>
 import Header2 from "@/components/Header2";
+import dayjs from "dayjs";
 export default {
   data() {
     return {
+      dialogTableVisible: false,
       dataForm: {},
       dataList: [
         {
-          date: "2023.11.17",
+          date: "2023.11.17 00:00:00",
           user: "a",
+          dataName: "",
+          guidance: "",
+          model: "",
           model_url: "http://1.com",
-          type: "自主建模",
           result: "",
         },
         {
-          date: "2023.11.18",
+          date: "2023.11.18 00:00:00",
           user: "b",
+          dataName: "",
+          guidance: "",
+          model: "",
           model_url: "http://2.com",
-          type: "自主建模",
           result: "",
         },
         {
-          date: "2023.11.19",
+          date: "2023.11.19 00:00:00",
           user: "c",
+          dataName: "",
+          guidance: "",
+          model: "",
           model_url: "http://3.com",
-          type: "模型应用",
           result: "",
         },
         {
-          date: "2023.11.20",
+          date: "2023.11.20 00:00:00",
           user: "d",
+          dataName: "",
+          guidance: "",
+          model: "",
           model_url: "http://4.com",
-          type: "模型应用",
           result: "",
         },
         {
-          date: "2023.11.21",
+          date: "2023.11.21 00:00:00",
           user: "e",
+          dataName: "",
+          guidance: "",
+          model: "",
           model_url: "http://5.com",
-          type: "模型应用",
           result: "",
         },
       ],
       currentPage: 1, // 当前页码
-      pageSize: 5, // 每页的数据条数
+      pageSize: 1, // 每页的数据条数
       //筛选
       user: "", //当前选择的user
       from: "", //起始时间
       to: "", //终止时间
       dataListLoading: false,
       addOrUpdateVisible: false,
+      details: "",
     };
   },
   components: {
@@ -222,6 +298,21 @@ export default {
     this.getDataList();
   },
   methods: {
+    //点击查看详情
+    handleClick(row) {
+      this.details = row;
+      console.log(this.details);
+    },
+    //时间列的格式转化
+    formatDate(row, column) {
+      // 获取单元格数据
+      let date = row[column.property];
+      if (date == null) {
+        return null;
+      }
+      let dt = new Date(date);
+      return dayjs(dt).format("YYYY-MM-DD\nHH:mm:ss");
+    },
     //用户查询
     userSearch(queryString, cb) {
       var dataList = this.dataList;
@@ -290,8 +381,7 @@ export default {
     },
     //删除数据
     deleteRow(index, rows) {
-      console.log(index,rows)
-      
+      console.log(index, rows);
     },
   },
 };

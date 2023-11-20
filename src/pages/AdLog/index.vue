@@ -60,6 +60,7 @@
           border
           style="width: 85%; margin: auto"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          :header-cell-style="{ text: 'center', background: '#f5f7fa' }"
           :data="
             this.dataList.slice(
               (currentPage - 1) * pageSize,

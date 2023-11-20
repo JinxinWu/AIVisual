@@ -15,8 +15,8 @@
           router
         >
           <el-menu-item index="/login">登录/个人信息</el-menu-item>
-          <el-menu-item index="/Administrator">用户操作日志</el-menu-item>
-          <el-menu-item index="/AdLog">用户建模日志</el-menu-item>
+          <el-menu-item index="/AdLog">用户操作日志</el-menu-item>
+          <el-menu-item index="/Administrator">用户建模日志</el-menu-item>
 
         </el-menu>
       </div>

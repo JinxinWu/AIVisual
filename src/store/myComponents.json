@@ -4,56 +4,56 @@
     "id": 1,
     "name": "csv文件",
     "type": "csvImport",
-    "content": "这是导入csv的组件"
+    "content": "拖入即可导入csv文件"
   },
   "ExcelImport": {
     "step": 1,
     "id": 2,
     "name": "Excel文件",
     "type": "ExcelImport",
-    "content": "这是导入Excel的组件"
+    "content": "拖入即可导入Excel文件"
   },
   "DBImport": {
     "step": 1,
     "id": 3,
     "name": "DB文件",
     "type": "DBImport",
-    "content": "这是导入DB文件的组件"
+    "content": "拖入即可导入db文件"
   },
   "unstructuredImport": {
     "step": 1,
     "id": 4,
     "name": "非结构化数据",
     "type": "unstructuredImport",
-    "content": "这是导入非结构化数据的组件"
+    "content": "拖入即可导入非结构化数据"
   },
   "delMisCol": {
     "step": 2,
     "id": 5,
     "name": "删除缺失列",
     "type": "DeleteMissingColumns",
-    "content": "这是删除缺失值列的组件"
+    "content": "删除数据集中某一部分或全部的数据缺失的列，以减少噪音和不完整信息"
   },
   "zeroCom": {
     "step": 2,
     "id": 6,
     "name": "0补全",
     "type": "ZeroCompletion",
-    "content": "这是0补全的组件"
+    "content": "对于数据中的缺失值，使用0来填充"
   },
   "meanCom": {
     "step": 2,
     "id": 7,
     "name": "均值补全",
     "type": "MeanCompletion",
-    "content": "这是均值补全的组件"
+    "content": "对于数据中的缺失值，使用该列的平均值来填充"
   },
   "interCom": {
     "step": 2,
     "id": 8,
     "name": "插值补全",
     "type": "InterpolationCompletion",
-    "content": "这是插值补全的组件"
+    "content": "对于数据中的缺失值，利用该列已知的数据点间的关系来估计缺失值"
   },
   "datasetPart": {
     "step": 2,
@@ -105,70 +105,70 @@
     "id": 10,
     "name": "删除异常样本",
     "type": "DeleteAbnormalSample",
-    "content": "这是删除异常样本的组件"
+    "content": "删除数据集中存在的可能对模型产生不良影响的异常值，异常样本是指与数据集中的大多数样本明显不同或者偏离正常模式的样本"
   },
   "bcTrans": {
     "step": 2,
     "id": 11,
     "name": "Box-Cox变换",
     "type": "BCTransformation",
-    "content": "这是Box-Cox变换的组件"
+    "content": "调整数据分布以满足正态性假设"
   },
   "ltTrun": {
     "step": 2,
     "id": 12,
     "name": "长尾截断",
     "type": "LTTruncation",
-    "content": "这是长尾截断的组件"
+    "content": "对相对较大的数值或频率较低的极端值进行截断或删除操作"
   },
   "normal": {
     "step": 2,
     "id": 13,
     "name": "归一化",
     "type": "Normalization",
-    "content": "这是归一化的组件"
+    "content": "将数据缩放到一个统一的范围，使得不同特征之间的数值差异不会对模型的训练产生过大的影响"
   },
   "standard": {
     "step": 2,
     "id": 14,
     "name": "标准化",
     "type": "Standardization",
-    "content": "这是标准化的组件"
+    "content": "将数据按照一定的规则进行转换，使得转换后的数据具有特定的性质，消除不同特征之间的尺度差异，使得模型能够更好地适应数据"
   },
   "onehot": {
     "step": 2,
     "id": 15,
     "name": "One-hot编码",
     "type": "OnehotEncoding",
-    "content": "这是One-hot编码的组件"
+    "content": "将类别型数据转换为二进制向量表示"
   },
   "label": {
     "step": 2,
     "id": 16,
     "name": "Label编码",
     "type": "LabelEncoding",
-    "content": "这是Label编码的组件"
+    "content": "将类别型数据转换为整数编码"
   },
   "equi": {
     "step": 2,
     "id": 17,
     "name": "等距离散化",
     "type": "EquidistantDispersion",
-    "content": "这是等距离散化的组件"
+    "content": "将连续型数据划分为若干个区间，每个区间的长度相等"
   },
   "ordi": {
     "step": 2,
     "id": 53,
     "name": "Ordinal编码",
     "type": "Ordinal_Encoder",
-    "content": "这是ordinal编码的组件"
+    "content": "将有序分类数据映射到连续整数值"
   },
   "randomUnder": {
     "step": 3,
     "id": 18,
     "name": "随机欠采样",
     "type": "RandomUndersampling",
-    "content": "这是随机欠采样的组件",
+    "content": "随机删除多数类别的样本，使其数量与少数类别相近",
     "options": [
       {
         "value": 0,
@@ -205,7 +205,7 @@
     "id": 19,
     "name": "ENN欠采样",
     "type": "ENNUndersampling",
-    "content": "这是ENN欠采样的组件",
+    "content": "基于近邻关系的欠采样方法，用于处理类别不平衡的数据集",
     "options": [
       {
         "value": 0,
@@ -242,7 +242,7 @@
     "id": 20,
     "name": "重复过采样",
     "type": "RepeatedOversampling",
-    "content": "这是重复过采样的组件",
+    "content": "通过复制一些少数类别样本，使其数量增加，达到类别平衡",
     "options": [
       {
         "value": 0,
@@ -279,7 +279,7 @@
     "id": 21,
     "name": "SMOTE过采样",
     "type": "SMOTEOversampling",
-    "content": "这是SMOTE过采样的组件",
+    "content": "通过在少数类别样本之间插入合成样本，来增加少数类别的样本数量，以达到类别平衡",
     "options": [
       {
         "value": 0,
@@ -316,7 +316,7 @@
     "id": 22,
     "name": "GAN过采样",
     "type": "GANOversampling",
-    "content": "这是GAN过采样的组件",
+    "content": "使用生成对抗网络来生成合成样本的过采样方法",
     "options": [
       {
         "value": 0,
@@ -353,7 +353,7 @@
     "id": 23,
     "name": "PCA降维",
     "type": "PCADReduction",
-    "content": "这是PCA降维的组件",
+    "content": "通过找到数据中的主成分，将数据投影到这些主成分上，从而实现维度的降低",
     "options": [
       {
         "value": 0,
@@ -390,7 +390,7 @@
     "id": 24,
     "name": "LDA降维",
     "type": "LDADReduction",
-    "content": "这是LDA降维的组件",
+    "content": "将数据投影到一个新的低维空间，以最大化类别之间的差异度，最小化同一类别内的方差",
     "options": [
       {
         "value": 0,
@@ -427,7 +427,7 @@
     "id": 25,
     "name": "相关性选择",
     "type": "CorrelationSelection",
-    "content": "这是相关性选择的组件",
+    "content": "用于识别和保留与目标变量具有显著相关性的特征",
     "options": [
       {
         "value": 0,
@@ -464,7 +464,7 @@
     "id": 26,
     "name": "卡方信息特征选择",
     "type": "CIFSelection",
-    "content": "这是卡方信息特征选择的组件",
+    "content": "计算每个特征与目标变量之间的卡方统计量，来衡量它们之间的关联程度",
     "options": [
       {
         "value": 0,
@@ -501,181 +501,181 @@
     "id": 27,
     "name": "基本CNN",
     "type": "BCNN",
-    "content": "这是基本CNN的组件"
+    "content": "卷积神经网络算法，专门用于处理具有网格结构数据"
   },
   "alexNet": {
     "step": 5,
     "id": 28,
     "name": "AlexNet",
     "type": "AlexNet",
-    "content": "这是AlexNet的组件"
+    "content": "AlexNet算法"
   },
   "resNet": {
     "step": 5,
     "id": 29,
     "name": "ResNet",
     "type": "ResNet",
-    "content": "这是ResNet的组件"
+    "content": "ResNet算法"
   },
   "vgg": {
     "step": 5,
     "id": 30,
     "name": "VGG",
     "type": "VGG",
-    "content": "这是VGG的组件"
+    "content": "ResNet算法"
   },
   "brnn": {
     "step": 5,
     "id": 31,
     "name": "基本RNN",
     "type": "BRNN",
-    "content": "这是基本RNN的组件"
+    "content": "基本RNN算法"
   },
   "lstm": {
     "step": 5,
     "id": 32,
     "name": "LSTM",
     "type": "LSTM",
-    "content": "这是LSTM的组件"
+    "content": "LSTM算法"
   },
   "gru": {
     "step": 5,
     "id": 33,
     "name": "GRU",
     "type": "GRU",
-    "content": "这是GRU的组件"
+    "content": "GRU算法"
   },
   "bgnn": {
     "step": 5,
     "id": 34,
     "name": "基本GNN",
     "type": "BGNN",
-    "content": "这是基本GNN的组件"
+    "content": "基本GNN算法"
   },
   "simgnn": {
     "step": 5,
     "id": 35,
     "name": "SimGNN",
     "type": "SimGNN",
-    "content": "这是SimGNN的组件"
+    "content": "SimGNN算法"
   },
   "svm": {
     "step": 6,
     "id": 36,
     "name": "支持向量机",
     "type": "SVM",
-    "content": "这是SVM的组件"
+    "content": "SVM算法"
   },
   "nnd": {
     "step": 6,
     "id": 37,
     "name": "最近邻距离",
     "type": "NND",
-    "content": "这是最近邻距离的组件"
+    "content": "最近邻距离算法"
   },
   "lr": {
     "step": 6,
     "id": 38,
     "name": "逻辑回归",
     "type": "LR",
-    "content": "这是逻辑回归的组件"
+    "content": "逻辑回归算法"
   },
   "dt": {
     "step": 6,
     "id": 39,
     "name": "决策树",
     "type": "DT",
-    "content": "这是决策树的组件"
+    "content": "决策树算法"
   },
   "rf": {
     "step": 6,
     "id": 40,
     "name": "随机森林",
     "type": "RF",
-    "content": "这是随机森林的组件"
+    "content": "随机森林算法"
   },
   "lightgbm": {
     "step": 6,
     "id": 41,
     "name": "LightGBM",
     "type": "LightGBM",
-    "content": "这是LightGBM的组件"
+    "content": "LightGBM算法"
   },
   "xgboost": {
     "step": 6,
     "id": 42,
     "name": "Xgboost",
     "type": "Xgboost",
-    "content": "这是Xgboost的组件"
+    "content": "Xgboost算法"
   },
   "catboost": {
     "step": 6,
     "id": 43,
     "name": "Catboost",
     "type": "Catboost",
-    "content": "这是Catboost的组件"
+    "content": "Catboost算法"
   },
   "kmeans": {
     "step": 6,
     "id": 44,
     "name": "Kmeans",
     "type": "Kmeans",
-    "content": "这是Kmeans的组件"
+    "content": "Kmeans算法"
   },
   "accuracy": {
     "step": 7,
     "id": 45,
     "name": "正确率",
     "type": "Accuracy",
-    "content": "这是准确率的组件"
+    "content": "测试正确率"
   },
   "precision": {
     "step": 7,
     "id": 46,
     "name": "精确率",
     "type": "Precision",
-    "content": "这是精确率的组件"
+    "content": "测试精确率"
   },
   "recall": {
     "step": 7,
     "id": 47,
     "name": "召回率",
     "type": "Recall",
-    "content": "这是召回率的组件"
+    "content": "测试召回率"
   },
   "f1": {
     "step": 7,
     "id": 48,
     "name": "F1",
     "type": "F1",
-    "content": "这是F1的组件"
+    "content": "综合考虑模型的精确度和召回率的指标"
   },
   "auc": {
     "step": 7,
     "id": 49,
     "name": "AUC",
     "type": "AUC",
-    "content": "这是AUC的组件"
+    "content": "评估二分类模型性能的指标"
   },
   "roc": {
     "step": 7,
     "id": 50,
     "name": "ROC",
     "type": "ROC",
-    "content": "这是ROC的组件"
+    "content": "用于可视化和评估二分类模型性能的指标"
   },
   "mse": {
     "step": 7,
     "id": 51,
     "name": "MSE",
     "type": "MSE",
-    "content": "这是MSE的组件"
+    "content": "用于评估回归模型性能的指标"
   },
   "mape": {
     "step": 7,
     "id": 52,
     "name": "MAPE",
     "type": "MAPE",
-    "content": "这是MAPE的组件"
+    "content": "衡量模型在预测时相对于真实值的平均百分比误差的指标"
   }
 }
