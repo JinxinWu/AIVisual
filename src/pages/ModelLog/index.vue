@@ -34,17 +34,16 @@
             :header-cell-style="rowStyle"
             :default-sort="{ prop: 'date', order: 'descending' }"
           >
-            <el-table-column prop="id" label="序号" width="50" align="center">
+            <el-table-column prop="id" label="序号" align="center" width="50">
             </el-table-column>
             <el-table-column
               prop="gmtCreateTime"
               label="时间"
-              width="100"
               align="center"
               :formatter="formatDate"
             >
             </el-table-column>
-            <el-table-column prop="dataName" label="数据集名称" width="120">
+            <el-table-column prop="dataName" label="数据集名称">
               <template slot-scope="scope">
                 <span v-if="scope.row.dataName.length <= 6">{{
                   scope.row.dataName
@@ -54,7 +53,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="dataAnalysis" label="建模指引" width="160">
+            <el-table-column prop="dataAnalysis" label="建模指引">
               <template slot-scope="scope">
                 <span v-if="scope.row.dataAnalysis.length <= 10">{{
                   scope.row.dataAnalysis
@@ -64,7 +63,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="method" label="模型(算法组合)" width="260">
+            <el-table-column prop="method" label="模型(算法组合)">
               <template slot-scope="scope">
                 <span v-if="scope.row.method.length <= 10">{{
                   scope.row.method
@@ -74,7 +73,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="result" label="结果" width="263">
+            <el-table-column prop="result" label="结果">
               <template slot-scope="scope">
                 <span v-if="scope.row.result.length <= 10">{{
                   scope.row.result
