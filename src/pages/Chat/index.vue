@@ -13,10 +13,11 @@
         </h1>
       </div>
       <el-divider></el-divider>
+
+      <!-- :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }" -->
       <el-row
         v-for="(item, idx) in chatMessages"
         style="padding-top: 15px; padding-bottom: 15px"
-        :style="{ 'background-color': idx % 2 === 0 ? '' : '#ececf1' }"
         :key="item.id"
       >
         <el-col :span="1" :offset="7"
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import Header from "../../components/Header/index.vue"
+import Header from "../../components/Header/index.vue";
 import axios from "axios";
 
 export default {
@@ -91,46 +92,49 @@ export default {
       textareaData: "",
       chatMessages: [
         {
-          id:1,
+          id: 1,
           role: "assistant",
           content: "你好，很高兴和你交流。有什么我可以帮助你的吗？",
         },
       ],
-      id:1,
+      id: 1,
     };
   },
   methods: {
     sendMessage() {
-      console.log(this.textareaData.length)
-      const textWithoutEnter = this.textareaData.replace(/\n/g, '');
+      console.log(this.textareaData.length);
+      const textWithoutEnter = this.textareaData.replace(/\n/g, "");
       if (textWithoutEnter.length > 0) {
-        const message=textWithoutEnter;
+        const message = textWithoutEnter;
         this.chatMessages.push({
-          id:this.id+1,
+          id: this.id + 1,
           role: "user",
           content: message,
         });
-        this.id=this.id+1;
+        this.id = this.id + 1;
         this.textareaData = "";
-        axios.post("/guo/test/message", {
+        axios
+          .post("/guo/test/message", {
             message: message,
           })
           .then((response) => {
             console.log(response.data);
             this.chatMessages.push({
-              id:this.id+1,
-              role:"assistant",
-              content : response.data.reply});
-              this.id=this.id+1;
+              id: this.id + 1,
+              role: "assistant",
+              content: response.data.reply,
+            });
+            this.id = this.id + 1;
           })
           .catch((error) => {
             this.chatMessages.push({
-              id:this.id+1,
-              role:"assistant",
-              content : "好的",});
-              this.id=this.id+1;
+              id: this.id + 1,
+              role: "assistant",
+              content: "好的",
+            });
+            this.id = this.id + 1;
           });
-      }else {
+      } else {
         console.log("error");
       }
     },
@@ -182,6 +186,7 @@ export default {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   left: 0;
   right: 0;
+  background: white;
 }
 
 .ipt textarea {
@@ -207,9 +212,9 @@ button {
   border-radius: 5px;
 }
 
-.icon {
-  margin-bottom: 31px;
-}
+// .icon {
+//   margin-bottom: 31px;
+// }
 
 .size-icon {
   width: 26px;
