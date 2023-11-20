@@ -94,7 +94,6 @@
                   type="text"
                   size="small"
                   @click="showdialog(model)"
-                  :disabled="scope.row.isAble"
                   >应用</el-button
                 >
               </template>
@@ -187,16 +186,6 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       reactModel: "",
-      options: [
-        {
-          value: "自主建模",
-          label: "自主建模",
-        },
-        {
-          value: "模型应用",
-          label: "模型应用",
-        },
-      ],
       value: "",
       tableDataShow: [],
       tableDataPages: [],
@@ -285,8 +274,8 @@ export default {
       return dayjs(dt).format("YYYY-MM-DD\nHH:mm:ss");
     },
     showdialog(model) {
-      console.log(model);
-      this.reactModel = model;
+      // console.log(model);
+      // this.reactModel = model;
       this.dialogVisible = true;
     }
     // apply(row) {
