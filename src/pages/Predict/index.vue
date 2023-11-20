@@ -6,11 +6,13 @@
     <el-main>
       <p class="title">模型应用中心</p>
       <el-divider></el-divider>
+      <!-- 应用 -->
       <el-row
         type="flex"
         class="row-bg"
         justify="center"
         v-for="(o, index) in Math.ceil(models.length / 3)"
+        :key="index.modelId"
       >
         <el-col
           :span="5"
@@ -23,12 +25,12 @@
           <el-card :body-style="{ padding: '0px' }">
             <img :src="model.coverUrl" class="image" />
             <div style="padding: 14px">
-              <span style="font-size: 18px">{{ model.modelName }}</span>
+              <span style="font-size: 18px">{{ model.name }}</span>
               <div class="bottom clearfix">
                 <el-button
                   type="text"
                   class="button"
-                  @click="dialogVisible = true"
+                  @click="showdialog(model)"
                   >立即体验</el-button
                 >
               </div>
@@ -38,13 +40,13 @@
       </el-row>
       <el-dialog title="应用体验" :visible.sync="dialogVisible">
         <div style="font-size: 18px; margin-bottom: 10px">
-          <p>请上传测试集</p>
+          <p>{{ this.reactModel.modelInform }}</p>
         </div>
         <el-upload class="upload-demo" drag :http-request="uploadFile" multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">
-            只能上传csv文件，且不超过500kb
+            上传后请耐心等待
           </div>
         </el-upload>
         <div
@@ -78,31 +80,38 @@ export default {
       resultUrl: "",
       models: [
         {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          id: "ahdiaihd",
+          name: "应用名称",
+          url: "应用网图地址",
+          modelId: "应用id",
+          modelInform:"应用说明",
+
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
+          modelInform:"应用说明2",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
+          modelInform:"应用说明3",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
+          modelInform:"应用说明4",
         },
         {
           name: "iajdiajid",
           url: "oijadiajdoai",
           modelId: "ahdiaihd",
+          modelInform:"应用说明5",
         },
       ],
+      reactModel:'',
     };
   },
   mounted() {
@@ -166,6 +175,11 @@ export default {
         });
       }
     },
+    showdialog(model){
+      console.log(model);
+      this.reactModel=model;
+      this.dialogVisible=true;
+    }
   },
   watch: {},
 };
