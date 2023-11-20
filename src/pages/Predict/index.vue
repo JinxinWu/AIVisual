@@ -76,44 +76,18 @@ export default {
       dialogVisible: false,
       resultShow: false,
       resultUrl: "",
-      models: [
-        {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          id: "ahdiaihd",
-        },
-        {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          modelId: "ahdiaihd",
-        },
-        {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          modelId: "ahdiaihd",
-        },
-        {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          modelId: "ahdiaihd",
-        },
-        {
-          name: "iajdiajid",
-          url: "oijadiajdoai",
-          modelId: "ahdiaihd",
-        },
-      ],
+      models: [],
     };
   },
   mounted() {
-    // axios({
-    //     method: "get",
-    //     url: "/guo/test/getModel",
-    //     headers: this.headers,
-    //     timeout: 30000,
-    //   }).then((res) => {
-    //     this.models = res.data.models
-    //   });
+    axios({
+        method: "get",
+        url: "/guo/test/getModel",
+        headers: this.headers,
+        timeout: 30000,
+      }).then((res) => {
+        this.models = res.data.models
+      });
   },
   methods: {
     uploadFile(item) {

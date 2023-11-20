@@ -2,7 +2,8 @@ import VueRouter from 'vue-router';
 
 import Train from "../pages/Train";
 import Login from "../pages/Login";
-import Log from "../pages/Log";
+import ModelLog from "../pages/ModelLog";
+import ApplyLog from "../pages/ApplyLog";
 import Chat from "../pages/Chat";
 import Predict from "../pages/Predict";
 import Test from "../pages/Test"
@@ -28,9 +29,17 @@ const router = new VueRouter({
 			redirect: '/login',
     },
     {
-      path: '/Log',
-      name: 'Log',
-      component: Log,
+      path: '/ModelLog',
+      name: 'ModelLog',
+      component: ModelLog,
+      meta: {
+				requireAuth: true
+			},
+    },
+    {
+      path: '/ApplyLog',
+      name: 'ApplyLog',
+      component: ApplyLog,
       meta: {
 				requireAuth: true
 			},
