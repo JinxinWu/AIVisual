@@ -5,23 +5,11 @@
     </el-header>
     <el-main>
       <el-row style="margin-top: 20px">
-        <el-col :span="6" :offset="4">
-          <span class="demonstration">按照数据集名称检索</span>
-          <el-select v-model="value" clearable placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-col>
         <el-col :span="8" :offset="4"
           ><div>
             <span class="demonstration">按照日期检索</span>
             <el-date-picker
-              v-model="value2"
+              v-model="value"
               type="datetimerange"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -41,12 +29,7 @@
             :header-cell-style="rowStyle"
             :default-sort="{ prop: 'date', order: 'descending' }"
           >
-            <el-table-column
-              prop="id"
-              label="序号"
-              width="50"
-              align="center"
-            >
+            <el-table-column prop="id" label="序号" width="50" align="center">
             </el-table-column>
             <el-table-column
               prop="gmtCreateTime"
@@ -194,7 +177,7 @@ export default {
           dataAnalysis: "王小虎iuhuihihiuhiuhiuuhiuhiuh",
           method: "上海市普陀区金沙江路 1518 弄",
           result: "成功",
-        }
+        },
       ],
       pickerOptions: {
         shortcuts: [
@@ -227,16 +210,14 @@ export default {
           },
         ],
       },
-      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-      value2: "",
     };
   },
-  
+
   methods: {
     getTableData() {
       axios({
         method: "get",
-        url: "/guo/test/getTrainLog?user_id="+this.user_id,
+        url: "/guo/test/getTrainLog?user_id=" + this.user_id,
         headers: this.headers,
         timeout: 30000,
       }).then((res) => {
@@ -295,84 +276,19 @@ export default {
   },
   watch: {
     value(val) {
-      if (this.value2 === null) {
-        if (val === "") {
-          this.tableDataPages = this.tableData;
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        } else {
-          this.tableDataPages = this.tableData.filter((item) => {
-            return item.type === val;
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        }
+      if (val == null) {
+        this.tableDataPages = this.tableData;
+        this.currentPage3 = 1;
+        this.tableDataShow = this.tableDataPages.slice(0, 10);
       } else {
-        if (val === "") {
-          this.tableDataPages = this.tableData.filter((item) => {
-            const dt = new Date(item.date);
-            return (
-              dt.getTime() >= this.value2[0].getTime() &&
-              dt.getTime() <= this.value2[1].getTime()
-            );
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        } else {
-          this.tableDataPages = this.tableDataPages.filter((item) => {
-            const dt = new Date(item.date);
-            return (
-              dt.getTime() >= this.value2[0].getTime() &&
-              dt.getTime() <= this.value2[1].getTime()
-            );
-          });
-          this.tableDataPages = this.tableDataPages.filter((item) => {
-            return item.type === val;
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        }
-      }
-    },
-    value2(val) {
-      // 类型值为空
-      if (this.value === "") {
-        // 时间为空
-        if (val === null) {
-          this.tableDataPages = this.tableData;
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        } else {
-          // 时间不为空
-          this.tableDataPages = this.tableData.filter((item) => {
-            const dt = new Date(item.date);
-            return (
-              dt.getTime() >= val[0].getTime() &&
-              dt.getTime() <= val[1].getTime()
-            );
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        }
-      } else {
-        // console.log(val);
-        if (val === null) {
-          this.tableDataPages = this.tableData.filter((item) => {
-            return item.type === this.value;
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        } else {
-          this.tableDataPages = this.tableDataPages.filter((item) => {
-            const dt = new Date(item.date);
-            return (
-              dt.getTime() >= val[0].getTime() &&
-              dt.getTime() <= val[1].getTime()
-            );
-          });
-          this.currentPage3 = 1;
-          this.tableDataShow = this.tableDataPages.slice(0, 10);
-        }
+        this.tableDataPages = this.tableData.filter((item) => {
+          const dt = new Date(item.gmtCreateTime);
+          return (
+            dt.getTime() >= val[0].getTime() && dt.getTime() <= val[1].getTime()
+          );
+        });
+        this.currentPage3 = 1;
+        this.tableDataShow = this.tableDataPages.slice(0, 10);
       }
     },
     currentPage3() {
@@ -384,6 +300,8 @@ export default {
   },
   mounted() {
     // this.getTableData();
+    this.tableDataPages = this.tableData;
+    this.tableDataShow = this.tableData.slice(0, 10);
   },
 };
 </script>
