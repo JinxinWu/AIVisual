@@ -21,7 +21,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
   z-index: 1;
   background: url(//aistudio-fe-online.cdn.bcebos.com/aistudio/dist/1700195597809/images/application/center/page-bg-right.png)
       no-repeat,
@@ -29,5 +29,9 @@ export default {
       no-repeat;
   background-size: 1080px 420px, 800px 1050px;
   background-position: top -60px right -372px, top -60px left;
+}
+
+.el-main::-webkit-scrollbar {
+  width: 0;
 }
 </style>

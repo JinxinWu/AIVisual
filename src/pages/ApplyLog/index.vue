@@ -324,7 +324,7 @@ export default {
 }
 
 body > .el-container {
-  height: 96vh;
+  // height: 96vh;
   margin-bottom: 0px;
 }
 

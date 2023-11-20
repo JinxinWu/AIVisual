@@ -217,7 +217,7 @@ export default {
 
 .el-main {
   padding: 0;
-  //   height: calc(100vh - 170px); // 设置主体 main 高度
+  // height: calc(100vh - 170px); // 设置主体 main 高度
   // background-color: #e9eef3;
   color: #333;
   text-align: left;
@@ -225,7 +225,7 @@ export default {
 }
 
 body > .el-container {
-  height: 96vh;
+  // height: 96vh;
   margin-bottom: 0px;
 }
 
