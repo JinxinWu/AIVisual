@@ -43,7 +43,7 @@ export default {
         type: this.type,
         height: this.height,
         width: this.width,
-        color: "#d6edf7",
+        color: "#f2f5fa",
       };
       // 开始拖拽
       this.$emit('start-drag', dragData);
@@ -62,7 +62,7 @@ export default {
   border-radius:6px;
   // 小手形状
   cursor: pointer;
-  background-color: #d6edf7;
+  background-color: #f2f5fa;
   font-size: 13px;
   color: black;
   border: none;

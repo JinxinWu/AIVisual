@@ -865,7 +865,7 @@ export default {
 
 //表格最左边的div
 .rowDiv {
-  background-color: #2932e1;
+  background-color: #2468f1;
   width: 100px;
   height: 25px;
   margin: 10px auto;
