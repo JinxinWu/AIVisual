@@ -7,29 +7,11 @@
 
     <div class="mod-menu" style="">
       <!-- 操作按钮 -->
-
       <div
         style="margin-top: 20px; margin-bottom: 20px; width: 100%; height: 40px"
       >
-        <el-col :span="3" :offset="3" style="font-size: 15px; line-height: 40px"
-          >快速搜索：</el-col
-        >
-        <!-- 用户查询 -->
-
-        <el-col :span="4">
-          <span style="font-size: 15px; margin-right: 10px">用户名</span>
-          <el-autocomplete
-            class="inline-input"
-            v-model="user"
-            :fetch-suggestions="userSearch"
-            placeholder=""
-            clearable
-            style="width: 140px; font-size: 15px"
-          ></el-autocomplete>
-        </el-col>
-
         <!-- 时间查询 -->
-        <el-col :span="10" style="font-size: 15px">
+        <el-col :span="10" :offset="3" style="font-size: 15px">
           <span style="margin-right: 10px; font-size: 15px; color: #8492a6"
             >时间区间</span
           >
@@ -52,9 +34,11 @@
             style="width: 145px; font-size: 15px"
           ></el-autocomplete>
         </el-col>
+        <el-col :span="4">
+          <el-button @click="tableVisible=true;">新增</el-button>        
+        </el-col>
       </div>
       <!-- 数据显示 -->
-
       <el-table
         row-key="menuId"
         ref="filterTable"
@@ -62,16 +46,14 @@
         style="width: 80%; margin: auto"
         :default-sort="{ prop: 'date', order: 'descending' }"
         :header-cell-style="{ text: 'center', background: '#f5f7fa' }"
-        :data="
-          getDataList()
-        "
+        :data="getDataList()"
       >
         <el-table-column
+          prop="modelId"
           header-align="center"
-          min-width="50"
-          type="index"
-          :index="indexMethod(0)"
-          label="序号"
+          align="center"
+          width="200"
+          label="模型id"
         >
         </el-table-column>
         <el-table-column
@@ -84,82 +66,21 @@
           sortable
         >
         </el-table-column>
-
-        <el-table-column
-          prop="user"
-          header-align="center"
-          align="center"
-          width="100"
-          label="用户"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="dataName"
-          label="数据集名称"
-          width="120"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <span v-if="scope.row.dataName.length <= 6">{{
-              scope.row.dataName
-            }}</span>
-            <span v-if="scope.row.dataName.length > 6">{{
-              scope.row.dataName.substr(0, 6) + "..."
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="guidance" label="建模指引" width="160">
-          <template slot-scope="scope">
-            <span v-if="scope.row.guidance.length <= 10">{{
-              scope.row.guidance
-            }}</span>
-            <span v-if="scope.row.guidance.length > 10">{{
-              scope.row.guidance.substr(0, 10) + "..."
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="model" label="模型(算法组合)" width="260">
-          <template slot-scope="scope">
-            <span v-if="scope.row.model.length <= 10">{{
-              scope.row.model
-            }}</span>
-            <span v-if="scope.row.model.length > 10">{{
-              scope.row.model.substr(0, 10) + "..."
-            }}</span>
-          </template>
-        </el-table-column>
         <el-table-column
           prop="modelUrl"
           header-align="center"
           align="center"
-          width="200"
           label="模型地址"
         >
         </el-table-column>
-
-        <el-table-column
-          prop="result"
-          header-align="center"
-          align="center"
-          width="200"
-          label="结果"
-          ><template slot-scope="scope">
-            <span v-if="scope.row.result.length <= 10">{{
-              scope.row.result
-            }}</span>
-            <span v-if="scope.row.result.length > 10">{{
-              scope.row.result.substr(0, 10) + "..."
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="deleteRow(scope.$index, dataList)"
               type="text"
               size="small"
             >
-              移除
+              删除
             </el-button>
             <el-button
               @click="
@@ -190,22 +111,30 @@
     </div>
     <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
       <el-form label-position="left" inline class="demo-table-expand">
+        <el-form-item label="模型id">
+          <span>{{ details.modelId }}</span>
+        </el-form-item>
         <el-form-item label="时间">
           <span>{{ details.date }}</span>
         </el-form-item>
-        <el-form-item label="数据集名称">
-          <span>{{ details.dataName }}</span>
-        </el-form-item>
-        <el-form-item label="建模指引">
-          <span v-html="details.guidance"></span>
-        </el-form-item>
-        <el-form-item label="算法组合">
-          <span>{{ details.model }}</span>
-        </el-form-item>
-        <el-form-item label="结果">
-          <span>{{ details.result }}</span>
+        <el-form-item label="模型地址">
+          <span>{{ details.modelUrl }}</span>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <el-dialog title="新增项目" :visible.sync="tableVisible" :show-close="false">
+      <el-form label-position="left"  :model="newItem">
+            <el-form-item label="时间">
+              <el-input v-model="newItem.data" style="width: 260px;margin-left: 28px;"></el-input>
+            </el-form-item>
+            <el-form-item label="模型地址">
+              <el-input v-model="newItem.modelUrl" style="width: 260px;"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">立即创建</el-button>
+              <el-button @click="cancel()">取消</el-button>
+            </el-form-item>
+          </el-form>
     </el-dialog>
   </div>
 </template>
@@ -216,69 +145,48 @@ import dayjs from "dayjs";
 export default {
   data() {
     return {
+      tableVisible:false,
       dialogTableVisible: false,
-      dataForm: {},
       dataList: [
         {
+          modelId: "fcefefed",
           date: "2023.11.17 00:00:00",
-          user: "a",
-          dataName: "",
-          guidance: "",
-          model: "",
           modelUrl: "http://1.com",
-          result: "",
         },
         {
+          modelId: "fcefefed",
           date: "2023.11.18 00:00:00",
-          user: "b",
-          dataName: "",
-          guidance: "",
-          model: "",
           modelUrl: "http://2.com",
-          result: "",
         },
         {
+          modelId: "fcefefed",
           date: "2023.11.19 00:00:00",
-          user: "c",
-          dataName: "",
-          guidance: "",
-          model: "",
           modelUrl: "http://3.com",
-          result: "",
         },
         {
+          modelId: "fcefefed",
           date: "2023.11.20 00:00:00",
-          user: "d",
-          dataName: "",
-          guidance: "",
-          model: "",
           modelUrl: "http://4.com",
-          result: "",
         },
         {
+          modelId: "fcefefed",
           date: "2023.11.21 00:00:00",
-          user: "e",
-          dataName: "",
-          guidance: "",
-          model: "",
           modelUrl: "http://5.com",
-          result: "",
         },
       ],
       currentPage: 1, // 当前页码
-      pageSize: 1, // 每页的数据条数
+      pageSize: 5, // 每页的数据条数
       //筛选
-      user: "", //当前选择的user
       from: "", //起始时间
       to: "", //终止时间
       details: {
-        date: "",
-          user: "",
-          dataName: "",
-          guidance: "",
-          model: "",
+          modelId: "",
+          date: "",
           modelUrl: "",
-          result: "",
+      },
+      newItem: {
+          date: "",
+          modelUrl: "",
       },
     };
   },
@@ -286,20 +194,35 @@ export default {
     Header2,
   },
   methods: {
-    getDataList(){
-      const sorted_dataList=this.dataList.slice(
-            (this.currentPage - 1) * this.pageSize,
-            this.currentPage * this.pageSize
-          );
-      const result =sorted_dataList.filter(
-            (data) =>
-              (!this.from ||
-                !this.to ||
-                (data.date.toLowerCase() >= this.from &&
-                  data.date.toLowerCase() <= this.to)) &&
-              (!this.user ||
-                data.user.toLowerCase().includes(this.user.toLowerCase()))
-          );
+    //取消
+    cancel(){
+      this.tableVisible=false;
+      this.newItem={
+          date: "",
+          modelUrl: "",
+      };
+    },
+    //新建信息
+    onSubmit(){
+      console.log(this.newItem)
+      const item=this.newItem;
+      this.dataList.push(item);
+      //axios 写这里
+      //this.tableVisible=false;
+    },
+    //获取当前展示的内容
+    getDataList() {
+      const sorted_dataList = this.dataList.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
+      const result = sorted_dataList.filter(
+        (data) =>
+          !this.from ||
+          !this.to ||
+          (data.date.toLowerCase() >= this.from &&
+            data.date.toLowerCase() <= this.to)
+      );
       return result;
     },
     //点击查看详情
@@ -368,16 +291,10 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-
     //筛选模型类型
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
-    },
-
-    //自动增加序号
-    indexMethod(index) {
-      return index + 1;
     },
     //删除数据
     deleteRow(index, rows) {
