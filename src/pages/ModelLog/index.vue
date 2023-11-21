@@ -94,7 +94,10 @@
                   size="small"
                   >查看</el-button
                 >
-                <el-button type="text" size="small" @click="showdialog(model)"
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="showdialog(scope.row)"
                   >应用</el-button
                 >
               </template>
@@ -274,9 +277,10 @@ export default {
       let dt = new Date(date);
       return dayjs(dt).format("YYYY-MM-DD\nHH:mm:ss");
     },
-    showdialog(model) {
+    showdialog(row) {
       // console.log(model);
       // this.reactModel = model;
+      console.log(row);
       this.dialogVisible = true;
     },
     // apply(row) {
