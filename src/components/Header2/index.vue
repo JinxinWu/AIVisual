@@ -1,7 +1,7 @@
 <template>
-  <el-row>
+  <el-row style="box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.1)">
     <el-col :span="8">
-      <div class="logo">灵智启业</div>
+      <div class="logo"><img src="../../assets/img/logo.png" alt="" /></div>
     </el-col>
 
     <el-col :span="16">
@@ -18,7 +18,6 @@
           <el-menu-item index="/AdLog">用户操作日志</el-menu-item>
           <el-menu-item index="/Administrator">用户建模日志</el-menu-item>
           <el-menu-item index="/AdMolLog">模型操作日志</el-menu-item>
-
         </el-menu>
       </div>
     </el-col>
@@ -49,22 +48,28 @@ export default {
     margin-bottom: 0;
   }
 }
-//第一个el-col的样式
-.el-row .el-col:first-child {
-  background-color: #004088;
-  border-radius: 20px 0 0 0;
+
+img {
+  width: 33%;
+  margin-left: 200px;
 }
 
-//logo盒子的样式
-.logo {
-  width: auto;
-  height: auto;
-  color: white;
-  font-weight: 600;
-  font-size: 24px;
-  margin-left: 25%;
-  font-family: "Microsoft YaHei", sans-serif;
-}
+// //第一个el-col的样式
+// .el-row .el-col:first-child {
+//   background-color: #004088;
+//   border-radius: 20px 0 0 0;
+// }
+
+// //logo盒子的样式
+// .logo {
+//   width: auto;
+//   height: auto;
+//   color: white;
+//   font-weight: 600;
+//   font-size: 24px;
+//   margin-left: 25%;
+//   font-family: "Microsoft YaHei", sans-serif;
+// }
 
 //菜单样式
 //定位

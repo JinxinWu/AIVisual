@@ -1,151 +1,172 @@
 <template>
-  <div>
+  <el-container>
     <!-- 头部 -->
     <el-header>
       <Header2></Header2>
     </el-header>
-
-    <div class="mod-menu" style="">
-      <!-- 操作按钮 -->
-      <div
-        style="margin-top: 20px; margin-bottom: 20px; width: 100%; height: 40px"
-      >
-        <!-- 时间查询 -->
-        <el-col :span="10" :offset="3" style="font-size: 15px">
-          <span style="margin-right: 10px; font-size: 15px; color: #8492a6"
-            >时间区间</span
+    <el-main>
+      <div class="mod-menu" style="">
+        <!-- 操作按钮 -->
+        <div
+          style="
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            height: 40px;
+          "
+        >
+          <!-- 时间查询 -->
+          <el-col :span="10" :offset="3" style="font-size: 15px">
+            <span style="margin-right: 10px; font-size: 15px; color: #8492a6"
+              >时间区间</span
+            >
+            从
+            <el-autocomplete
+              class="inline-input"
+              v-model="from"
+              :fetch-suggestions="dateSearch"
+              placeholder="请输入起始时间"
+              clearable
+              style="width: 145px; font-size: 15px"
+            ></el-autocomplete>
+            到
+            <el-autocomplete
+              class="inline-input"
+              v-model="to"
+              :fetch-suggestions="dateSearch"
+              placeholder="请输入终止时间"
+              clearable
+              style="width: 145px; font-size: 15px"
+            ></el-autocomplete>
+          </el-col>
+          <el-col :span="4">
+            <el-button @click="tableVisible = true">新增</el-button>
+          </el-col>
+        </div>
+        <!-- 数据显示 -->
+        <el-table
+          row-key="menuId"
+          ref="filterTable"
+          border
+          style="width: 80%; margin: auto"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+          :header-cell-style="{ text: 'center', background: '#f5f7fa' }"
+          :data="getDataList()"
+        >
+          <el-table-column
+            prop="modelId"
+            header-align="center"
+            align="center"
+            width="200"
+            label="模型id"
           >
-          从
-          <el-autocomplete
-            class="inline-input"
-            v-model="from"
-            :fetch-suggestions="dateSearch"
-            placeholder="请输入起始时间"
-            clearable
-            style="width: 145px; font-size: 15px"
-          ></el-autocomplete>
-          到
-          <el-autocomplete
-            class="inline-input"
-            v-model="to"
-            :fetch-suggestions="dateSearch"
-            placeholder="请输入终止时间"
-            clearable
-            style="width: 145px; font-size: 15px"
-          ></el-autocomplete>
-        </el-col>
-        <el-col :span="4">
-          <el-button @click="tableVisible=true;">新增</el-button>        
-        </el-col>
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            header-align="center"
+            align="center"
+            width="200"
+            label="时间"
+            :formatter="formatDate"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="modelUrl"
+            header-align="center"
+            align="center"
+            label="模型地址"
+          >
+          </el-table-column>
+          <el-table-column label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteRow(scope.$index, dataList)"
+                type="text"
+                size="small"
+              >
+                删除
+              </el-button>
+              <el-button
+                @click="
+                  handleClick(scope.row);
+                  dialogTableVisible = true;
+                "
+                type="text"
+                size="small"
+                >查看</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 分页 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="this.dataList.length"
+          >
+          </el-pagination>
+        </div>
       </div>
-      <!-- 数据显示 -->
-      <el-table
-        row-key="menuId"
-        ref="filterTable"
-        border
-        style="width: 80%; margin: auto"
-        :default-sort="{ prop: 'date', order: 'descending' }"
-        :header-cell-style="{ text: 'center', background: '#f5f7fa' }"
-        :data="getDataList()"
+      <el-dialog
+        title="建模详情"
+        :visible.sync="dialogTableVisible"
+        :append-to-body="true"
       >
-        <el-table-column
-          prop="modelId"
-          header-align="center"
-          align="center"
-          width="200"
-          label="模型id"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          header-align="center"
-          align="center"
-          width="200"
-          label="时间"
-          :formatter="formatDate"
-          sortable
-        >
-        </el-table-column>
-        <el-table-column
-          prop="modelUrl"
-          header-align="center"
-          align="center"
-          label="模型地址"
-        >
-        </el-table-column>
-        <el-table-column label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="deleteRow(scope.$index, dataList)"
-              type="text"
-              size="small"
-            >
-              删除
-            </el-button>
-            <el-button
-              @click="
-                handleClick(scope.row);
-                dialogTableVisible = true;
-              "
-              type="text"
-              size="small"
-              >查看</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页 -->
-      <div class="block" style="margin-top: 15px">
-        <el-pagination
-          align="center"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[1, 5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="this.dataList.length"
-        >
-        </el-pagination>
-      </div>
-    </div>
-    <el-dialog title="建模详情" :visible.sync="dialogTableVisible">
-      <el-form label-position="left" inline class="demo-table-expand">
-        <el-form-item label="模型id">
-          <span>{{ details.modelId }}</span>
-        </el-form-item>
-        <el-form-item label="时间">
-          <span>{{ details.date }}</span>
-        </el-form-item>
-        <el-form-item label="模型地址">
-          <span>{{ details.modelUrl }}</span>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-    <el-dialog title="新增项目" :visible.sync="tableVisible" :show-close="false">
-      <el-form label-position="left"  :model="newItem">
-            <el-form-item label="时间">
-              <el-input v-model="newItem.data" style="width: 260px;margin-left: 28px;"></el-input>
-            </el-form-item>
-            <el-form-item label="模型地址">
-              <el-input v-model="newItem.modelUrl" style="width: 260px;"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">立即创建</el-button>
-              <el-button @click="cancel()">取消</el-button>
-            </el-form-item>
-          </el-form>
-    </el-dialog>
-  </div>
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="模型id">
+            <span>{{ details.modelId }}</span>
+          </el-form-item>
+          <el-form-item label="时间">
+            <span>{{ details.date }}</span>
+          </el-form-item>
+          <el-form-item label="模型地址">
+            <span>{{ details.modelUrl }}</span>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <el-dialog
+        title="新增项目"
+        :visible.sync="tableVisible"
+        :show-close="false"
+        :append-to-body="true"
+      >
+        <el-form label-position="left" :model="newItem">
+          <el-form-item label="时间">
+            <el-input
+              v-model="newItem.data"
+              style="width: 260px; margin-left: 28px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="模型地址">
+            <el-input
+              v-model="newItem.modelUrl"
+              style="width: 260px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">立即创建</el-button>
+            <el-button @click="cancel()">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </el-main>
+  </el-container>
 </template>
   
-  <script>
+<script>
 import Header2 from "@/components/Header2";
 import dayjs from "dayjs";
 export default {
   data() {
     return {
-      tableVisible:false,
+      tableVisible: false,
       dialogTableVisible: false,
       dataList: [
         {
@@ -180,13 +201,13 @@ export default {
       from: "", //起始时间
       to: "", //终止时间
       details: {
-          modelId: "",
-          date: "",
-          modelUrl: "",
+        modelId: "",
+        date: "",
+        modelUrl: "",
       },
       newItem: {
-          date: "",
-          modelUrl: "",
+        date: "",
+        modelUrl: "",
       },
     };
   },
@@ -195,17 +216,17 @@ export default {
   },
   methods: {
     //取消
-    cancel(){
-      this.tableVisible=false;
-      this.newItem={
-          date: "",
-          modelUrl: "",
+    cancel() {
+      this.tableVisible = false;
+      this.newItem = {
+        date: "",
+        modelUrl: "",
       };
     },
     //新建信息
-    onSubmit(){
-      console.log(this.newItem)
-      const item=this.newItem;
+    onSubmit() {
+      console.log(this.newItem);
+      const item = this.newItem;
       this.dataList.push(item);
       //axios 写这里
       //this.tableVisible=false;
