@@ -1,7 +1,7 @@
 <template>
-  <el-row style="box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.1);">
+  <el-row style="box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.1)">
     <el-col :span="8">
-      <div class="logo"><img src="../../assets/img/logo.png" alt=""></div>
+      <div class="logo"><img src="../../assets/img/logo.png" alt="" /></div>
     </el-col>
 
     <el-col :span="16" style="padding-left: 240px">
@@ -22,7 +22,17 @@
             <el-menu-item index="/modellog">模型日志</el-menu-item>
             <el-menu-item index="/applylog">应用日志</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/login">登录/个人信息</el-menu-item>
+          <el-menu-item index="/login" v-if="!hasToken()"
+            >登录/个人信息</el-menu-item
+          >
+          <el-menu-item style="background-color: white !important" v-if="hasToken()">
+            <div style="margin-top: -10px">
+              <el-avatar
+                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              ></el-avatar>
+            </div>
+            <!-- <img :src="userAvatar" alt="User Avatar" /> -->
+          </el-menu-item>
         </el-menu>
       </div>
     </el-col>
@@ -30,16 +40,37 @@
 </template>
 
 <script>
+import VueCookies from "vue-cookies";
+import axios from "axios";
 export default {
   name: "Header",
   data() {
     return {
       activeIndex: "1",
+      userAvatar: "",
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    hasToken() {
+      let token = VueCookies.get("token");
+      if (token) {
+        axios({
+          method: "get",
+          url: `/guo/account/user/getAvatar`,
+          headers: {
+            token: token,
+          },
+          timeout: 30000,
+        }).then((res) => {
+          this.userAvatar = res.data.userAvatar;
+        });
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
@@ -65,13 +96,13 @@ img {
 
 //logo盒子的样式
 // .logo {
-  // width: auto;
-  // height: auto;
-  // color: white;
-  // font-weight: 600;
-  // font-size: 24px;
-  // margin-left: 25%;
-  // font-family: "Microsoft YaHei", sans-serif;
+// width: auto;
+// height: auto;
+// color: white;
+// font-weight: 600;
+// font-size: 24px;
+// margin-left: 25%;
+// font-family: "Microsoft YaHei", sans-serif;
 // }
 
 //菜单样式
@@ -103,7 +134,7 @@ img {
   border-radius: 10px;
 }
 
-/deep/.el-menu--horizontal>.el-submenu .el-submenu__title {
+/deep/.el-menu--horizontal > .el-submenu .el-submenu__title {
   margin-right: 10px;
   color: black;
   font-size: 16px !important;
@@ -113,7 +144,7 @@ img {
   border-radius: 10px;
 }
 
-/deep/.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+/deep/.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
   font-weight: 600;
   color: white !important;
   background-color: #004088 !important;
