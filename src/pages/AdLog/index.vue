@@ -17,8 +17,14 @@
           "
         >
           <el-col
-            :span="3"
-            :offset="2"
+            :span="4"
+            :offset="3"
+            style="font-size: 40px; font-weight: bold; line-height: 40px"
+            >用户操作日志</el-col
+          >
+          <el-col
+            :span="2"
+            :offset="1"
             style="font-size: 15px; line-height: 40px"
             >快速搜索：</el-col
           >

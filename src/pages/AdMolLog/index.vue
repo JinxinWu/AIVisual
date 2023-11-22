@@ -15,6 +15,12 @@
             height: 40px;
           "
         >
+          <el-col
+            :span="4"
+            :offset="3"
+            style="font-size: 40px; font-weight: bold; line-height: 40px"
+            >模型操作日志</el-col
+          >
           <!-- 时间查询 -->
           <el-col :span="10" :offset="3" style="font-size: 15px">
             <span style="margin-right: 10px; font-size: 15px; color: #8492a6"
