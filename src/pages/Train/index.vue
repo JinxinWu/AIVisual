@@ -371,7 +371,7 @@
                 position: absolute;
                 color: black;
                 top: 50px;
-                left: 160px;
+                left: 115px;
               "
             >
               建模提示：<br />
@@ -397,7 +397,7 @@
                   color: white;
                   background-color: #004088;
                   top: 200px;
-                  left: 960px;
+                  left: 810px;
                 "
                 >加载数据</el-button
               >
@@ -409,7 +409,7 @@
                   z-index: 999;
                   position: absolute;
                   top: 175px;
-                  left: 960px;
+                  left: 810px;
                 "
               >
                 只能上传{{ fileType }}文件
@@ -425,7 +425,7 @@
                 color: white;
                 background-color: #004088;
                 top: 200px;
-                left: 1060px;
+                left: 910px;
               "
               >模型训练</el-button
             >
@@ -439,7 +439,7 @@
                 color: white;
                 background-color: #004088;
                 top: 200px;
-                left: 1150px;
+                left: 1000px;
               "
               >模型下载</el-button
             >
@@ -454,7 +454,7 @@
                 color: white;
                 background-color: #004088;
                 top: 200px;
-                left: 1250px;
+                left: 1100px;
               "
               >清空画布</el-button
             >
@@ -463,11 +463,11 @@
         <!-- 后端显示模块 -->
         <el-row
           style="
-            margin-top: 10px;
+            margin: 10px auto;
             color: black;
             font-size: 14px;
             min-height: 100px;
-            with: 80%;
+            width: 83%;
             border: 1px solid #dcdcdc;
           "
         >
@@ -884,7 +884,7 @@ export default {
 //画布
 .flow-wrap {
   height: 250px;
-  width: 1400px;
+  width: 1230px;
   position: relative;
   overflow: hidden;
   outline: none !important;

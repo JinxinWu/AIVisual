@@ -15,13 +15,13 @@
           router
         >
           <el-menu-item index="/train">数据训练</el-menu-item>
+          <el-menu-item index="/predict">模型应用</el-menu-item>
+          <el-menu-item index="/chat">智聊自助</el-menu-item>
           <el-submenu index="/">
             <template slot="title">日志</template>
             <el-menu-item index="/modellog">模型日志</el-menu-item>
             <el-menu-item index="/applylog">应用日志</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/predict">模型应用</el-menu-item>
-          <el-menu-item index="/chat">智聊自助</el-menu-item>
           <el-menu-item index="/login">登录/个人信息</el-menu-item>
         </el-menu>
       </div>
